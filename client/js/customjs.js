@@ -247,6 +247,16 @@ function updateStatusCallback(){
 
                                   })
      
+     $("#deleteContent").click(function(e){//create Location
+                                    
+         e.preventDefault();
+                                    deleteContent();
+                                    
+                                    //console.log(Json);
+                                   //createPageInstructor(callToDB("I0001"));
+
+                                  })
+     
   var ImgList=[srcIU,srcIU,srcIU,srcIU]
 var CapoList=["Classe1","Classe2","Classe3","Classe4"]
 var LinksIdList=[["link1-1","link1-2"],["link2-1","link2-2"],["link3-1","link3-2"],["link4-1","link4-2"]]
@@ -380,6 +390,18 @@ function createSideBarNav(){
 //---------New Function----------------------------------------
 
 
+//function to delete page
+
+function deleteContent(){//add eliminate ORIENTATION INFO SMARTPHONE
+                               console.log("ELIMINO")
+                                console.log( document.getElementById('sidebar-wrapper'))
+                               console.log( document.getElementById('page-content-wrapper'))
+                                $('#sidebar-wrapper').empty();
+                                $('#Pages-Container').empty();
+                                
+                             }
+
+
 //function for construction page
 function addLinkOnSideBar(addLinkC, addLinkA2A, namesLinkA2A, namesLinkC,LinkA2A,LinkC){
                             
@@ -436,46 +458,25 @@ function addLinkOnSideBar(addLinkC, addLinkA2A, namesLinkA2A, namesLinkC,LinkA2A
                                           
                                           }
                                 } 
-function addLinkOnSideBarLocation(addLinkC, addLinkA2A, namesLinkA2A, namesLinkC,LinkA2A,LinkC){
+function addLinkOnSideBarLocation(){
                             
-                   
-    
-    
-                     
                             var  A2A=document.createElement('div');
                             A2A.setAttribute('id','linkA2Asmartphone');
                             var el="";
-                            el+="<li class='sidebar-brand'>See also(linkA2A)<a href='#'>"
-                            for(var i=0;i<namesLinkA2A.length;i++){
-                                
-                                            el+="<li><a href='#' id='A2A"+i+"'>"+namesLinkA2A[i]+"</a></li>"
-                                                                }
-                                    //associo a ogni link la funzione di showA2A
-                                    
+                            el+="<li class='sidebar-brand'>LOCATION<a href='#'>"
                           
-                                      
-                                    A2A.innerHTML=el;                               
-                                    var temp=document.getElementsByClassName('sidebar-nav')[0];
-                                    temp.insertBefore(A2A,temp.lastChild);
-                               
-                            
-                       
-
-                 
-    
-    
-    
-    //assoccio ad ogni cosa aggiunta cosa fare al click
-         for(var i=0;i<namesLinkA2A.length;i++){
-                                            console.log("prova)    
-                                            console.log($("a[id^=A2A" + i+ "]"))
+                                
+                            el+="<li><a href='#' id='A2A0'>Location</a></li>"
+                            el+="<li><a href='#' id='A2A1'>Contact us</a></li>"
+                            A2A.innerHTML=el;                               
+                            var temp=document.getElementsByClassName('sidebar-nav')[0];
+                            console.log(temp)
+                            temp.appendChild(A2A);
+                               //assoccio ad ogni cosa aggiunta cosa fare al click
+      
                                            
-        if(i==0) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(0,namesLinkA2A.length)}}
-        if(i==1) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(1,namesLinkA2A.length)}   }                          if(i==2) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(2,namesLinkA2A.length)}   }
-                                          
-                                          
-         
-          }
+                            $("#A2A0")[0].onclick=function(){showPageA2A(0,2)}
+                            $("#A2A1")[0].onclick=function(){showPageA2A(1,2)}
                                 } 
 function createA2ABarDesktopLocation(){ var div=document.createElement('div');
                                            div.setAttribute('class','btn-group btn-group-justified hidden-xs');
@@ -487,9 +488,8 @@ function createA2ABarDesktopLocation(){ var div=document.createElement('div');
                                        
                                       
                                         div.innerHTML=el;
-                                     var e=document.getElementById('page-content-wrapper');
-                                     var bs=document.getElementById('buttonSide');
-                                     e.insertBefore(div, bs.nextSibling);
+                                    
+                                       document.getElementById('Pages-Container').appendChild(div);
                                        
                                        
                                        $("#A2A0")[0].onclick=function(){showPageA2A(0,2)}
@@ -512,10 +512,9 @@ function createA2ABarDesktopCourse(){
                                         
                                        
                                         div.innerHTML=el;
-                                     var e=document.getElementById('page-content-wrapper');
-                                     var bs=document.getElementById('buttonSide');
-                                     e.insertBefore(div, bs.nextSibling);
-
+                                     document.getElementById('Pages-Container').appendChild(div);
+                                    
+                                     
 
      $("A2A0").onclick(function(){showPageA2A(0,2)})
                                        $("#A2A0")[0].onclick(function(){showPageA2A(0,3)})
@@ -591,7 +590,7 @@ function createImgRightText(Simg,Text,idWherePutIt){
                                         div.setAttribute('id','content')
                                         var el="<div class='thumbnail right-caption'><img src='"+server+Simg+"' width='50%'><div                                           class='caption'>"+Text+"</div></div>";
                                         div.innerHTML=el;
-                                        document.getElementById('page-content-wrapper').appendChild(div);
+                                        document.getElementById(idWherePutIt).appendChild(div);
                                         }
 
 
@@ -676,7 +675,7 @@ function createTextwithTitle(text,title,idWherePutIt){
     
                                     var div=document.createElement('div')
                                     var el="";
-                                    el+="<h1 align='center'>"+title+"</h1></br></br><p align='center'>"+text+"</p>";
+                                    el+="<h1 align='center'>"+title+"</h1></br></br><p align='center'>"+text+"                                         </p>";
                                     div.innerHTML=el;
                                     document.getElementById(idWherePutIt).appendChild(div);
 
@@ -723,7 +722,7 @@ function addWrappers(){
 
 }
 function createDivA2A(n){
-                        var content=document.getElementById('page-content-wrapper')
+                        var content=document.getElementById('Pages-Container')
                         console.log(content);
                         var el="";
                         for(var i=0;i<n;i++){
@@ -759,29 +758,34 @@ function showPageA2A(pageToShow,npages){
 //presuppongono che la pagina sia  stata svuotata
 function createPageLocation(JSON){
                             console.log("sto creando pagina LOCATION")
+                            createA2ABarDesktopLocation();
+                            createSideBarNav();
+                            addLinkOnSideBarLocation();
                             createDivA2A(2);
                             showPageA2A(0,2);
                             createTextwithTitle(JSON.whereweare,"WHERE WE ARE","page0");
                             createTextwithTitle(JSON.howtogethere,"HOW TO GET THERE","page0");
                             createGoogleMaps("page0");
                             createTextwithTitle(JSON.howtogethere,"CONTACT US","page1");
-                            createA2ABarDesktopLocation();
-                            createSideBarNav();
-                            addLinkOnSideBar(false,true,nomeLinkA2A,null,nomeLinkA2A,null);
+                            
+                           
+                         
 
 
 
 
 
 
-}
+                                }
 function createPageInstructor(JSON){
 
             console.log(JSON)
-            createTextwithTitle("",JSON.name,'page-content-wrapper');//titolo
-            createImgRightText(JSON.profilePic,JSON.shortBio,'page-content-wrapper')
-            createTextwithTitle(JSON.professionalQualification,"",'page-content-wrapper');
-            addCarousel2(JSON.images,'page-content-wrapper');
+            createDivA2A(1);
+            createTextwithTitle("",JSON.name,'page0');//titolo
+            createImgRightText(JSON.profilePic,JSON.shortBio,'page0');
+      
+            createTextwithTitle(JSON.professionalQualification,"",'page0');
+            addCarousel2(JSON.images,'page0');
             createSideBarNav();
             addLinkOnSideBarInstructor(JSON.courses)
 
