@@ -2,14 +2,14 @@
 //get course from db and reply using json structure
 
 //connection to db
-$mysqli = new mysqli("localhost", "root", "", "my_biggym2015");
-        
+include ("dbconnect.php");
+
 if (mysqli_connect_errno()) { //verify connection
     echo "Error to connect to DBMS: ".mysqli_connect_error(); //notify error
     exit(); //do nothing else 
 }
 else {
-    $phpGetparamid ="C0002";//mysql_escape_string($_GET["id"]); //get escaped id
+    $phpGetparamid = mysql_escape_string($_GET["id"]); //get escaped id
     //echo "Successful connection"; // connection ok
     mysqli_set_charset($mysqli, "utf8"); 
     # extract results mysqli_result::fetch_array
@@ -20,7 +20,7 @@ else {
     $query3 = "SELECT id_image.image as image FROM course JOIN id_image on id_image.id=course.id WHERE course.id ='" . $phpGetparamid."';";
     //get schedule
     $query4 = "SELECT DoW, init, end FROM 'schedule' WHERE course='" . $phpGetparamid."';";
-    echo $query4;
+    //echo $query4;
     //get form
     $query5= "SELECT field FROM `form_field` WHERE form ='F0001'";
     //query execution
@@ -97,7 +97,6 @@ else {
         }
         // var_dump($myCourse);
            echo json_encode($myCourse);
-       
     }
 
     //free result

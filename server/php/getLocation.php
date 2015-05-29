@@ -2,7 +2,7 @@
 //get instructor from db and reply using json structure
 
 //connection to db
-$mysqli = new mysqli("localhost", "root", "", "my_biggym2015");
+include ("dbconnect.php");
 
 if (mysqli_connect_errno()) { //verify connection
     echo "Error to connect to DBMS: ".mysqli_connect_error(); //notify error
@@ -45,4 +45,4 @@ else {
 
 
 
-?>
+?>

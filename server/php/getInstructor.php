@@ -2,7 +2,7 @@
 //get instructor from db and reply using json structure
 
 //connection to db
-$mysqli = new mysqli("localhost", "root", "", "my_biggym2015");
+include ("dbconnect.php");
 
 if (mysqli_connect_errno()) { //verify connection
     echo "Error to connect to DBMS: ".mysqli_connect_error(); //notify error
@@ -16,6 +16,8 @@ else {
     $query1 = " SELECT * FROM instructor WHERE id = '" . $phpGetparamid."';";
     $query2 = "SELECT course.id as courseID, course.title as courseTitle FROM instructor  JOIN instructor_course ON instructor_course.instructor = id JOIN course ON instructor_course.course = course.id WHERE instructor.id = '" . $phpGetparamid."';";
     $query3 = "SELECT id_image.image as image FROM instructor JOIN id_image on id_image.id=instructor.id WHERE instructor.id = '" . $phpGetparamid."';";
+    //scarica awards
+     $query4 = "SELECT award.* FROM award JOIN instructor_award on instructor_award.award=award.id WHERE instructor_award.instructor = '" . $phpGetparamid."';"; 
     //query execution
     $result1 = $mysqli->query($query1);    
 
@@ -56,6 +58,19 @@ else {
             $myInstructor["images"]= $myArray3;
 
         }
+              $result4 = $mysqli->query($query4);
+        //if there are images
+        if($result4 and $result4->num_rows >0)
+        {
+            $myArray4 = array();//create an array
+            while($row = $result4->fetch_array(MYSQL_ASSOC)) {
+              //  $myArray[] = $row;
+                  array_push($myArray4, $row);
+                //  var_dump(json_encode($myArray));
+            }
+            $myInstructor["awards"]= $myArray4;
+
+        }
                    // var_dump($myArray);
            echo json_encode($myInstructor);
     }
@@ -64,6 +79,7 @@ else {
     if($result1)$result1->close();
     if($result2)$result2->close();
     if($result3)$result3->close();
+    if($result4)$result4->close();
 
     //close connection
     $mysqli->close();
