@@ -1,0 +1,62 @@
+.dropdown{
+  background-color: #222;
+  border-color: #080808;
+  &>li>a{
+    color: #999;
+    &:hover{
+      color: #fff;
+      background-color: #000;
+    }
+  }
+}
+.carousel-inner{
+  max-height: 400px !important;
+}
+
+body,html,.row-offcanvas {
+  height:100%;
+}
+#TestButtons {
+
+    width: 90%;
+    
+
+}
+
+
+
+#NavInfoDesktop {
+    
+    width: 250px;
+
+    padding: 1px;
+    list-style: none;
+    
+    
+}
+.thumbnail.right-caption > img {
+    float: left;
+    margin-right: 9px;
+}
+
+.thumbnail.right-caption {
+    float: left;
+    padding-top:1px;
+    display: inline;
+}
+px
+.thumbnail.right-caption > .caption {
+    padding: 4px;
+}
+
+#content{  
+
+    padding-left: 10px;
+        }
+
+ html, body, #map-canvas {
+        height: 300px;
+        width: 88%;
+        margin: 1px;
+        padding: 1px
+      }
