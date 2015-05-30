@@ -54,9 +54,9 @@ px
     padding-left: 10px;
         }
 
- html, body, #map-canvas {
+ #map-canvas {
         height: 300px;
-        width: 88%;
+        
         margin: 1px;
         padding: 1px
       }

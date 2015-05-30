@@ -41,6 +41,7 @@ function callToDB(what){
                else if(typeOfPage==1){createPageCourse(JSON.parse(response))}
                if(typeOfPage==2){createPageLocation(JSON.parse(response))}
                else if(typeOfPage==3){createPageAllCourseByName(JSON.parse(response))}
+               else if(typeOfPage==4){createPageAllCourseByName(JSON.parse(response))}
               else console.log("nulla da fare")
         
         },
@@ -686,7 +687,7 @@ console.log(idWheretoPutIt)
 var cont=document.createElement('div');
           cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
                             var el="";
-                            el+="<img src='"+server+JSON.coursePic+"'width='50%' class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
+                            el+="<img src='"+server+JSON.coursePic+"'width='100px' class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
                             el+="<div class='right-caption col-xs-6 col-*-3'>";
                             el+="<a  href='' ><h4 id='LINK"+JSON.id+"'>"+JSON.title+"</h4></a>";
                             el+="</div>";
@@ -862,7 +863,7 @@ function createPageLocation(JSON){
                             showPageA2A(0,2);
                             createTextwithTitle(JSON.whereweare,"WHERE WE ARE","page0");
                             createTextwithTitle(JSON.howtogethere,"HOW TO GET THERE","page0");
-                            createGoogleMaps("page0");
+                            createGoogleMaps(JSON.map,"page0");
                             createTextwithTitle(JSON.howtogethere,"CONTACT US","page1");
                             bindLink(true,2)
                            
@@ -937,7 +938,7 @@ function createPageAllCourseByName(JSON){
 
 
 }
-function createPageAllCourseByLevel(JSON){}
+
 
 
 //------------------------------------------------------------------
@@ -945,14 +946,21 @@ function createPageAllCourseByLevel(JSON){}
 //API FACEBOOK/TWITTER/GOOGLE MAPS
 
 
-function initialize() {
+function initialize(var1,var2) {
+    var myLatlng = new google.maps.LatLng(var1,var2);
   var mapOptions = {
-    zoom: 8,
-    center: new google.maps.LatLng(-34.397, 150.644)
-  };
-
+    zoom: 16,
+    center: myLatlng
+            };
+ 
   var map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
+    
+var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'Big GYM!!!'
+  });
  document.getElementById('map-canvas').setAttribute('overflow','visible')   
     
 }
@@ -960,13 +968,15 @@ function initialize() {
 
 
 
-function createGoogleMaps(idwhereToPutIt){
-
+function createGoogleMaps(coordinates,idwhereToPutIt){
+            console.log("prima:"+coordinates+"*")
+            var cor=coordinates.split(',');
+            console.log(cor)
              var div=document.createElement('div');
              div.setAttribute('id','map-canvas')
              document.getElementById(idwhereToPutIt).appendChild(div);
-             
-             initialize() 
+             var value = parseFloat("554,20".replace(",", "."));
+             initialize(parseFloat(cor[0]),parseFloat(cor[1])) 
 
                     }
 

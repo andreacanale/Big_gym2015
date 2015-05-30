@@ -38,16 +38,17 @@
 }
 
 #page-content-wrapper {
-    width: 95%;
+    width: 100%;
     position: absolute;
     margin-left: 10px;
- 
+    margin-right: 10px;
 }
 
 #wrapper.toggled #page-content-wrapper {
     position: absolute;
     margin-right: -250px;
     padding-left:10px;
+    
 }
 
 /* Sidebar Styles */
@@ -121,11 +122,13 @@
     }
 
     #page-content-wrapper {
+        width: 100%;
         padding: 20px;
         position: relative;
     }
 
     #wrapper.toggled #page-content-wrapper {
+        
         position: relative;
         margin-right: 0;
     }
