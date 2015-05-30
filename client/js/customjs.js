@@ -1,7 +1,7 @@
 //SERVER  VARIABLES FOR IMAGES SOURCES
 
 
-var server="/SITO/server/"
+var server="/SITO/Big_gym2015/server"
 //DATABASE JS
 var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php"]
 
@@ -26,7 +26,7 @@ function callToDB(what){
         url: query, //Relative or absolute path to file.php file
         data: {id:what},
         success: function(response) {
-            console.log(JSON.parse(response));
+            
             var result=JSON.parse(response);
             var el="";
 
@@ -34,7 +34,7 @@ function callToDB(what){
                 
                //choose type of page to make
                if(typeOfPage==0)createPageInstructor(JSON.parse(response))
-               else if(typeOfPage==1){}
+               else if(typeOfPage==1){createPageCourse(JSON.parse(response))}
                if(typeOfPage==2)createPageLocation(JSON.parse(response))
         
         
@@ -96,16 +96,16 @@ function updateStatusCallback(){
             if(!isLink)$("#buttonSideBar").hide();
            })
      
-     $.ajaxSetup({ cache: true });
-  $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
-    FB.init({
-      appId: '921666911210062',
-      version: 'v2.3' // or v2.0, v2.1, v2.0
-    });     
-    $('#loginbutton,#feedbutton').removeAttr('disabled');
-    FB.getLoginStatus(updateStatusCallback);
-  });
-     
+  
+     $('[id^="LINK"]').click(function(e){
+                                
+                                e.preventDefault();
+                                var str=event.target.id;
+                                console.log("id di quello  selezionato"+str)
+                                var res = str.substr(4, 25);
+                                console.log("ho selezionato un link:"+res)
+                                callToDB(res)
+                        });
      
      
      
@@ -116,7 +116,7 @@ function updateStatusCallback(){
                     $("#wrapper").toggleClass("toggled");
                     
                     
-                            changeArrowDirection(arrow)
+                            changeArrowDirection(arrow);
          
         
                                             });
@@ -242,6 +242,7 @@ function updateStatusCallback(){
      $("#L0001").click(function(e){//create Location
                                     e.preventDefault();
                                     var  Json=callToDB("L0001");
+                                    
                                     //console.log(Json);
                                    //createPageInstructor(callToDB("I0001"));
 
@@ -390,6 +391,44 @@ function createSideBarNav(){
 //---------New Function----------------------------------------
 
 
+//binda i link a chiamate a DB
+function bindLink(isA2A,nPA2A){  //bind all link  to callDB
+                  
+                    $('[id^="LINK"]').click(function(e){
+                                
+                                e.preventDefault();
+                                var str=event.target.id;
+                                console.log("id di quello  selezionato"+str)
+                                var res = str.substr(4, 25);
+                                console.log("ho selezionato un link:"+res)
+                                callToDB(res)
+                        });
+    
+                if(isA2A){
+                            //$("#A2A1")[0].onclick=function(){showPageA2A(1,2)}
+                 $('[id^="A2A"]').click(function(e){
+                                
+                                e.preventDefault();
+                                var str=event.target.id;
+                                console.log("id di quello  selezionato"+str)
+                                var res = str.substr(3, 25);
+                                console.log("cosa sto passando"+str)
+                                
+                                showPageA2A(parseInt(res),nPA2A)
+                        });
+    
+                
+                
+                
+                
+                }
+    
+                    
+                    
+        }
+
+
+
 //function to delete page
 
 function deleteContent(){//add eliminate ORIENTATION INFO SMARTPHONE
@@ -403,6 +442,10 @@ function deleteContent(){//add eliminate ORIENTATION INFO SMARTPHONE
 
 
 //function for construction page
+
+
+
+//addLinkOnSideBar vecchia
 function addLinkOnSideBar(addLinkC, addLinkA2A, namesLinkA2A, namesLinkC,LinkA2A,LinkC){
                             
                    
@@ -458,70 +501,38 @@ function addLinkOnSideBar(addLinkC, addLinkA2A, namesLinkA2A, namesLinkC,LinkA2A
                                           
                                           }
                                 } 
-function addLinkOnSideBarLocation(){
+
+
+function addA2ALinkOnSideBar(namesPagesA2A,nameHead){
                             
                             var  A2A=document.createElement('div');
                             A2A.setAttribute('id','linkA2Asmartphone');
+                            console.log(namesPagesA2A)
                             var el="";
-                            el+="<li class='sidebar-brand'>LOCATION<a href='#'>"
+                            el+="<li class='sidebar-brand'>"+nameHead+"<a href='#'>"
                           
-                                
-                            el+="<li><a href='#' id='A2A0'>Location</a></li>"
-                            el+="<li><a href='#' id='A2A1'>Contact us</a></li>"
+                            for(var i=0;i<namesPagesA2A.length;i++){    
+                            el+="<li><a href='#' id='A2A"+i+"' '>"+namesPagesA2A[i]+"</a></li>";}
                             A2A.innerHTML=el;                               
-                            var temp=document.getElementsByClassName('sidebar-nav')[0];
-                            console.log(temp)
-                            temp.appendChild(A2A);
-                               //assoccio ad ogni cosa aggiunta cosa fare al click
+                            document.getElementsByClassName('sidebar-nav')[0].appendChild(A2A);;
+                           
+                               
       
-                                           
-                            $("#A2A0")[0].onclick=function(){showPageA2A(0,2)}
-                            $("#A2A1")[0].onclick=function(){showPageA2A(1,2)}
                                 } 
-function createA2ABarDesktopLocation(){ var div=document.createElement('div');
+function createA2ABarDesktop(Pages){ var div=document.createElement('div');
                                            div.setAttribute('class','btn-group btn-group-justified hidden-xs');
                                            div.setAttribute('id',"A2ABD");
                                            div.setAttribute('role','group');
                                            div.setAttribute('aria-label','...');
-                                        el="<div class='btn-group' role='group'><div class='btn btn-default'id='A2A0'>Location</div></div><div class='btn-group' role='group'><div class='btn btn-default'id='A2A1'>CONTACT US </div></div>";
-                                          
-                                       
-                                      
-                                        div.innerHTML=el;
-                                    
+                                           var el="";
+         for(var i=0;i<Pages.length;i++){
+ el+="<div class='btn-group' role='group'><div class='btn btn-default'id='A2A"+i+"'>"+Pages[i]+"</div></div>";
+                                        }
+                                         
+                                       el+="</div>";
+                                       div.innerHTML=el;
                                        document.getElementById('Pages-Container').appendChild(div);
-                                       
-                                       
-                                       $("#A2A0")[0].onclick=function(){showPageA2A(0,2)}
-                                       $("#A2A1")[0].onclick=function(){showPageA2A(1,2)}
-                                       console.log($("#A2A0"));
-
-
-
-
-
-}
-function createA2ABarDesktopCourse(){
-                                        var div=document.createElement('div');
-                                           div.setAttribute('class','btn-group btn-group-justified hidden-xs');
-                                           div.setAttribute('id',"A2ABD");
-                                           div.setAttribute('role','group');
-                                           div.setAttribute('aria-label','...');
-                                        el="<div class='btn-group' role='group'><div class='btn btn-default'id='A2A0'>Description</div></div><div class='btn-group' role='group'><div class='btn btn-default'id='A2A1'>Scheduling</div></div><div class='btn-group' role='group'><div class='btn btn-default'id='A2A2'>Register</div></div>";
-    
-                                        
-                                       
-                                        div.innerHTML=el;
-                                     document.getElementById('Pages-Container').appendChild(div);
-                                    
-                                     
-
-     $("A2A0").onclick(function(){showPageA2A(0,2)})
-                                       $("#A2A0")[0].onclick(function(){showPageA2A(0,3)})
-                                       $("#A2A1")[0].onclick(function(){showPageA2A(1,3)})
-                                       $("#A2A2")[0].onclick(function(){showPageA2A(2,3)})
-}
-
+                                       }
 function addLinkOnSideBarInstructor(Courses){
                             
                             var LC=document.createElement('div');
@@ -531,7 +542,7 @@ function addLinkOnSideBarInstructor(Courses){
                             el2+="<li class='sidebar-brand'>Courses Taught<a href='#'>"
                             for(var i=0;i<Courses.length;i++){
                                 
-                            el2+="<li><a href='#' id='"+Courses[i].courseID+"'>"+Courses[i].courseTitle+"</a></li>"
+                            el2+="<li><a href='#' id='LINK"+Courses[i].courseID+"'>"+Courses[i].courseTitle+"</a></li>"
                                                                 }
                             
                             LC.innerHTML=el2;
@@ -539,8 +550,28 @@ function addLinkOnSideBarInstructor(Courses){
                             temp.appendChild(LC);
                             
                             
-                              }
-    
+                              }//vale per tutti i tipi di correlati
+
+//prototipo che vale  per tutti  ma da cambiare query
+
+function addLinkCorrelatedOnSideBar(Links,headLinks){
+                            
+                            var LC=document.createElement('div');
+                            LC.setAttribute('id','linkCollegati')
+                            //Title of links
+                            var el2="";
+                            el2+="<li class='sidebar-brand'>"+headLinks+"<a href='#'>"
+                            for(var i=0;i<Links.length;i++){
+                                
+                            el2+="<li><a href='#' id='LINK"+Links[i].ID+"'>"+Courses[i].Title+"</a></li>"
+                                                                }
+                            
+                            LC.innerHTML=el2;
+                            var temp=document.getElementsByClassName('sidebar-nav')[0];
+                            temp.appendChild(LC);
+                            
+                            
+                              }   
     
     
     
@@ -553,8 +584,8 @@ function addLinkOnSideBarInstructor(Courses){
 
 
 
-//function for construction content
-//aggiungere opzione A2A passando se è A2a o no(nel caso no mettere in all content-wrapper)
+//function FOR COSTRUZIONE CONTENUTO----------------------
+//
 function addCarousel2( Images,idWherePutIt){
                     var div=document.createElement('div');
                     div.setAttribute('id','myCarousel')
@@ -596,6 +627,32 @@ function createImgRightText(Simg,Text,idWherePutIt){
 
 
 
+function createForm(whatToKnow,idWherePutIt){
+            var div=document.createElement('form');
+            div.setAttribute('class','form-horizontal')
+            var el="";
+            for(var i=0;i<whatToKnow.length;i++){
+                    el+="<div class='form-group'><label for='"+whatToKnow[i]+"' class='col-sm-2 control-label'>"+whatToKnow[i]+"</label><div class='col-sm-10'><input type='text' class='form-control' placeholder='Enter the "+whatToKnow[i]+"'></input></div></div>";
+            }
+    el+=  "<div class='form-group'><div class='col-sm-offset-2 col-sm-10'><button class='btn btn-default' id='sendButton'>Send Form</button></div></div>";   
+            
+
+
+  
+            
+            
+            
+            
+            
+            div.innerHTML=el;
+            document.getElementById(idWherePutIt).appendChild(div);
+  
+
+
+}
+
+
+
 function createWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             var cont=document.createElement('div');
                             cont.setAttribute('class','container');
@@ -605,7 +662,7 @@ function createWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             el+="<h6>"+CapoLinks+"</h6>";
                             
                             for(var i=0;i<Links.length;i++){
-                                                el+="<li id='"+Links[i]+"'><a href='#'>"+nameLinks[i]+"</a></li>";
+                                                el+="<li id='LINK"+Links[i]+"'><a href='#'>"+nameLinks[i]+"</a></li>";
                                                     
                             
                                                             }
@@ -627,7 +684,7 @@ function createWithLinks2(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             el+="<h4>"+CapoLinks+"</h4>";
                             
                             for(var i=0;i<Links.length;i++){
-                                                el+="<li id='"+Links[i]+"'><a href='#'>"+nameLinks[i]+"</a></li>";
+                                                el+="<li id='LINK"+Links[i]+"'><a href='#'>"+nameLinks[i]+"</a></li>";
                                                     
                             
                                                             }
@@ -685,6 +742,9 @@ function createTextwithTitle(text,title,idWherePutIt){
 
                                 }
 
+
+
+//-----------------------------fine funzioni  crea contenuti-------////
 function addTestButton(idWherePutIt){
         var div=document.createElement('div')
         div.setAttribute('class','row')
@@ -757,17 +817,21 @@ function showPageA2A(pageToShow,npages){
 
 //presuppongono che la pagina sia  stata svuotata
 function createPageLocation(JSON){
+                            deleteContent();
+                            var pages=["Where we are","Contact Us"]
+                            
+                             
                             console.log("sto creando pagina LOCATION")
-                            createA2ABarDesktopLocation();
+                            createA2ABarDesktop(pages);
                             createSideBarNav();
-                            addLinkOnSideBarLocation();
+                            addA2ALinkOnSideBar(pages,"Location");
                             createDivA2A(2);
                             showPageA2A(0,2);
                             createTextwithTitle(JSON.whereweare,"WHERE WE ARE","page0");
                             createTextwithTitle(JSON.howtogethere,"HOW TO GET THERE","page0");
                             createGoogleMaps("page0");
                             createTextwithTitle(JSON.howtogethere,"CONTACT US","page1");
-                            
+                            bindLink(true,2)
                            
                          
 
@@ -778,7 +842,7 @@ function createPageLocation(JSON){
 
                                 }
 function createPageInstructor(JSON){
-
+            deleteContent();
             console.log(JSON)
             createDivA2A(1);
             createTextwithTitle("",JSON.name,'page0');//titolo
@@ -789,11 +853,44 @@ function createPageInstructor(JSON){
             createSideBarNav();
             addLinkOnSideBarInstructor(JSON.courses)
 
+            
+            bindLink();
 
 
 
 
 }
+
+
+function createPageCourse(JSON){
+
+                            deleteContent();
+                            var pages=["Description","Scheduling","Register"]
+                            
+                             
+                            console.log("sto creando pagina Course")
+                            createA2ABarDesktop(pages);
+                            createSideBarNav();
+                            addA2ALinkOnSideBar(pages,JSON.title);
+                            createDivA2A(3);
+                            showPageA2A(0,3);
+                        
+                            //in pagina 0 description
+                            createTextwithTitle(JSON.description,JSON.title,'page0');
+                            createTextwithTitle(JSON.target,"TARGET",'page0');
+                            addCarousel2(JSON.images,'page0')
+                            
+                            //in pagina 1 scheduling
+                            createTextwithTitle("","Scheduling of : "+JSON.title+"",'page1');
+                            //in pagina 2 register
+    
+                            createTextwithTitle("","Register to: "+JSON.title+"",'page2');
+                            createForm(JSON.formFields,'page2')
+
+
+                            bindLink(true,3);
+}
+
 function createPageAllInstructor(JSON){}
 function createPageAllCourseByName(JSON){}
 function createPageAllCourseByLevel(JSON){}
