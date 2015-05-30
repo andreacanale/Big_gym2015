@@ -3,7 +3,7 @@
 
 var server="/SITO/Big_gym2015/server"
 //DATABASE JS
-var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php"]
+var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategory.php"]
 
 
 
@@ -13,7 +13,11 @@ function callToDB(what){
     if(what[0]=="I"){query=phps[0];typeOfPage=0;}
     else if(what[0]=="C"){query=phps[1];typeOfPage=1;}
     else if(what[0]=="L"){query=phps[2];typeOfPage=2;}
-    
+    else if(what=="ACN0"){query=phps[3];typeOfPage=3;}
+    else if(what=="ACL0"){query=phps[4];typeOfPage=4;}
+    else if(what=="ACC0"){query=phps[5];typeOfPage=5;}
+    else typeOfPage=-1;
+    console.log(typeOfPage)
     //0 Instructor 1 Course 2 Location
   
     console.log(query)
@@ -35,8 +39,9 @@ function callToDB(what){
                //choose type of page to make
                if(typeOfPage==0)createPageInstructor(JSON.parse(response))
                else if(typeOfPage==1){createPageCourse(JSON.parse(response))}
-               if(typeOfPage==2)createPageLocation(JSON.parse(response))
-        
+               if(typeOfPage==2){createPageLocation(JSON.parse(response))}
+               else if(typeOfPage==3){createPageAllCourseByName(JSON.parse(response))}
+              else console.log("nulla da fare")
         
         },
         error: function(request,error) 
@@ -140,6 +145,7 @@ function updateStatusCallback(){
                                         })
        
        
+         
        
        
         $("#AttivaOID").click(function(e){console.log("boooooooo")
@@ -170,19 +176,7 @@ function updateStatusCallback(){
                                           }) 
          
          
-        $("#AttivaA2AS").click(function(e){
-                                                e.preventDefault();
-                                               if(!(A2AS || CL))createSideBarNav();
-                                               
-                                               if(!A2AS){addLinkOnSideBar(false,true,nomeLinkA2A,null,nomeLinkA2A,null);
-                                                        A2AS=true;
-                                                        }
-                                               else {$('#linkA2Asmartphone').remove();
-                                                        A2AS=false;}
-                                                if(!(A2AS || CL))$('.sidebar-nav').remove()
-
-             
-                                          })
+        
          $("#AttivaLC").click(function(e){
                                                 e.preventDefault();
                                                if(!(A2AS || CL))createSideBarNav();
@@ -198,17 +192,7 @@ function updateStatusCallback(){
              
                                           })
         
-     $("#addSlider").click(function(e){
-                                               e.preventDefault();
-                                               
-                                               if(!isSlider){addCarousel2(srcI);
-                                                        isSlider=true;
-                                                        }
-                                               else {$('#myCarousel').remove();
-                                                        isSlider=false;}
-
-             
-                                          })
+     
      $("#addContent").click(function(e){
                                                e.preventDefault();
                                                
@@ -675,7 +659,7 @@ function createWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             }
 
 //server per fare lista
-function createWithLinks2(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
+function createWithLinks2(Simg,Links,nameLinks,CapoLinks,isCapoLinkALink,idWherePutIt){
                             var cont=document.createElement('div');
                             cont.setAttribute('class','thumbnail right-caption col-xs-12 col-sm-6 col-md-6 col-ld-6')
                             var el=""
@@ -696,6 +680,47 @@ function createWithLinks2(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
 
                             }
 
+//-----per pagina all courses---////
+function createImgWith1Link(JSON,idWheretoPutIt){
+console.log(idWheretoPutIt)
+var cont=document.createElement('div');
+          cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
+                            var el="";
+                            el+="<img src='"+server+JSON.coursePic+"'width='50%' class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
+                            el+="<div class='right-caption col-xs-6 col-*-3'>";
+                            el+="<a  href='' ><h4 id='LINK"+JSON.id+"'>"+JSON.title+"</h4></a>";
+                            el+="</div>";
+                            cont.innerHTML=el;
+                      
+                            document.getElementById(idWheretoPutIt).appendChild(cont);
+                            
+
+
+                    }
+function createListImgWith1Links(JSON,idWheretoPutIt){
+  //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
+                            var cont=document.createElement('div');
+                            cont.setAttribute('class','container-fluid');
+                            cont.setAttribute('id','list-thumbnails-links')
+                            var Row="";
+                            var j=0;
+                            document.getElementById(idWheretoPutIt).appendChild(cont);
+                            for(var i=0;i<JSON.courses.length;i++){
+                                
+                                
+                                if(i%2==0){ j++;
+                                            Row="<div  id='riga"+j+"' class='row'></div>"
+                                            cont.innerHTML=cont.innerHTML+Row;
+                                           }
+                                
+                                
+                                createImgWith1Link(JSON.courses[i],'riga'+j)
+                                
+                                                            }
+                          
+                            
+                            }
+//--------------------------------////
 function createListImgWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
   //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
                             var cont=document.createElement('div');
@@ -719,6 +744,14 @@ function createListImgWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                           
                             
                             }
+
+//
+
+
+
+
+
+
 
 function createMap(idwherePutIt){
         
@@ -892,7 +925,18 @@ function createPageCourse(JSON){
 }
 
 function createPageAllInstructor(JSON){}
-function createPageAllCourseByName(JSON){}
+function createPageAllCourseByName(JSON){
+                                console.log("sono qui")
+                                    deleteContent();
+                                    createDivA2A(1);
+    
+                                createTextwithTitle("",JSON.paragraph.content,"page0");
+                                createListImgWith1Links(JSON,"page0");
+                            bindLink(false,0);
+
+
+
+}
 function createPageAllCourseByLevel(JSON){}
 
 
