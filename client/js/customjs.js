@@ -3,7 +3,7 @@
 
 var server="/SITO/Big_gym2015/server"
 //DATABASE JS
-var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategory.php"]
+var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php"]
 
 
 
@@ -39,9 +39,10 @@ function callToDB(what){
                //choose type of page to make
                if(typeOfPage==0)createPageInstructor(JSON.parse(response))
                else if(typeOfPage==1){createPageCourse(JSON.parse(response))}
-               if(typeOfPage==2){createPageLocation(JSON.parse(response))}
+               else if(typeOfPage==2){createPageLocation(JSON.parse(response))}
                else if(typeOfPage==3){createPageAllCourseByName(JSON.parse(response))}
-               else if(typeOfPage==4){createPageAllCourseByName(JSON.parse(response))}
+               else if(typeOfPage==4){createPageAllCourseByLevel(JSON.parse(response))}
+               else if(typeOfPage==5){createPageAllCourseCategories(JSON.parse(response))}
               else console.log("nulla da fare")
         
         },
@@ -132,7 +133,7 @@ function updateStatusCallback(){
      
        $("#AttivaOIS").click(function(e){
             e.preventDefault();
-        console.log("attivo mappa")
+       
            createGoogleMaps();
            
      
@@ -149,7 +150,7 @@ function updateStatusCallback(){
          
        
        
-        $("#AttivaOID").click(function(e){console.log("boooooooo")
+        $("#AttivaOID").click(function(e){
             e.preventDefault();
            if(!OID){createOrientationDesktop();
                     OID=true;}
@@ -418,8 +419,7 @@ function bindLink(isA2A,nPA2A){  //bind all link  to callDB
 
 function deleteContent(){//add eliminate ORIENTATION INFO SMARTPHONE
                                console.log("ELIMINO")
-                                console.log( document.getElementById('sidebar-wrapper'))
-                               console.log( document.getElementById('page-content-wrapper'))
+                              
                                 $('#sidebar-wrapper').empty();
                                 $('#Pages-Container').empty();
                                 
@@ -479,7 +479,7 @@ function addLinkOnSideBar(addLinkC, addLinkA2A, namesLinkA2A, namesLinkC,LinkA2A
     //assoccio ad ogni cosa aggiunta cosa fare al click
     for(var i=0;i<namesLinkA2A.length;i++){
                                                 
-                                            console.log($("a[id^=A2A" + i+ "]"))
+                                            
                                            
         if(i==0) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(0,namesLinkA2A.length)}}
         if(i==1) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(1,namesLinkA2A.length)}   }                          if(i==2) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(2,namesLinkA2A.length)}   }
@@ -504,6 +504,40 @@ function addA2ALinkOnSideBar(namesPagesA2A,nameHead){
                                
       
                                 } 
+
+
+//add link correlated on sidebar pass array of Link=[id,name] and name to put head
+//prototipo che vale  per tutti  ma da cambiare query
+function addLCLinkOnSideBar(Links,nameHead){
+                            
+                            var  A2A=document.createElement('div');
+                            A2A.setAttribute('id','linkCollegati');
+                           
+                            var el="";
+                            el+="<li class='sidebar-brand'><a href='#'>"+nameHead+"</a>"
+                      
+                            for(var i=0;i<Links.length;i++){    
+                                
+                                el+="<li><a href='#' id='LINK"+Links[i].id+"' '>"+Links[i].name+"</a></li>";
+                            
+                            }
+                            A2A.innerHTML=el;                               
+                            document.getElementsByClassName('sidebar-nav')[0].appendChild(A2A);;
+                           
+                               
+      
+                                } 
+
+
+
+
+
+                      //var create per testare funzione di prima ..da cambiare query
+var LCAllCourseByLevel= [{id:"ACL0", name:"All course by level"}];
+
+var LCAllCourseByName= [{id:"ACN0", name:"All course by Name"}];
+//-------------------------------------------------
+
 function createA2ABarDesktop(Pages){ var div=document.createElement('div');
                                            div.setAttribute('class','btn-group btn-group-justified hidden-xs');
                                            div.setAttribute('id',"A2ABD");
@@ -518,6 +552,7 @@ function createA2ABarDesktop(Pages){ var div=document.createElement('div');
                                        div.innerHTML=el;
                                        document.getElementById('Pages-Container').appendChild(div);
                                        }
+
 function addLinkOnSideBarInstructor(Courses){
                             
                             var LC=document.createElement('div');
@@ -537,27 +572,9 @@ function addLinkOnSideBarInstructor(Courses){
                             
                               }//vale per tutti i tipi di correlati
 
-//prototipo che vale  per tutti  ma da cambiare query
 
-function addLinkCorrelatedOnSideBar(Links,headLinks){
-                            
-                            var LC=document.createElement('div');
-                            LC.setAttribute('id','linkCollegati')
-                            //Title of links
-                            var el2="";
-                            el2+="<li class='sidebar-brand'>"+headLinks+"<a href='#'>"
-                            for(var i=0;i<Links.length;i++){
-                                
-                            el2+="<li><a href='#' id='LINK"+Links[i].ID+"'>"+Courses[i].Title+"</a></li>"
-                                                                }
-                            
-                            LC.innerHTML=el2;
-                            var temp=document.getElementsByClassName('sidebar-nav')[0];
-                            temp.appendChild(LC);
-                            
-                            
-                              }   
-    
+
+
     
     
                           
@@ -683,7 +700,7 @@ function createWithLinks2(Simg,Links,nameLinks,CapoLinks,isCapoLinkALink,idWhere
 
 //-----per pagina all courses---////
 function createImgWith1Link(JSON,idWheretoPutIt){
-console.log(idWheretoPutIt)
+
 var cont=document.createElement('div');
           cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
                             var el="";
@@ -716,6 +733,53 @@ function createListImgWith1Links(JSON,idWheretoPutIt){
                                 
                                 
                                 createImgWith1Link(JSON.courses[i],'riga'+j)
+                                
+                                                            }
+                          
+                            
+                            }
+
+//x All Course Category
+
+function createImgWithMoreLink(JSON,idWheretoPutIt){
+
+var cont=document.createElement('div');
+          cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
+                            var el="";
+                            el+="<img src='"+server+JSON.thumbnail+"' class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
+                            el+="<div class='right-caption col-xs-6 col-*-3'>";
+                            el+="<a  href='' ><h4 id='LINK"+JSON.id+"'>"+JSON.nome+"</h4></a>";
+                            
+                            //qui ci va id per fare query  di corsi per una categoria
+                            el+="<p id='LINK'><a  href='' >See Course of  this category</a></p>";
+                            
+    
+                            el+="</div>";
+                            cont.innerHTML=el;
+                      
+                            document.getElementById(idWheretoPutIt).appendChild(cont);
+                            
+
+
+                    }
+function createListImgWithMoreLinks(JSON,idWheretoPutIt){
+  //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
+                            var cont=document.createElement('div');
+                            cont.setAttribute('class','container-fluid');
+                            cont.setAttribute('id','list-thumbnails-links')
+                            var Row="";
+                            var j=0;
+                            document.getElementById(idWheretoPutIt).appendChild(cont);
+                            for(var i=0;i<JSON.courseCategories.length;i++){
+                                
+                                
+                                if(i%2==0){ j++;
+                                            Row="<div  id='riga"+j+"' class='row'></div>"
+                                            cont.innerHTML=cont.innerHTML+Row;
+                                           }
+                                
+                                
+                                createImgWithMoreLink(JSON.courseCategories[i],'riga'+j)
                                 
                                                             }
                           
@@ -817,7 +881,7 @@ function addWrappers(){
 }
 function createDivA2A(n){
                         var content=document.getElementById('Pages-Container')
-                        console.log(content);
+                       
                         var el="";
                         for(var i=0;i<n;i++){
                                                 var div=document.createElement('div')
@@ -927,17 +991,44 @@ function createPageCourse(JSON){
 
 function createPageAllInstructor(JSON){}
 function createPageAllCourseByName(JSON){
-                                console.log("sono qui")
-                                    deleteContent();
-                                    createDivA2A(1);
-    
-                                createTextwithTitle("",JSON.paragraph.content,"page0");
-                                createListImgWith1Links(JSON,"page0");
-                            bindLink(false,0);
+                                        console.log("Sto facendo pagina course By Name")
+                                        deleteContent();
+                                        createDivA2A(1);
+                                        createSideBarNav();
+                                        addLCLinkOnSideBar(LCAllCourseByLevel,"Other sort")
+                                        createTextwithTitle("",JSON.paragraph.content,"page0");
+                                        createListImgWith1Links(JSON,"page0");
 
+                                        bindLink(false,0);
+                                        }
+function createPageAllCourseByLevel(JSON){
+                                        console.log("Sto facendo pagina course By Level")
+                                        deleteContent();
+                                        createDivA2A(1);
+                                        createSideBarNav();
+                                        addLCLinkOnSideBar(LCAllCourseByName,"Other sort")
+                                        createTextwithTitle("",JSON.paragraph.content,"page0");
+                                        createListImgWith1Links(JSON,"page0");
 
+                                        bindLink(false,0);
+                                        }
+function createPageAllCourseCategories(JSON){
+                                        console.log("Sto facendo pagina All course Category")
+                                        deleteContent();
+                                        createDivA2A(1);
+                                        createSideBarNav();
+                                        //cerco di  divide il content
+                                        var str=JSON.paragraph.content;
+                                        var res=str.split(/\n/)
+                           
+                            
+                            
+                                        addLCLinkOnSideBar(LCAllCourseByName,"Other view")
+                                        createTextwithTitle(res[1],res[0],"page0");
+                                        createListImgWithMoreLinks(JSON,"page0");
 
-}
+                                        bindLink(false,0);
+                                        }
 
 
 
@@ -969,9 +1060,9 @@ var marker = new google.maps.Marker({
 
 
 function createGoogleMaps(coordinates,idwhereToPutIt){
-            console.log("prima:"+coordinates+"*")
+            
             var cor=coordinates.split(',');
-            console.log(cor)
+        
              var div=document.createElement('div');
              div.setAttribute('id','map-canvas')
              document.getElementById(idwhereToPutIt).appendChild(div);
