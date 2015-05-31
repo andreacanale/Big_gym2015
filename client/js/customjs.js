@@ -746,7 +746,7 @@ function createImgWithMoreLink(JSON,idWheretoPutIt){
 var cont=document.createElement('div');
           cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
                             var el="";
-                            el+="<img src='"+server+JSON.thumbnail+"' class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
+                            el+="<img src='"+server+JSON.thumbnail+"'s class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
                             el+="<div class='right-caption col-xs-6 col-*-3'>";
                             el+="<a  href='' ><h4 id='LINK"+JSON.id+"'>"+JSON.nome+"</h4></a>";
                             
@@ -928,6 +928,15 @@ function createPageLocation(JSON){
                             createTextwithTitle(JSON.whereweare,"WHERE WE ARE","page0");
                             createTextwithTitle(JSON.howtogethere,"HOW TO GET THERE","page0");
                             createGoogleMaps(JSON.map,"page0");
+    
+                             var string=JSON.conctactUs;
+                          
+                               string.split('\n '),
+                        result = arr.splice(0,2);
+
+                        result.push(arr.join('\n ')); 
+    
+    
                             createTextwithTitle(JSON.howtogethere,"CONTACT US","page1");
                             bindLink(true,2)
                            
