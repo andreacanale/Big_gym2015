@@ -14,7 +14,7 @@ else {
     mysqli_set_charset($mysqli, "utf8"); 
     # extract results mysqli_result::fetch_array
     $query1 = " SELECT * FROM instructor WHERE id = '" . $phpGetparamid."';";
-    $query2 = "SELECT course.id as courseID, course.title as courseTitle FROM instructor  JOIN instructor_course ON instructor_course.instructor = id JOIN course ON instructor_course.course = course.id WHERE instructor.id = '" . $phpGetparamid."';";
+    $query2 = "SELECT course.id, course.title FROM instructor  JOIN instructor_course ON instructor_course.instructor = id JOIN course ON instructor_course.course = course.id WHERE instructor.id = '" . $phpGetparamid."';";
     $query3 = "SELECT id_image.image as image FROM instructor JOIN id_image on id_image.id=instructor.id WHERE instructor.id = '" . $phpGetparamid."';";
     //scarica awards
      $query4 = "SELECT award.* FROM award JOIN instructor_award on instructor_award.award=award.id WHERE instructor_award.instructor = '" . $phpGetparamid."';"; 

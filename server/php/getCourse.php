@@ -19,7 +19,7 @@ else {
     //get images of the course
     $query3 = "SELECT id_image.image as image FROM course JOIN id_image on id_image.id=course.id WHERE course.id ='" . $phpGetparamid."';";
     //get schedule
-    $query4 = "SELECT DoW, init, end FROM 'schedule' WHERE course='" . $phpGetparamid."';";
+    $query4 = "SELECT DoW, init, end FROM schedule WHERE course='" . $phpGetparamid."';";
     //echo $query4;
     //get form
     $query5= "SELECT field FROM `form_field` WHERE form ='F0001'";
@@ -65,7 +65,7 @@ else {
 
         }
 
-    
+   
          $result4 = $mysqli->query($query4);
         //if there are images
         if($result4 and $result4->num_rows >0)
@@ -77,8 +77,8 @@ else {
                 //  var_dump(json_encode($myArray));
             }
             $myCourse["schedule"]= $myArray4;
-
         }
+        
 
     
      $result5 = $mysqli->query($query5);
@@ -95,7 +95,7 @@ else {
             $myCourse["formFields"]= $myArray5;
 
         }
-        // var_dump($myCourse);
+      //   var_dump($myCourse);
            echo json_encode($myCourse);
     }
 
