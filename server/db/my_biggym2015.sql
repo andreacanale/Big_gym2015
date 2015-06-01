@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.7
+-- version 4.3.11
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mag 29, 2015 alle 22:13
--- Versione del server: 5.1.71-community-log
--- PHP Version: 5.3.10
+-- Host: 127.0.0.1
+-- Generation Time: Giu 01, 2015 alle 18:26
+-- Versione del server: 5.6.24
+-- PHP Version: 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `my_biggym2015`
+-- Database: `bigym`
 --
 
 -- --------------------------------------------------------
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `course` (
 
 INSERT INTO `course` (`id`, `title`, `target`, `level`, `description`, `heldIn`, `coursePic`) VALUES
 ('C0001', 'BOXE', 'MEN-WOMEN  AGE 16+', 'high', '<p>Boxing is a combat sport in which two people engage in a contest of strength, speed, reflexes, endurance, and will, by throwing punches at each other, usually with gloved hands. Historically, the goals have been to weaken and knock down the opponent.<br>\r\nAt Big GYM you can feel like an Olympian boxing in the ring with our USA Boxing Rocco Rambo coach,  or you can take part in the various amateur and pro competitions in the area and abroad.  Coach Rocco has vas experience in training both beginners and athletes the art of Boxing.  Rocco also knows what it takes to condition for a boxing match.  He uses his vast knowledge of athlete training and brings it to his cardio bag class for all ages and all levels!  You’ll train like a pro and NEVER have to hit by anyone!!</p>', 'R0001', '/images/boxe.jpg'),
-('C0002', 'Kick-Boxing', 'Men-Women age 16+', 'intermediate', '<p>One of the fastest growing fighting styles in the UK, Muay Thai is two thousand years of combat history distilled into the ‘science of eight limbs’, in which the fighter employs fists, shins, knees and elbows, plus a form of stand-up grappling known as clinch work. Its power and simplicity mean it’s widely regarded as the world’s most effective martial art and it has exploded globally in recent years, winning fans both as a breath-taking ring sport and a vital component of mixed martial arts.</p>', 'R0001', '/images/kick-boxing'),
+('C0002', 'Kick-Boxing', 'Men-Women age 16+', 'intermediate', '<p>One of the fastest growing fighting styles in the UK, Muay Thai is two thousand years of combat history distilled into the ‘science of eight limbs’, in which the fighter employs fists, shins, knees and elbows, plus a form of stand-up grappling known as clinch work. Its power and simplicity mean it’s widely regarded as the world’s most effective martial art and it has exploded globally in recent years, winning fans both as a breath-taking ring sport and a vital component of mixed martial arts.</p>', 'R0001', '/images/kick-boxing.jpg'),
 ('C0003', 'Zumba', 'everyone', 'everyone', '<p>Are you ready to party yourself into shape?  Forget the workout, just lose yourself in the music and find yourself in shape at the original Zumba dance-fitness party.\r\nZumba classes feature exotic rhythms set to high-energy Latin and international beats, transitioning the workout to target every major muscle group in the body.  Before you know it, you’ll be getting fit and your energy levels will be soaring!</p>', 'R0001', '/images/zumba.jpg'),
 ('C0004', 'Power Yoga', 'everyone', 'intermediate', '<p>Power yoga is a vigorous, fitness-based approach to yoga. Power yoga doesn’t follow a set series of poses unlike other yoga styles. With its emphasis on strength and flexibility, power yoga is a great introduction to the practice for those who want more of a physical challenge than meditative approach.It will torch your calories, tone, strengthen and rinse your body, clear your mind and leave you with a sense of accomplishment and empowerment. The dynamic mix of sweat and spirit that is cultivated in a Power Yoga class will challenge you to step up to your edge, and unlock your hidden potential for achieving authentic personal power and living an extraordinary life.</p>\r\n\r\n<p>Be prepared to SHINE!</p>\r\n', 'R0001', '/images/poweryoga.jpg');
 
@@ -78,18 +78,18 @@ CREATE TABLE IF NOT EXISTS `coursecategory` (
   `id` varchar(5) NOT NULL,
   `nome` varchar(30) NOT NULL,
   `thumbnail` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  `Description` varchar(300) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `coursecategory`
 --
 
-INSERT INTO `coursecategory` (`id`, `nome`, `thumbnail`) VALUES
-('CC001', 'Aerobic', '/images/LOGO_AEROBICA.png'),
-('CC002', 'Martial Arts', '/images/logo_MARTIAL ARTS.png'),
-('CC003', 'Water-Based', '/images/logo_WATER BASED.png'),
-('CC004', 'Yoga', '/images/YOGA.png');
+INSERT INTO `coursecategory` (`id`, `nome`, `thumbnail`, `Description`) VALUES
+('CC001', 'Aerobic', '/images/LOGO_AEROBICA.png', '<p>Yoga means "to yoke," or "to conjoin." This holistic practice is deeply rooted in ancient Indian culture that unites the mind, body and spirit through movement, breathing techniques and meditation. </p>'),
+('CC002', 'Martial Arts', '/images/logo_MARTIAL ARTS.png', '<p>Here the list of all course of Martial  Arts ,you can choose from boxe to karate,asian oeuropean fight style.\r\nYou think that it''s impossible that there are so many courses only for Martial Arts?\r\nDON''T WORRY: each teacher has an official authorization to teach the course and in some case also an'),
+('CC003', 'Water-Based', '/images/logo_WATER BASED.png', '<p>It''s known that the union of physical exercise with the water is something that it''s for everyone,child will grow up with strongher body,mid-age people can improve their cardio and breathe and also injured people can heal with rehabilitation swim.So let''s start and join our courses.</p>'),
+('CC004', 'Yoga', '/images/YOGA.png', '<p>Yoga means "to yoke," or "to conjoin." This holistic practice is deeply rooted in ancient Indian culture that unites the mind, body and spirit through movement, breathing techniques and meditation.Don''t be lazy and start,choose your course.</p>');
 
 -- --------------------------------------------------------
 
@@ -99,8 +99,7 @@ INSERT INTO `coursecategory` (`id`, `nome`, `thumbnail`) VALUES
 
 CREATE TABLE IF NOT EXISTS `coursecategory_course` (
   `courseCategory` varchar(5) NOT NULL,
-  `course` varchar(5) NOT NULL,
-  PRIMARY KEY (`courseCategory`,`course`)
+  `course` varchar(5) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -193,8 +192,7 @@ CREATE TABLE IF NOT EXISTS `instructor` (
   `shortBio` varchar(1000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `professionalQualification` varchar(1000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `profilePic` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `miniText` varchar(300) NOT NULL,
-  PRIMARY KEY (`id`)
+  `miniText` varchar(300) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -236,8 +234,7 @@ INSERT INTO `instructor_award` (`instructor`, `award`) VALUES
 
 CREATE TABLE IF NOT EXISTS `instructor_course` (
   `instructor` varchar(5) NOT NULL,
-  `course` varchar(5) NOT NULL,
-  PRIMARY KEY (`instructor`,`course`)
+  `course` varchar(5) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -270,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `location` (
 --
 
 INSERT INTO `location` (`id`, `whereweare`, `howtogethere`, `map`, `conctactUs`) VALUES
-('L0001', '<p>You can find us at the following address:</p></br>\r\n\r\n<p>Big GYM</p></br>\r\n<p>Via Pacini 49</p></br>\r\n<p>20133 -MILAN (MI)</p></br>\r\n', '<p>On foot</p></br>\r\n<p>We are locatiod just few steps away PIOLA MM2 metro station. You can reach us walking few meters by the metro station.<p></br>\r\n<p>By car</p></br>\r\n<p>You can drive the circonvallazione and go to via Pacini from Piola square.</p>\r\n\r\n', '', 'Contact us\r\nPlease, move you weak arms and call us to make them strong\r\nTelephone: +619  333666999\r\nEmail: getbig@biggym.com\r\nSkype: Enlarge.your.shoulders');
+('L0001', '<p>You can find us at the following address:</p></br>\r\n\r\n<p>Big GYM</p></br>\r\n<p>Via Pacini 49</p></br>\r\n<p>20133 -MILAN (MI)</p></br>\r\n', '<p>On foot</p></br>\r\n<p>We are locatiod just few steps away PIOLA MM2 metro station. You can reach us walking few meters by the metro station.<p></br>\r\n<p>By car</p></br>\r\n<p>You can drive the circonvallazione and go to via Pacini from Piola square.</p>\r\n\r\n', '45.4833425,9.2321726', '<p>Contact us</p>\r\n<p>Please, move you weak arms and call us to make them strong</br>\r\nTelephone: +619  333666999</br>\r\nEmail: getbig@biggym.com</br>\r\nSkype: Enlarge.your.shoulders</p>');
 
 -- --------------------------------------------------------
 
@@ -280,8 +277,7 @@ INSERT INTO `location` (`id`, `whereweare`, `howtogethere`, `map`, `conctactUs`)
 
 CREATE TABLE IF NOT EXISTS `paragraph` (
   `id` varchar(5) NOT NULL,
-  `content` varchar(1000) NOT NULL,
-  PRIMARY KEY (`id`)
+  `content` varchar(1000) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -289,10 +285,10 @@ CREATE TABLE IF NOT EXISTS `paragraph` (
 --
 
 INSERT INTO `paragraph` (`id`, `content`) VALUES
-('P0001', 'All instructors\r\nHealth and fitness is increasingly in the public eye and many people are becoming keen to take command of their own fitness. Our Gym instructors facilitate this process by providing expert advice on what to expect, how to exercise and monitor diet, and can also provide that crucial element of motivation which people may find difficult on their own.So let''s know them.'),
-('P0002', 'All Courses by NAME'),
-('P0003', 'All Courses by LEVEL'),
-('P0004', 'Course Categories\r\nHere you can see a list of our course categories.');
+('P0001', '<p>All instructors</p>\r\n<p>Health and fitness is increasingly in the public eye and many people are becoming keen to take command of their own fitness. Our Gym instructors facilitate this process by providing expert advice on what to expect, how to exercise and monitor diet, and can also provide that crucial element of motivation which people may find difficult on their own.So let''s know them.</p>'),
+('P0002', '<p>All Courses by NAME</p>'),
+('P0003', '<p>All Courses by LEVEL</p>'),
+('P0004', '<p>Course Categories</p>\r\n<p>Here you can see a list of our course categories.</p>');
 
 -- --------------------------------------------------------
 
@@ -325,6 +321,40 @@ INSERT INTO `schedule` (`course`, `DoW`, `init`, `end`) VALUES
 ('C0004', 'Monday', '9:00', '11:00'),
 ('C0004', 'Thursday', '14:00', '16:00'),
 ('C0004', 'Friday', '17:00', '19:00');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `coursecategory`
+--
+ALTER TABLE `coursecategory`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `coursecategory_course`
+--
+ALTER TABLE `coursecategory_course`
+  ADD PRIMARY KEY (`courseCategory`,`course`);
+
+--
+-- Indexes for table `instructor`
+--
+ALTER TABLE `instructor`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `instructor_course`
+--
+ALTER TABLE `instructor_course`
+  ADD PRIMARY KEY (`instructor`,`course`);
+
+--
+-- Indexes for table `paragraph`
+--
+ALTER TABLE `paragraph`
+  ADD PRIMARY KEY (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

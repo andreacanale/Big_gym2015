@@ -931,13 +931,11 @@ function createPageLocation(JSON){
     
                              var string=JSON.conctactUs;
                           
-                               string.split('\n '),
-                        result = arr.splice(0,2);
-
-                        result.push(arr.join('\n ')); 
+                             var   result=string.split('</p>');
+                              console.log(result);
     
     
-                            createTextwithTitle(JSON.howtogethere,"CONTACT US","page1");
+                            createTextwithTitle(result[1],result[0],"page1");
                             bindLink(true,2)
                            
                          
