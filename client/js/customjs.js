@@ -738,6 +738,39 @@ function createListImgWith1Links(JSON,idWheretoPutIt){
                           
                             
                             }
+function createListImgWith1LinksOnlyOneLevel(JSON,idWheretoPutIt,level){
+  //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
+                            console.log("sono stato chiamato")
+                            var cont=document.createElement('div');
+                            cont.setAttribute('class','container-fluid');
+                            cont.setAttribute('id','list-thumbnails-links')
+                            var Row="";
+                            var j=0;
+                            var l=JSON.courses;
+                            var JSONF=l.filter(customFilter(level))
+                            document.getElementById(idWheretoPutIt).appendChild(cont);
+                            for(var i=0;i<JSONF.length;i++){
+                                
+                                
+                                if(i%2==0){ j++;
+                                            Row="<div  id='riga"+level+j+"' class='row'></div>"
+                                            cont.innerHTML=cont.innerHTML+Row;
+                                           }
+                                
+                                
+                                    createImgWith1Link(JSONF[i],'riga'+level+j)
+                                
+                                                            }
+                          
+                            
+                            }
+
+function customFilter(level) {
+   return function(el) {
+      var r = el.level;
+      return (level.localeCompare(r)==0);
+   }
+}
 
 //x All Course Category
 
@@ -809,6 +842,8 @@ function createListImgWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                           
                             
                             }
+
+
 
 //
 
@@ -933,8 +968,6 @@ function createPageLocation(JSON){
                           
                              var   result=string.split('</p>');
                               console.log(result);
-    
-    
                             createTextwithTitle(result[1],result[0],"page1");
                             bindLink(true,2)
                            
@@ -1004,6 +1037,9 @@ function createPageAllCourseByName(JSON){
                                         createSideBarNav();
                                         addLCLinkOnSideBar(LCAllCourseByLevel,"Other sort")
                                         createTextwithTitle("",JSON.paragraph.content,"page0");
+    
+    
+                              
                                         createListImgWith1Links(JSON,"page0");
 
                                         bindLink(false,0);
@@ -1015,7 +1051,20 @@ function createPageAllCourseByLevel(JSON){
                                         createSideBarNav();
                                         addLCLinkOnSideBar(LCAllCourseByName,"Other sort")
                                         createTextwithTitle("",JSON.paragraph.content,"page0");
-                                        createListImgWith1Links(JSON,"page0");
+                                        
+    
+    
+                                        createTextwithTitle("","everyone","page0");
+                                        createListImgWith1LinksOnlyOneLevel(JSON,"page0","everyone");
+                                        createTextwithTitle("","intermediate","page0");
+                                        createListImgWith1LinksOnlyOneLevel(JSON,"page0","intermediate");
+                                        createTextwithTitle("","high","page0");
+                                        createListImgWith1LinksOnlyOneLevel(JSON,"page0","high");
+                                       
+    
+    
+    
+    
 
                                         bindLink(false,0);
                                         }
