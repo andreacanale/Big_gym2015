@@ -13,9 +13,9 @@ else {
     //echo "Successful connection"; // connection ok
     mysqli_set_charset($mysqli, "utf8"); 
     # extract results mysqli_result::fetch_array
-    $query1 = " SELECT * FROM course WHERE id = '" . $phpGetparamid."';";
+    $query1 = " SELECT course.*,id_image.image as roomPic FROM course LEFT JOIN id_image ON id_image.id = course.heldIn WHERE course.id = '" . $phpGetparamid."';";
     //get intructors of the course
-    $query2 = "SELECT instructor.id as instructorID, instructor.Name as instructorName FROM course  JOIN instructor_course ON instructor_course.course = course.id JOIN instructor ON instructor_course.instructor = instructor.id WHERE course.id = '" . $phpGetparamid."';";
+    $query2 = "SELECT instructor.* FROM course  JOIN instructor_course ON instructor_course.course = course.id JOIN instructor ON instructor_course.instructor = instructor.id WHERE course.id = '" . $phpGetparamid."';";
     //get images of the course
     $query3 = "SELECT id_image.image as image FROM course JOIN id_image on id_image.id=course.id WHERE course.id ='" . $phpGetparamid."';";
     //get schedule
