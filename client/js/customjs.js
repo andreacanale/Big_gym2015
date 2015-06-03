@@ -1127,7 +1127,33 @@ function createGoogleMaps(coordinates,idwhereToPutIt){
 
                     }
 
+function addSchedule( Schedule,idWherePutIt){
+                    var div=document.createElement('div');
+                    div.setAttribute('id','mySchedule')
+     /*               div.setAttribute('data-ride','carousel')
+                    div.setAttribute('class','carousel slide')*/
 
+                    var el=" <table class='table'><thead><tr><th>DoW</th><th>start</th><th>end</th></tr></thead><tbody>";
+                    el+="<li class='active' data-target='#myCarousel' data-slide-to='0'></li>"
+                    for(var i=1;i<Schedule.length;i++){
+                        el+="<tr>";
+                        el+="<td>".Schedule[i]["DoW"]."</td>";
+                        el+="<td>".Schedule[i]["init"]."</td>";
+                        el+="<td>".Schedule[i]["end"]."</td>";
+                        el+="</tr>";
+                                    }
+                    el+="</tbody></table>"
+                  
+                    div.innerHTML=el;
+    
+    
+                    //vedo  cosa  stampa
+                    
+                    document.getElementById(idWherePutIt).appendChild(div);
+
+
+
+                        }
 
 
 
