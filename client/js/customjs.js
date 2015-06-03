@@ -195,7 +195,24 @@ function createOrientationInfoSmartphone(){ //sono da passare le variabili come 
             
             }
 function createOrientationDesktop(){ //sono da passare le variabili come punto inizio-fine gt contesto partenza e aggungere onClick                                            event
-            //create OI for smartphone
+    var OI = giveOrientationInfos(); 
+    /*<div class="panel panel-default">
+  <div class="panel-heading">Panel Heading</div>
+  <div class="panel-body">Panel Content</div>
+</div>*/
+    var div = document.createElement('div');
+    div.setAttribute('class','panel panel-default');
+    var el = "";
+    el=+ "<div class='panel-heading'>Orientation info</div> <div class='panel-body'>";
+    el=+ "<a id='LINK"+OI["context"].id +"' href='#'><p>"+ OI["context"].name +"</p></a>";
+    el=+ "<p>"+ OI["current"].name +" of "+ OI["tourSize"].name +"</p>";
+    el=+ "<nav><ul class'pager'><li><a id='LINK"+OI["previous"].id +" href='#'>Previous</a></li>";
+    el=+ "<li><a id='LINK"+OI["Next"].id +" href='#'>Next</a></li></ul></nav>";
+    el=+ "</div>";
+    
+    
+    
+    /*//create OI for smartphone
               //dove mettere
              var div = document.createElement('ul');
              div.setAttribute('class', 'pager visible-md visible-sm visible-lg');
@@ -223,7 +240,8 @@ function createOrientationDesktop(){ //sono da passare le variabili come punto i
              div.appendChild(li1);
              li1.appendChild(a1);
              div.appendChild(li2);
-             li2.appendChild(a2);
+             li2.appendChild(a2);*/
+            div.innerHTML(el);
               var e=document.getElementById('sidebar-wrapper');
             
                e.insertBefore(div, e.firstChild);
