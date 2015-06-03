@@ -4,11 +4,15 @@
 var server="/SITO/Big_gym2015/server"
 //DATABASE JS
 var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getCourseOfCategoryX.php"]
+function strStartsWith(str, prefix) {
+    return str.indexOf(prefix) === 0;
+}
 
+                        
 
 
 function callToDB(what){
-    var query="";               strStartsWith(what, "I0")
+    var query="";               
     var typeOfPage=0;
     if(strStartsWith(what, "I0")){query=phps[0];typeOfPage=0;}
     else if(strStartsWith(what, "C0")){query=phps[1];typeOfPage=1;}
@@ -101,9 +105,7 @@ function updateStatusCallback(){
                                                     e.preventDefault();
                     
                     $("#wrapper").toggleClass("toggled");
-                    
-                    
-                            changeArrowDirection(arrow);
+                    changeArrowDirection(arrow);
          
         
                                             });
@@ -113,7 +115,7 @@ function updateStatusCallback(){
                                           }) 
          
          
-                     
+                     bindLink(false,0);
    
  
     
@@ -122,7 +124,7 @@ function updateStatusCallback(){
  
  
  });
-bindLink(false);
+
 
 
 
@@ -246,7 +248,7 @@ function createSideBarNav(){
 
 //binda i link a chiamate a DB
 function bindLink(isA2A,nPA2A){  //bind all link  to callDB
-                  
+                  //bind of  LINK to courses or instructors
                     $('[id^="LINK"]').click(function(e){
                                 
                                 e.preventDefault();
@@ -256,7 +258,7 @@ function bindLink(isA2A,nPA2A){  //bind all link  to callDB
                                 console.log("ho selezionato un link:"+res)
                                 callToDB(res)
                         });
-                
+                //bind of Link on Landmark
                     $('[id^="LANDMARK"]').click(function(e){
                                 
                                 e.preventDefault();
@@ -267,6 +269,7 @@ function bindLink(isA2A,nPA2A){  //bind all link  to callDB
                                 callToDB(res)
                         });
     
+                //bind of link of A2A if present
                 if(isA2A){
                             //$("#A2A1")[0].onclick=function(){showPageA2A(1,2)}
                  $('[id^="A2A"]').click(function(e){
@@ -876,7 +879,7 @@ function createDivA2A(n){
                         for(var i=0;i<n;i++){
                                                 var div=document.createElement('div')
                                                 div.setAttribute('id','page'+i)
-                                                div.innerHTML="<h1>PAGE"+i+"</h1>";
+                                                //div.innerHTML="<h1>PAGE"+i+"</h1>";
                             
                                             content.appendChild(div);
                         }
@@ -965,7 +968,7 @@ function createPageCourse(JSON){
                             createA2ABarDesktop(pages);
                             createSideBarNav();
                             addA2ALinkOnSideBar(pages,JSON.title);
-                            createDivA2A(3);
+                                                        createDivA2A(3);
                             showPageA2A(0,3);
                         
                             //in pagina 0 description
@@ -975,12 +978,19 @@ function createPageCourse(JSON){
                             
                             //in pagina 1 scheduling
                             createTextwithTitle("","Scheduling of : "+JSON.title+"",'page1');
+                            addSchedule(JSON.schedule,'page1')
+                            createTextwithTitle("","INSTRUCTORS",'page1');
+                            createListThumbNailFInal(JSON,"page1",true,false,true);
+                            
+                            
                             //in pagina 2 register
     
                             createTextwithTitle("","Register to: "+JSON.title+"",'page2');
                             createForm(JSON.formFields,'page2')
 
 
+                            console.log(JSON.instructors)
+                            addLCLinkOnSideBar(JSON.Links,"Tough by:");
                             bindLink(true,3);
 }
 
@@ -1104,12 +1114,12 @@ function addSchedule( Schedule,idWherePutIt){
                     div.setAttribute('class','carousel slide')*/
 
                     var el=" <table class='table'><thead><tr><th>DoW</th><th>start</th><th>end</th></tr></thead><tbody>";
-                    el+="<li class='active' data-target='#myCarousel' data-slide-to='0'></li>"
+                    
                     for(var i=1;i<Schedule.length;i++){
                         el+="<tr>";
-                        el+="<td>".Schedule[i]["DoW"]."</td>";
-                        el+="<td>".Schedule[i]["init"]."</td>";
-                        el+="<td>".Schedule[i]["end"]."</td>";
+                        el+="<td>"+Schedule[i]["DoW"]+"</td>";
+                        el+="<td>"+Schedule[i]["init"]+"</td>";
+                        el+="<td>"+Schedule[i]["end"]+"</td>";
                         el+="</tr>";
                                     }
                     el+="</tbody></table>"
