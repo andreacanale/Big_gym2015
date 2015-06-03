@@ -3,19 +3,21 @@
 
 var server="/SITO/Big_gym2015/server"
 //DATABASE JS
-var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php"]
+var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getCourseOfCategoryX.php"]
 
 
 
 function callToDB(what){
-    var query="";
+    var query="";               strStartsWith(what, "I0")
     var typeOfPage=0;
-    if(what[0]=="I"){query=phps[0];typeOfPage=0;}
-    else if(what[0]=="C"){query=phps[1];typeOfPage=1;}
-    else if(what[0]=="L"){query=phps[2];typeOfPage=2;}
-    else if(what=="ACN0"){query=phps[3];typeOfPage=3;}
-    else if(what=="ACL0"){query=phps[4];typeOfPage=4;}
-    else if(what=="ACC0"){query=phps[5];typeOfPage=5;}
+    if(strStartsWith(what, "I0")){query=phps[0];typeOfPage=0;}
+    else if(strStartsWith(what, "C0")){query=phps[1];typeOfPage=1;}
+    else if(strStartsWith(what, "L0")){query=phps[2];typeOfPage=2;}
+    else if(strStartsWith(what, "ACN0")){query=phps[3];typeOfPage=3;}
+    else if(strStartsWith(what, "ACL0")){query=phps[4];typeOfPage=4;}
+    else if(strStartsWith(what, "ACC0")){query=phps[5];typeOfPage=5;}
+    else if(strStartsWith(what, "AI")){query=phps[6];typeOfPage=6;}
+    else if(strStartsWith(what, "CC")){query=phps[7];typeOfPage=7;}
     else typeOfPage=-1;
     console.log(typeOfPage)
     //0 Instructor 1 Course 2 Location
@@ -30,11 +32,11 @@ function callToDB(what){
         url: query, //Relative or absolute path to file.php file
         data: {id:what},
         success: function(response) {
-            
+            console.log(JSON.parse(response))
             var result=JSON.parse(response);
             var el="";
 
-                console.log(result);
+                
                 
                //choose type of page to make
                if(typeOfPage==0)createPageInstructor(JSON.parse(response))
@@ -43,6 +45,8 @@ function callToDB(what){
                else if(typeOfPage==3){createPageAllCourseByName(JSON.parse(response))}
                else if(typeOfPage==4){createPageAllCourseByLevel(JSON.parse(response))}
                else if(typeOfPage==5){createPageAllCourseCategories(JSON.parse(response))}
+               else if(typeOfPage==6){createPageAllInstructor(JSON.parse(response))}
+               else if(typeOfPage==7){createPageAllCourseCategories(JSON.parse(response))}
               else console.log("nulla da fare")
         
         },
@@ -63,32 +67,8 @@ function updateStatusCallback(){
 
 //------------------------------------
 //var for test
-   var isLink=false;  //there are link to  show on sidebar for smartphone
-    var OIS=false;   //Orientation Info for smartphone
-    var OID=false;   //Orientation Info for desktop
-    var A2AD=false;  //A2A link for desktop   
-    var  A2AS=false; ////A2A link for smartphone  
-    var  CL=false;    //Correlated link for  everything
-    var isSlider=false;
-    var isContent=false;
-    var isImgLinks=false;
-   //test variables
-    var nomeLinkCorrelati=["linkaC1","linkaC2","linkaC3"]
-    var nomeLinkA2A=["linka2a1","linka2a1","linka2a1"]
-    
-    //test variables carousel
-    var srcIU="http://www.kaylainthecity.com/wp-content/uploads/gym.jpg";
-    var srcI=[srcIU,srcIU,srcIU,srcIU]
-    var titleI=["img1","img2","img3","img4"]
-    var textI=["text1","text2","text3","text4"]
-   //test variable text+img
-    var scrITI="http://www.kaylainthecity.com/wp-content/uploads/gym.jpg";
-    var header="heading 1"
-    var textTest="<p>Short Bio</p></br><p>ofodhososifidsfoihdifhsihfiodhfi</p>"
-    var content="Istructor 1 is one of the best fu*****  instructor of the world ,he don't know nothing  jon Snow sto scrivendo cosa a cazzo"
-    
-    
-    //-------------------VARIABILI DEL SITO----------////
+  
+//-------------------VARIABILI DEL SITO----------////
     
     $(document).ready(function(){
         
@@ -117,8 +97,8 @@ function updateStatusCallback(){
      
      
      
-       $("#menu-toggle").click(function(e) {
-                    e.preventDefault();
+                    $("#menu-toggle").click(function(e) {
+                                                    e.preventDefault();
                     
                     $("#wrapper").toggleClass("toggled");
                     
@@ -127,135 +107,22 @@ function updateStatusCallback(){
          
         
                                             });
-     
-     
-     
-     
-       $("#AttivaOIS").click(function(e){
-            e.preventDefault();
-       
-           createGoogleMaps();
-           
-     
-                                        })
-       
-        $("#addTEXTTITLE").click(function(e){
-            e.preventDefault();
-                
-           createTextwithTitle("dsandiosandlksandlsanakldsnsakd","TITOLO","page-content-wrapper")
-     
-                                        })
-       
-       
-         
-       
-       
-        $("#AttivaOID").click(function(e){
-            e.preventDefault();
-           if(!OID){createOrientationDesktop();
-                    OID=true;}
-           else {$('#NavInfoDesktop').remove();
-                    OID=false;}
-           
-     
-     })
-         $("#AttivaA2AD").click(function(e){
-            e.preventDefault();
-           if(!A2AD){createA2ABarDesktopLocation();
-                    A2AD=true;}
-           else {$('#A2ABD').remove();
-                    A2AD=false;}
-             })
-         
-         $("#add3A2A").click(function(e){
-            e.preventDefault();
-                createDivA2A(3)
-             })
-         
-        $("#OPENFromHomepage").click(function(e){
+                    $("#OPENFromHomepage").click(function(e){
                                           
                             addWrappers();
                                           }) 
          
          
-        
-         $("#AttivaLC").click(function(e){
-                                                e.preventDefault();
-                                               if(!(A2AS || CL))createSideBarNav();
-                                               
-                                               
-                    if(!CL){addLinkOnSideBar(true,false,null,nomeLinkCorrelati,null,nomeLinkCorrelati);
-                                                        CL=true;
-                                                        }
-                                               else {$('#linkCollegati').remove();
-                                                        CL=false;}
-                                                if(!(A2AS || CL))$('.sidebar-nav').remove()
-
-             
-                                          })
-        
-     
-     $("#addContent").click(function(e){
-                                               e.preventDefault();
-                                               
-                                               if(!isContent){createImgRightText(srcIU,textTest);
-                                                        isContent=true;
-                                                        }
-                                               else {$('#content').remove();
-                                                        isContent=false;}
-
-             
-                                          })
-     $("#addImgWithLinks").click(function(e){
-                                               e.preventDefault();
-                                               
-                                               if(!isContent){createListImgWithLinks(ImgList,nameLinksList,LinksIdList,CapoList,'page-content-wrapper')
-                                                        isImgLinks=true;
-                                                        }
-                                               else {$('#content').remove();
-                                                        isImgLinks=false;}
-
-             
-                                          })
-     
-     $("#I0001").click(function(e){//create Instructor
-                                    e.preventDefault();
-                                    var  Json=callToDB("I0001");
-                                    //console.log(Json);
-                                   //createPageInstructor(callToDB("I0001"));
-
-                                  })
-     $("#L0001").click(function(e){//create Location
-                                    e.preventDefault();
-                                    var  Json=callToDB("L0001");
-                                    
-                                    //console.log(Json);
-                                   //createPageInstructor(callToDB("I0001"));
-
-                                  })
-     
-     $("#deleteContent").click(function(e){//create Location
-                                    
-         e.preventDefault();
-                                    deleteContent();
-                                    
-                                    //console.log(Json);
-                                   //createPageInstructor(callToDB("I0001"));
-
-                                  })
-     
-  var ImgList=[srcIU,srcIU,srcIU,srcIU]
-var CapoList=["Classe1","Classe2","Classe3","Classe4"]
-var LinksIdList=[["link1-1","link1-2"],["link2-1","link2-2"],["link3-1","link3-2"],["link4-1","link4-2"]]
-var nameLinksList=[["link1-1","link1-2"],["link2-1","link2-2"],["link3-1","link3-2"],["link4-1","link4-2"]]
-     
+                     
+   
+ 
     
  
 
  
  
  });
-
+bindLink(false);
 
 
 
@@ -389,6 +256,16 @@ function bindLink(isA2A,nPA2A){  //bind all link  to callDB
                                 console.log("ho selezionato un link:"+res)
                                 callToDB(res)
                         });
+                
+                    $('[id^="LANDMARK"]').click(function(e){
+                                
+                                e.preventDefault();
+                                var str=event.target.id;
+                                console.log("id di quello  selezionato"+str)
+                                var res = str.substr(8, 25);
+                                console.log("cosa sto passando"+str)
+                                callToDB(res)
+                        });
     
                 if(isA2A){
                             //$("#A2A1")[0].onclick=function(){showPageA2A(1,2)}
@@ -401,13 +278,9 @@ function bindLink(isA2A,nPA2A){  //bind all link  to callDB
                                 console.log("cosa sto passando"+str)
                                 
                                 showPageA2A(parseInt(res),nPA2A)
-                        });
-    
-                
-                
-                
-                
-                }
+                                                    });
+            
+                            }
     
                     
                     
@@ -431,61 +304,13 @@ function deleteContent(){//add eliminate ORIENTATION INFO SMARTPHONE
 
 
 //addLinkOnSideBar vecchia
-function addLinkOnSideBar(addLinkC, addLinkA2A, namesLinkA2A, namesLinkC,LinkA2A,LinkC){
-                            
-                   
-    
-    
-                if(addLinkA2A){       
-                            var  A2A=document.createElement('div');
-                            A2A.setAttribute('id','linkA2Asmartphone');
-                            var el="";
-                            el+="<li class='sidebar-brand'>See also(linkA2A)<a href='#'>"
-                            for(var i=0;i<namesLinkA2A.length;i++){
-                                
-                                            el+="<li><a href='#' id='A2A"+i+"'>"+namesLinkA2A[i]+"</a></li>"
-                                                                }
-                                    //associo a ogni link la funzione di showA2A
-                                    
-                          
-                                      
-                                    A2A.innerHTML=el;                               
-                                    var temp=document.getElementsByClassName('sidebar-nav')[0];
-                                    temp.insertBefore(A2A,temp.lastChild);
-                               
-                            
-                              }
 
-                 if(addLinkC){       
-                            var LC=document.createElement('div');
-                            LC.setAttribute('id','linkCollegati')
-                            //Title of links
-                           var el2="";
-                            el2+="<li class='sidebar-brand'>See also(linkA2A)<a href='#'>"
-                            for(var i=0;i<namesLinkC.length;i++){
-                                
-                                            el2+="<li><a href='#' id='"+LinkC[i]+"'>"+namesLinkC[i]+"</a></li>"
-                                                                }
-                            
-                            LC.innerHTML=el2;
-                            var temp=document.getElementsByClassName('sidebar-nav')[0];
-                            temp.appendChild(LC);
-                            
-                            
-                              }
     
     
     
     //assoccio ad ogni cosa aggiunta cosa fare al click
-    for(var i=0;i<namesLinkA2A.length;i++){
-                                                
-                                            
-                                           
-        if(i==0) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(0,namesLinkA2A.length)}}
-        if(i==1) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(1,namesLinkA2A.length)}   }                          if(i==2) {$("a[id^=A2A" + i+ "]")[0].onclick=function(){showPageA2A(2,namesLinkA2A.length)}   }
-                                          
-                                          }
-                                } 
+    
+                              
 
 
 function addA2ALinkOnSideBar(namesPagesA2A,nameHead){
@@ -513,10 +338,16 @@ function addLCLinkOnSideBar(Links,nameHead){
                             var  A2A=document.createElement('div');
                             A2A.setAttribute('id','linkCollegati');
                            
+                           
                             var el="";
-                            el+="<li class='sidebar-brand'><a href='#'>"+nameHead+"</a>"
+                            el+="<li class='sidebar-brand'>"+nameHead+"<a href='#'>"
                       
-                            for(var i=0;i<Links.length;i++){    
+                            for(var i=0;i<Links.length;i++){
+                                
+                                 if (Links[i].title){
+									Links[i].name = Links[i].title;
+									delete Links[i].title;
+								}
                                 
                                 el+="<li><a href='#' id='LINK"+Links[i].id+"' '>"+Links[i].name+"</a></li>";
                             
@@ -723,6 +554,14 @@ function createListImgWith1Links(JSON,idWheretoPutIt){
                             var Row="";
                             var j=0;
                             document.getElementById(idWheretoPutIt).appendChild(cont);
+            
+                             if (JSON.courses){
+									Links[i].name = Links[i].title;
+									delete Links[i].title;
+								}
+    
+    
+                            
                             for(var i=0;i<JSON.courses.length;i++){
                                 
                                 
@@ -818,6 +657,122 @@ function createListImgWithMoreLinks(JSON,idWheretoPutIt){
                           
                             
                             }
+
+//createListFinalVersione
+function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption){
+//normalizzo ogni elemento
+    if (JSON.title){
+									JSON.name=JSON.title;
+									delete JSON.title;
+								}
+    if (JSON.nome){
+									JSON.name=JSON.nome;
+									delete JSON.nome;
+								}
+     if (JSON.miniText){
+									JSON.description=JSON.miniText;
+									delete JSON.miniText;
+								}
+     if(JSON.profilePic) {
+									JSON.pic=JSON.profilePic;
+									delete JSON.coursePic;
+								}
+     else if(JSON.coursePic) {
+									JSON.pic=JSON.coursePic;
+									delete JSON.coursePic;
+								}
+    else if(JSON.thumbnail) {
+									JSON.pic=JSON.thumbnail;
+									delete JSON.thumbnail;
+								}
+    
+    
+    
+    
+    
+            console.log(JSON.pic)
+    
+    
+            var cont=document.createElement('div');
+            cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
+                            var el="";
+    
+            var img=document.createElement('img');
+            img.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
+            img.setAttribute('src',server+JSON.pic)
+            if(headerLinked){var aH=document.createElement('a')
+                             aH.setAttribute('id','LINK'+JSON.id)
+                             aH.appendChild(img);
+                             img=aH;
+                                }
+            //caption header
+            var DIVcaption=document.createElement('div')
+            DIVcaption.setAttribute('class','right-caption col-xs-12 col-*-6')
+            var textCaption="";
+    //se l'header è linkato o no
+            if(headerLinked){
+                            textCaption+="<a  href='' ><h4 id='LINK"+JSON.id+"'>"+JSON.name+"</h4></a>";
+                            }
+            else {
+                            textCaption+="<h4>"+JSON.name.toUpperCase()+"</h4>";
+                 }
+    if(caption && headerLinked)    textCaption+="<p >"+JSON.description+"</p>"   
+    else if(moreLink)textCaption+="<li><a  href='' >SEE CATEGORY "+JSON.name.toUpperCase()+"</a></li><li id='LINK"+JSON.id+"'><a  href='' >See Courses of  '"+JSON.name+"'</a></li>";            
+                            
+                            //qui ci va id per fare query  di corsi per una categoria
+            DIVcaption.innerHTML=textCaption;
+            cont.appendChild(img);
+            cont.appendChild(DIVcaption);
+    
+    
+                document.getElementById(idWheretoPutIt).appendChild(cont);
+                            
+
+
+                    }
+function createListThumbNailFInal(JSON,idWheretoPutIt,headerLinked,moreLink,caption){
+  //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
+                            var cont=document.createElement('div');
+                            cont.setAttribute('class','container-fluid');
+                            cont.setAttribute('id','list-thumbnails-links')
+                            var Row="";
+                            var j=0;
+                            document.getElementById(idWheretoPutIt).appendChild(cont);
+                           //NORMALIZE
+                         if (JSON.courses){
+									JSON.Links=JSON.courses;
+									delete JSON.courses;
+								}
+                        console.log(JSON.instructors)
+                        if (JSON.instructors){
+									JSON.Links=JSON.instructors;
+									delete JSON.instructors;
+								}
+                         if(JSON.courseCategories) {
+									JSON.Links=JSON.courseCategories;
+									delete JSON.courseCategories;
+								}
+                            
+                            //
+                            for(var i=0;i<JSON.Links.length;i++){
+                                
+                                
+                                if(i%2==0){ j++;
+                                            Row="<div  id='riga"+j+"' class='row'></div>"
+                                            cont.innerHTML=cont.innerHTML+Row;
+                                           }
+                                
+                                
+                                createThumbnailFINAL(JSON.Links[i],'riga'+j,headerLinked,moreLink,caption);
+                                
+                                                            }
+                          
+                            
+                            
+}
+
+
+
 //--------------------------------////
 function createListImgWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
   //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
@@ -985,12 +940,12 @@ function createPageInstructor(JSON){
             createDivA2A(1);
             createTextwithTitle("",JSON.name,'page0');//titolo
             createImgRightText(JSON.profilePic,JSON.shortBio,'page0');
-      
+            
             createTextwithTitle(JSON.professionalQualification,"",'page0');
             addCarousel2(JSON.images,'page0');
             createSideBarNav();
-            addLinkOnSideBarInstructor(JSON.courses)
-
+            //addLinkOnSideBarInstructor(JSON.courses)
+            addLCLinkOnSideBar(JSON.courses,"WHAT HE TEACHES");
             
             bindLink();
 
@@ -1029,7 +984,22 @@ function createPageCourse(JSON){
                             bindLink(true,3);
 }
 
-function createPageAllInstructor(JSON){}
+function createPageAllInstructor(JSON){
+
+                                console.log("Sto facendo pagina course By Name")
+                                        deleteContent();
+                                        createDivA2A(1);
+                                        createSideBarNav();
+                                        addLCLinkOnSideBar(LCAllCourseByLevel,"Other sort")
+                                        createTextwithTitle("",JSON.paragraph.content,"page0");
+    
+    
+                              
+                                        createListThumbNailFInal(JSON,"page0",true,false,true)
+
+                                        bindLink(false,0);
+
+                                        }
 function createPageAllCourseByName(JSON){
                                         console.log("Sto facendo pagina course By Name")
                                         deleteContent();
@@ -1040,7 +1010,7 @@ function createPageAllCourseByName(JSON){
     
     
                               
-                                        createListImgWith1Links(JSON,"page0");
+                                        createListThumbNailFInal(JSON,"page0",true,false,false);
 
                                         bindLink(false,0);
                                         }
@@ -1081,8 +1051,8 @@ function createPageAllCourseCategories(JSON){
                             
                                         addLCLinkOnSideBar(LCAllCourseByName,"Other view")
                                         createTextwithTitle(res[1],res[0],"page0");
-                                        createListImgWithMoreLinks(JSON,"page0");
-
+                                        //createListThumbNailFInal(JSON,"page0",false,true,true)
+                                        createListThumbNailFInal(JSON,"page0",false,true,true)
                                         bindLink(false,0);
                                         }
 
@@ -1151,7 +1121,9 @@ function addSchedule( Schedule,idWherePutIt){
                     
                     document.getElementById(idWherePutIt).appendChild(div);
 
-
+function strStartsWith(str, prefix) {
+    return str.indexOf(prefix) === 0;
+}
 
                         }
 
