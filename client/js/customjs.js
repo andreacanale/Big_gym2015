@@ -202,48 +202,19 @@ function createOrientationDesktop(){ //sono da passare le variabili come punto i
 </div>*/
     var div = document.createElement('div');
     div.setAttribute('class','panel panel-default');
-    var el = "";
-    el=+ "<div class='panel-heading'>Orientation info</div> <div class='panel-body'>";
-    el=+ "<a id='LINK"+OI["context"].id +"' href='#'><p>"+ OI["context"].name +"</p></a>";
-    el=+ "<p>"+ OI["current"].name +" of "+ OI["tourSize"].name +"</p>";
-    el=+ "<nav><ul class'pager'><li><a id='LINK"+OI["previous"].id +" href='#'>Previous</a></li>";
-    el=+ "<li><a id='LINK"+OI["Next"].id +" href='#'>Next</a></li></ul></nav>";
-    el=+ "</div>";
+    var el="";
+    el+= "<div class='panel-heading'>Orientation info</div> <div class='panel-body'>";
+    el+= "<a id='LINK"+OI["context"].id+"' href='#'><p>"+OI["context"].name+"</p></a>";
+    el+= "<p>"+(OI["current"]+1)+" of "+OI["tourSize"]+"</p>";
+    el+= "<nav><ul class='pager'><li><a id='LINK"+OI["previous"].id+"' class='OIprevious' href='#'>Previous</a></li>";
+    el+= "<li><a id='LINK"+OI["next"].id+"' class='OInext' href='#'>Next</a></li></ul></nav>";
+    el+= "<div>";
     
     
-    
-    /*//create OI for smartphone
-              //dove mettere
-             var div = document.createElement('ul');
-             div.setAttribute('class', 'pager visible-md visible-sm visible-lg');
-             div.setAttribute('id', 'NavInfoDesktop');
-             var p1=document.createElement('p');
-             p1.innerHTML="prova p1"
-             var p2=document.createElement('p');
-             p2.innerHTML="prova p2"
-             //create button previous
-             var li1=document.createElement('li');
-             li1.setAttribute('id','Previous');
-             var a1=document.createElement('a');
-             a1.setAttribute('href','#');
-             a1.innerHTML="Previous";
-             //create button next
-            
-             var li2=document.createElement('li');
-             li2.setAttribute('id','Next');
-             var a2=document.createElement('a');
-             a2.setAttribute('href','#');
-             a2.innerHTML="Next";
-             //add everythung to page
-             div.appendChild(p1);
-             div.appendChild(p2);
-             div.appendChild(li1);
-             li1.appendChild(a1);
-             div.appendChild(li2);
-             li2.appendChild(a2);*/
-            div.innerHTML(el);
+
+            div.innerHTML=el;
               var e=document.getElementById('sidebar-wrapper');
-            
+            console.log("HEll");
                e.insertBefore(div, e.firstChild);
             }
 //<li id="Previous"><a href="#">Previous</a></li>
@@ -265,8 +236,22 @@ function createSideBarNav(){
 
 
 //binda i link a chiamate a DB
-function bindLink(isA2A,nPA2A){  //bind all link  to callDB
-                  //bind of  LINK to courses or instructors
+function bindLink(isA2A,nPA2A,gtInfos){  //bind all link  to callDB
+
+                    if (gtInfos){
+                            $('[id^="LINK"]').click(function(e){
+                                
+                                    var str=event.target.id;
+                                    var res = str.substr(4, 25);
+
+          
+      
+                                    
+                                    startGT(gtInfos["context"], res, gtInfos["tourVector"]);
+                            });
+                    }
+                    
+                                      //bind of  LINK to courses or instructors
                     $('[id^="LINK"]').click(function(e){
                                 
                                 e.preventDefault();
@@ -274,8 +259,18 @@ function bindLink(isA2A,nPA2A){  //bind all link  to callDB
                                 console.log("id di quello  selezionato"+str)
                                 var res = str.substr(4, 25);
                                 console.log("ho selezionato un link:"+res)
+                                
                                 callToDB(res)
                         });
+                    
+                    $('.OInext').click(function(e){
+                        e.preventDefault();
+                        GTnext();
+                    });
+                    $('.OIprevious').click(function(e){
+                        e.preventDefault();
+                        GTprevious();
+                    });
                 //bind of Link on Landmark
                     $('[id^="LANDMARK"]').click(function(e){
                                 
@@ -354,8 +349,8 @@ function addA2ALinkOnSideBar(namesPagesA2A,nameHead){
 
 //add link correlated on sidebar pass array of Link=[id,name] and name to put head
 //prototipo che vale  per tutti  ma da cambiare query
-function addLCLinkOnSideBar(Links,nameHead){
-                            
+function addLCLinkOnSideBar(Links2,nameHead){
+                            var Links= Links2;
                             var  A2A=document.createElement('div');
                             A2A.setAttribute('id','linkCollegati');
                            
@@ -751,8 +746,9 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
 
 
                     }
-function createListThumbNailFInal(JSON,idWheretoPutIt,headerLinked,moreLink,caption){
+function createListThumbNailFInal(JSON2,idWheretoPutIt,headerLinked,moreLink,caption){
   //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
+                            var JSON = JSON2;
                             var cont=document.createElement('div');
                             cont.setAttribute('class','container-fluid');
                             cont.setAttribute('id','list-thumbnails-links')
@@ -967,7 +963,8 @@ function createPageInstructor(JSON){
             createSideBarNav();
             //addLinkOnSideBarInstructor(JSON.courses)
             addLCLinkOnSideBar(JSON.courses,"WHAT HE TEACHES");
-            
+            //createOrientationInfoSmartphone(JSON)
+            createOrientationDesktop();
             bindLink();
 
 
@@ -1009,6 +1006,9 @@ function createPageCourse(JSON){
 
                             console.log(JSON.instructors)
                             addLCLinkOnSideBar(JSON.Links,"Tough by:");
+                            createOrientationDesktop();
+                            //createOrientationDesktop();//TODO
+        
                             bindLink(true,3);
 }
 
@@ -1025,7 +1025,20 @@ function createPageAllInstructor(JSON){
                               
                                         createListThumbNailFInal(JSON,"page0",true,false,true)
 
-                                        bindLink(false,0);
+                                        
+                                        
+                                        var gtInfos= new Array();
+                                        var gtContext= new Array();
+                                        gtContext["id"]="AI00";
+                                        gtContext["name"]="All Instructors";
+                                        gtInfos["context"]=gtContext;
+                                        gtInfos["tourVector"]=JSON.Links;
+                             
+                                        
+                                        
+                                        
+                                        
+                                        bindLink(false,0,gtInfos);
 
                                         }
 function createPageAllCourseByName(JSON){
@@ -1039,8 +1052,15 @@ function createPageAllCourseByName(JSON){
     
                               
                                         createListThumbNailFInal(JSON,"page0",true,false,false);
+    
+                                         var gtInfos= new Array();
+                                        var gtContext= new Array();
+                                        gtContext["id"]="ACN0";
+                                        gtContext["name"]="All Instructors";
+                                        gtInfos["context"]=gtContext;
+                                        gtInfos["tourVector"]=JSON.Links;
 
-                                        bindLink(false,0);
+                                        bindLink(false,0,gtInfos);
                                         }
 function createPageAllCourseByLevel(JSON){
                                         console.log("Sto facendo pagina course By Level")
@@ -1058,13 +1078,15 @@ function createPageAllCourseByLevel(JSON){
                                         createListImgWith1LinksOnlyOneLevel(JSON,"page0","intermediate");
                                         createTextwithTitle("","high","page0");
                                         createListImgWith1LinksOnlyOneLevel(JSON,"page0","high");
-                                       
     
-    
-    
-    
+                                         var gtInfos= new Array();
+                                        var gtContext= new Array();
+                                        gtContext["id"]="ACL0";
+                                        gtContext["name"]="All Instructors";
+                                        gtInfos["context"]=gtContext;
+                                        gtInfos["tourVector"]=JSON.Links;
 
-                                        bindLink(false,0);
+                                        bindLink(false,0,gtInfos);
                                         }
 function createPageAllCourseCategories(JSON){
                                         console.log("Sto facendo pagina All course Category")

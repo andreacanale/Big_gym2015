@@ -35,8 +35,10 @@ termina guided tour
 	function startGT(context,entry,tourVector){
 		stackContext.push(context);
 		stackEntry.push(entry);
-		while (tourVector[0] != entry){
+        var i=0;
+		while (tourVector[0].id != entry && i<=tourVector.length){
 			tourVector.push(tourVector.shift());
+            i++;
 		}
 		stackTourVector.push(tourVector);
 		stackPosition.push(0);
@@ -47,7 +49,7 @@ termina guided tour
 	previous, next, current, context, toursSize
 	*/
 	function giveOrientationInfos(){
-		if (!(stackContext.length > 0 && stackEntry.length>0 && stackPosition>0 && stackTourVector.length>0)) return;
+		if (!(stackContext.length > 0 && stackEntry.length>0 && stackPosition.length>0 && stackTourVector.length>0)) return;
 		var result=new Array();
 		if (stackPosition[stackPosition.length-1]>0){
 			var tmpVec = stackTourVector.pop();
