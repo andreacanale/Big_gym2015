@@ -1,7 +1,7 @@
 //SERVER  VARIABLES FOR IMAGES SOURCES
 
 
-var server="/SITO/Big_gym2015/server"
+var server="http://biggym2015.altervista.org/server/"
 //DATABASE JS
 var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getCourseOfCategoryX.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getLocation.php"]
 function strStartsWith(str, prefix) {
@@ -56,6 +56,7 @@ function requestForPage(id){
                             var type=returnTypeOfPage(id);
                             console.log("tipo: "+type+" con id: "+id);
                             callToServer(id,phps[type]);
+                            
                             }
 
 
@@ -74,8 +75,9 @@ function callToServer(whatToKnow,phpUrl){
         crossDomain: true, //localhost purposes
         url: phpUrl, //Relative or absolute path to file.php file
         data: {id:whatToKnow},
-        success: function(response) {
+        success: function(response) {   
                                         createPage(phps.indexOf(phpUrl),JSON.parse(response));
+            
                                      },
         error: function(request,error) 
         {
@@ -293,11 +295,9 @@ function bindLink(nA2A,gtInfos){  //
                                     e.preventDefault();
                                     var str=event.target.className;
                                     var res = str.substr(7, 25);
-                                    if(returnTypeOfPage(res)>2){//landmark
-                                                                clearAllGTStacks();
-                                    }else{
+                                  
                                             terminateGT();
-                                            }
+                                          
                                requestForPage(res);
                               
                             });
