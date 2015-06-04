@@ -3,57 +3,80 @@
 
 var server="/SITO/Big_gym2015/server"
 //DATABASE JS
-var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getLocation.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getCourseOfCategoryX.php"]
+var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getCourseOfCategoryX.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getLocation.php"]
 function strStartsWith(str, prefix) {
     return str.indexOf(prefix) === 0;
 }
 
                         
+function returnTypeOfPage(id){
+                if(strStartsWith(id, "I0")){return 0;}
+                else if(strStartsWith(id, "C0")){return 1;}
+                else if(strStartsWith(id, "CC")){return 2;}
+                else if(strStartsWith(id, "ACN0")){return 3;}
+                else if(strStartsWith(id, "ACL0")){return 4;}
+                else if(strStartsWith(id, "ACC0")){return 5;}
+                else if(strStartsWith(id, "AI")){return 6;}
+                else if(strStartsWith(id, "L0")){return 7;}
+                else return -1;
+                              }
+function createPage(typeOfPage,data){
+    switch (typeOfPage) {
+                            case 0:
+                                createPageInstructor(data)
+                                break;
+                            case 1:
+                                createPageCourse(data)
+                                break;
+                            case 2:
+                                createPageCourseOfCategoryX(data);
+                                break;
+                            case 3:
+                                createPageAllCourseByName(data)
+                                break;
+                            case 4:
+                                createPageAllCourseByLevel(data)
+                                break;
+                            case 5:
+                                createPageAllCourseCategories(data)
+                                break;
+                            case 6:
+                                createPageAllInstructor(data)
+                                
+                                break;
+                            case 7:
+                                createPageLocation(data)
+                                break;
+                            default:console.log("ERRORE SCELTA CREAZIONE PAGINA")
+}
+                                    }
 
 
-function callToDB(what){
-    var query="";               
-    var typeOfPage=0;
-    if(strStartsWith(what, "I0")){query=phps[0];typeOfPage=0;}
-    else if(strStartsWith(what, "C0")){query=phps[1];typeOfPage=1;}
-    else if(strStartsWith(what, "L0")){query=phps[2];typeOfPage=2;}
-    else if(strStartsWith(what, "ACN0")){query=phps[3];typeOfPage=3;}
-    else if(strStartsWith(what, "ACL0")){query=phps[4];typeOfPage=4;}
-    else if(strStartsWith(what, "ACC0")){query=phps[5];typeOfPage=5;}
-    else if(strStartsWith(what, "AI")){query=phps[6];typeOfPage=6;}
-    else if(strStartsWith(what, "CC")){query=phps[7];typeOfPage=7;}
-    else typeOfPage=-1;
-    console.log(typeOfPage)
+function requestForPage(id){
+                            var type=returnTypeOfPage(id);
+                            console.log("tipo: "+type+" con id: "+id);
+                            callToServer(id,phps[type]);
+                            }
+
+
+
+
+function callToServer(whatToKnow,phpUrl){
+    
     //0 Instructor 1 Course 2 Location
   
-    console.log(query)
-    console.log(what)
+    console.log(phpUrl)
+    console.log(whatToKnow)
     
     $.ajax({
         method: "GET",
         //dataType: "json", //type of data
         crossDomain: true, //localhost purposes
-        url: query, //Relative or absolute path to file.php file
-        data: {id:what},
+        url: phpUrl, //Relative or absolute path to file.php file
+        data: {id:whatToKnow},
         success: function(response) {
-            console.log(JSON.parse(response))
-            var result=JSON.parse(response);
-            var el="";
-
-                
-                
-               //choose type of page to make
-               if(typeOfPage==0)createPageInstructor(JSON.parse(response))
-               else if(typeOfPage==1){createPageCourse(JSON.parse(response))}
-               else if(typeOfPage==2){createPageLocation(JSON.parse(response))}
-               else if(typeOfPage==3){createPageAllCourseByName(JSON.parse(response))}
-               else if(typeOfPage==4){createPageAllCourseByLevel(JSON.parse(response))}
-               else if(typeOfPage==5){createPageAllCourseCategories(JSON.parse(response))}
-               else if(typeOfPage==6){createPageAllInstructor(JSON.parse(response))}
-               else if(typeOfPage==7){createPageAllCourseCategories(JSON.parse(response))}
-              else console.log("nulla da fare")
-        
-        },
+                                        createPage(phps.indexOf(phpUrl),JSON.parse(response));
+                                     },
         error: function(request,error) 
         {
             console.log("Error");
@@ -69,90 +92,32 @@ function updateStatusCallback(){
 }
 
 
-//------------------------------------
-//var for test
-  
-//-------------------VARIABILI DEL SITO----------////
+
+//--------DOCUMENT-READY----------////
     
     $(document).ready(function(){
         
-     //for don't  overlap  content with navbar
+     //Don't overlap content with navbar
      $(document.body).css('padding-top', $('#topnavbar').height() );
         $(window).resize(function(){
             $(document.body).css('padding-top', $('#topnavbar').height()-1 );
         });
-     
-  
-     $("#buttonSideBar").click(function(){
-            if(!isLink)$("#buttonSideBar").hide();
-           })
-     
-  
-     $('[id^="LINK"]').click(function(e){
-                                
-                                e.preventDefault();
-                                var str=event.target.id;
-                                console.log("id di quello  selezionato"+str)
-                                var res = str.substr(4, 25);
-                                console.log("ho selezionato un link:"+res)
-                                callToDB(res)
-                        });
-     
-     
-     
-     
-                    $("#menu-toggle").click(function(e) {
-                                                    e.preventDefault();
-                    
-                    $("#wrapper").toggleClass("toggled");
-                    changeArrowDirection(arrow);
+            
          
-        
-                                            });
-                    $("#OPENFromHomepage").click(function(e){
-                                          
-                            addWrappers();
-                                          }) 
-         
-         
-                     bindLink(false,0);
+        //bind all button/links     
+            bindLink(0);
    
  
-    
- 
+    });
 
- 
- 
- });
-
-
-
-
-
-
-
-
-
-    //funzione gestione freccia
-    var arrow=true;
-    
-    function changeArrowDirection(){
-            if(arrow){
-                    
-                            var div=document.getElementsByClassName('glyphicon glyphicon-triangle-right');
-                            div[0].setAttribute('class','glyphicon glyphicon-triangle-left')
-                            arrow=false;
-                         
-                    }
-           else{
-                            var div=document.getElementsByClassName('glyphicon glyphicon-triangle-left');
-                            div[0].setAttribute('class','glyphicon glyphicon-triangle-right')
-                            arrow=true;
-                    
-                           
-                    }
-    
-                                        }
+//change arrrowDirection of button for show/sidebar
+function changeArrowDirection(){
+        var curr=$( "#menu-toggle" ).find( "span" )[0].className;
+        var right="glyphicon glyphicon-triangle-right";
+        var left="glyphicon glyphicon-triangle-left";
+        if(curr.localeCompare(right)==0){curr=left;}else{curr=right}
+        $( "#menu-toggle" ).find( "span" )[0].setAttribute('class',curr)
+        }
 
  //aggiungere server nel source
 
@@ -204,12 +169,12 @@ function createOrientationDesktop(){ //sono da passare le variabili come punto i
     div.setAttribute('class','panel panel-default');
     var el="";
     el+= "<div class='panel-heading'>Orientation info</div> <div class='panel-body'>";
-    el+= "<a id='LINK"+OI["context"].id+"' href='#'><p>"+OI["context"].name+"</p></a>";
+    el+= "<a  href='#'><p class='GTINDEX"+OI["context"].id+"'>"+OI["context"].name+"</p></a>";
     el+= "<p>"+(OI["current"]+1)+" of "+OI["tourSize"]+"</p>";
-    el+= "<nav><ul class='pager'><li><a id='LINK"+OI["previous"].id+"' class='OIprevious' href='#'>Previous</a></li>";
-    el+= "<li><a id='LINK"+OI["next"].id+"' class='OInext' href='#'>Next</a></li></ul></nav>";
+    el+= "<nav><ul class='pager'><li><a class='OIprevious"+OI["previous"].id+"' href='#'>Previous</a></li>";
+    el+= "<li><a  class='OInext"+OI["next"].id+"' href='#'>Next</a></li></ul></nav>";
     el+= "<div>";
-    
+  
     
 
             div.innerHTML=el;
@@ -217,73 +182,139 @@ function createOrientationDesktop(){ //sono da passare le variabili come punto i
             console.log("HEll");
                e.insertBefore(div, e.firstChild);
             }
-//<li id="Previous"><a href="#">Previous</a></li>
- 
-var nomeLinkCorrelati=["linkaC1","linkaC2","linkaC3"]
-var nomeLinkA2A=["linka2a1","linka2a1","linka2a1"]
+//------FUNCTION FOR CREATE/DELETE PAGE--------------
 
 
-//sidebar div to put in Link of side-bar--------------
+
+/*
 function createSideBarNav(){
                             var ul=document.createElement("ul");
                             ul.setAttribute('class','sidebar-nav');
                             document.getElementById('sidebar-wrapper').appendChild(ul);
                             }
 
+function createDivA2A(n){
+                            var content=document.getElementById('Pages-Container')
+                            for(var i=0;i<n;i++){
+                                                var div=document.createElement('div')
+                                                div.setAttribute('id','page'+i)
+                                                content.appendChild(div);
+                                            }
+                        }
+*/
+function initializePage(nA2A){
+                deleteContent();
+                var div=document.createElement('div')
+                div.setAttribute('id','wrapper')
+                var el="<div id='sidebar-wrapper'><ul class='sidebar-nav'></ul></div>"
+                el+="<div id='page-content-wrapper' class='container'>"
+                el+="<div class='container-fluid' id='buttonSide'>"
+                el+= "<div class='row'>"
+                el+= "<div class='col-xs-3 col-sm-3'>"
+                el+= "<a href='#menu-toggle' class='btn btn-default hid visible-xs' id='menu-toggle'><span class='glyphicon glyphicon-triangle-right' aria-hidden='true'></span></a></div></div>"
+                el+="</div>"
+                el+="<div id='Pages-Container'>"
+                for(var i=0;i<nA2A;i++)el+="<div id='page"+i+"'></div>"
+                el+="</div>";
+                
+                div.innerHTML=el;
+                document.body.appendChild(div);
+                        }
 
+
+  
+
+function deleteContent(){
+                               console.log("ELIMINO")
+                              $('#wrapper').remove();
+                                //$('#sidebar-wrapper').empty();
+                                //$('#Pages-Container').empty();
+                                
+                             }
 
 //---------New Function----------------------------------------
 
 
-//binda i link a chiamate a DB
-function bindLink(isA2A,nPA2A,gtInfos){  //bind all link  to callDB
+//binda tutto
+function bindLink(nA2A,gtInfos){  //
+    
+    
+                    $("#menu-toggle").click(function(e) {
+                                                    e.preventDefault();
+                                                    $("#wrapper").toggleClass("toggled");
+                                                    changeArrowDirection();
+                                                        });
 
                     if (gtInfos){
-                            $('[id^="LINK"]').click(function(e){
-                                
-                                    var str=event.target.id;
+                            $('[class^="LINK"]').click(function(e){
+                                    e.preventDefault();
+                                    var str=event.target.className;
                                     var res = str.substr(4, 25);
-
-          
-      
                                     
                                     startGT(gtInfos["context"], res, gtInfos["tourVector"]);
                             });
-                    }
+                        
+                    
+                    
+                                
+                                }
                     
                                       //bind of  LINK to courses or instructors
-                    $('[id^="LINK"]').click(function(e){
+                    $('[class^="LINK"]').click(function(e){
                                 
                                 e.preventDefault();
-                                var str=event.target.id;
+                                var str=event.target.className;
                                 console.log("id di quello  selezionato"+str)
-                                var res = str.substr(4, 25);
+                                var res = str.substr(4,8);
                                 console.log("ho selezionato un link:"+res)
                                 
-                                callToDB(res)
+                                requestForPage(res);
                         });
                     
-                    $('.OInext').click(function(e){
+                    $('[class^="OInext"]').click(function(e){
                         e.preventDefault();
-                        GTnext();
+                         var str=event.target.className;
+                         var res = str.substr(6, 25);
+                         console.log("ho selezionato un link:"+res)
+                         GTnext();
+                         requestForPage(res);
+                         
                     });
-                    $('.OIprevious').click(function(e){
+                    $('[class^="OIprevious"]').click(function(e){
                         e.preventDefault();
+                        var str=event.target.className;
+                        var res = str.substr(10, 25);
+                        console.log("ho selezionato un link:"+res)
                         GTprevious();
+                        requestForPage(res);
+                        
                     });
+                    $('[class^="GTINDEX"]').click(function(e){
+                                    e.preventDefault();
+                                    var str=event.target.className;
+                                    var res = str.substr(7, 25);
+                                    if(returnTypeOfPage(res)>2){//landmark
+                                                                clearAllGTStacks();
+                                    }else{
+                                            terminateGT();
+                                            }
+                               requestForPage(res);
+                              
+                            });
                 //bind of Link on Landmark
-                    $('[id^="LANDMARK"]').click(function(e){
+                    $('[class^="LANDMARK"]').click(function(e){
                                 
                                 e.preventDefault();
-                                var str=event.target.id;
+                                var str=event.target.className;
                                 console.log("id di quello  selezionato"+str)
                                 var res = str.substr(8, 25);
                                 console.log("cosa sto passando"+str)
-                                callToDB(res)
+                                clearAllGTStacks();
+                                requestForPage(res);
                         });
     
                 //bind of link of A2A if present
-                if(isA2A){
+                if(nA2A>0){
                             //$("#A2A1")[0].onclick=function(){showPageA2A(1,2)}
                  $('[id^="A2A"]').click(function(e){
                                 
@@ -293,7 +324,7 @@ function bindLink(isA2A,nPA2A,gtInfos){  //bind all link  to callDB
                                 var res = str.substr(3, 25);
                                 console.log("cosa sto passando"+str)
                                 
-                                showPageA2A(parseInt(res),nPA2A)
+                                showPageA2A(parseInt(res),nA2A)
                                                     });
             
                             }
@@ -304,15 +335,7 @@ function bindLink(isA2A,nPA2A,gtInfos){  //bind all link  to callDB
 
 
 
-//function to delete page
 
-function deleteContent(){//add eliminate ORIENTATION INFO SMARTPHONE
-                               console.log("ELIMINO")
-                              
-                                $('#sidebar-wrapper').empty();
-                                $('#Pages-Container').empty();
-                                
-                             }
 
 
 //function for construction page
@@ -349,27 +372,29 @@ function addA2ALinkOnSideBar(namesPagesA2A,nameHead){
 
 //add link correlated on sidebar pass array of Link=[id,name] and name to put head
 //prototipo che vale  per tutti  ma da cambiare query
-function addLCLinkOnSideBar(Links2,nameHead){
-                            var Links= Links2;
-                            var  A2A=document.createElement('div');
-                            A2A.setAttribute('id','linkCollegati');
-                           
-                           
-                            var el="";
-                            el+="<li class='sidebar-brand'>"+nameHead+"<a href='#'>"
-                      
-                            for(var i=0;i<Links.length;i++){
+function addLCLinkOnSideBar(Links2,nameHead,areLandmark){
+              var Links= Links2;
+              var  correlatedLinks=document.createElement('div');
+              correlatedLinks.setAttribute('class','linkCollegati');
+              var el="";
+              el+="<li class='sidebar-brand'>"+nameHead+"<a href='#'>"
+              
+                                for(var i=0;i<Links.length;i++){
                                 
                                  if (Links[i].title){
 									Links[i].name = Links[i].title;
 									delete Links[i].title;
-								}
+				                                     }
+              if(!areLandmark){                      
+              el+="<li><a href='#' class='LINK"+Links[i].id+"' '>"+Links[i].name+"</a></li>";
+                                                                
+                              }else{
+             el+="<li><a href='#' class='LANDMARK"+Links[i].id+"' '>"+Links[i].name+"</a></li>";
+                                                    }
                                 
-                                el+="<li><a href='#' id='LINK"+Links[i].id+"' '>"+Links[i].name+"</a></li>";
-                            
-                            }
-                            A2A.innerHTML=el;                               
-                            document.getElementsByClassName('sidebar-nav')[0].appendChild(A2A);;
+                                }
+              correlatedLinks.innerHTML=el;                               
+              document.getElementsByClassName('sidebar-nav')[0].appendChild(correlatedLinks);
                            
                                
       
@@ -397,10 +422,11 @@ function createA2ABarDesktop(Pages){ var div=document.createElement('div');
                                          
                                        el+="</div>";
                                        div.innerHTML=el;
-                                       document.getElementById('Pages-Container').appendChild(div);
+                                       var pg=document.getElementById('Pages-Container');
+                                    pg.insertBefore(div, pg.firstChild);
                                        }
 
-function addLinkOnSideBarInstructor(Courses){
+/*function addLinkOnSideBarInstructor(Courses){
                             
                             var LC=document.createElement('div');
                             LC.setAttribute('id','linkCollegati')
@@ -409,7 +435,7 @@ function addLinkOnSideBarInstructor(Courses){
                             el2+="<li class='sidebar-brand'>Courses Taught<a href='#'>"
                             for(var i=0;i<Courses.length;i++){
                                 
-                            el2+="<li><a href='#' id='LINK"+Courses[i].courseID+"'>"+Courses[i].courseTitle+"</a></li>"
+                            el2+="<li><a href='#' class='LINK"+Courses[i].courseID+"'>"+Courses[i].courseTitle+"</a></li>"
                                                                 }
                             
                             LC.innerHTML=el2;
@@ -419,20 +445,10 @@ function addLinkOnSideBarInstructor(Courses){
                             
                               }//vale per tutti i tipi di correlati
 
-
+*/
 
 
     
-    
-                          
-
-
-
-
-
-
-
-
 //function FOR COSTRUZIONE CONTENUTO----------------------
 //
 function addCarousel2( Images,idWherePutIt){
@@ -511,7 +527,7 @@ function createWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             el+="<h6>"+CapoLinks+"</h6>";
                             
                             for(var i=0;i<Links.length;i++){
-                                                el+="<li id='LINK"+Links[i]+"'><a href='#'>"+nameLinks[i]+"</a></li>";
+                                                el+="<li class='LINK"+Links[i]+"'><a href='#'>"+nameLinks[i]+"</a></li>";
                                                     
                             
                                                             }
@@ -524,7 +540,7 @@ function createWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             }
 
 //server per fare lista
-function createWithLinks2(Simg,Links,nameLinks,CapoLinks,isCapoLinkALink,idWherePutIt){
+/*function createWithLinks2(Simg,Links,nameLinks,CapoLinks,isCapoLinkALink,idWherePutIt){
                             var cont=document.createElement('div');
                             cont.setAttribute('class','thumbnail right-caption col-xs-12 col-sm-6 col-md-6 col-ld-6')
                             var el=""
@@ -533,7 +549,7 @@ function createWithLinks2(Simg,Links,nameLinks,CapoLinks,isCapoLinkALink,idWhere
                             el+="<h4>"+CapoLinks+"</h4>";
                             
                             for(var i=0;i<Links.length;i++){
-                                                el+="<li id='LINK"+Links[i]+"'><a href='#'>"+nameLinks[i]+"</a></li>";
+                                                el+="<li class='LINK"+Links[i]+"'><a href='#'>"+nameLinks[i]+"</a></li>";
                                                     
                             
                                                             }
@@ -543,7 +559,7 @@ function createWithLinks2(Simg,Links,nameLinks,CapoLinks,isCapoLinkALink,idWhere
                             document.getElementById(idWherePutIt).appendChild(cont);
                             
 
-                            }
+                            }*/
 
 //-----per pagina all courses---////
 function createImgWith1Link(JSON,idWheretoPutIt){
@@ -553,7 +569,7 @@ var cont=document.createElement('div');
                             var el="";
                             el+="<img src='"+server+JSON.coursePic+"'width='100px' class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
                             el+="<div class='right-caption col-xs-6 col-*-3'>";
-                            el+="<a  href='' ><h4 id='LINK"+JSON.id+"'>"+JSON.title+"</h4></a>";
+                            el+="<a  href='' ><h4 class='LINK"+JSON.id+"'>"+JSON.title+"</h4></a>";
                             el+="</div>";
                             cont.innerHTML=el;
                       
@@ -562,8 +578,11 @@ var cont=document.createElement('div');
 
 
                     }
+
+
 function createListImgWith1Links(JSON,idWheretoPutIt){
-  //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
+  //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks
+                            var JSON2=JSON;
                             var cont=document.createElement('div');
                             cont.setAttribute('class','container-fluid');
                             cont.setAttribute('id','list-thumbnails-links')
@@ -571,14 +590,14 @@ function createListImgWith1Links(JSON,idWheretoPutIt){
                             var j=0;
                             document.getElementById(idWheretoPutIt).appendChild(cont);
             
-                             if (JSON.courses){
+                             if (JSON2.courses){
 									Links[i].name = Links[i].title;
 									delete Links[i].title;
 								}
     
     
                             
-                            for(var i=0;i<JSON.courses.length;i++){
+                            for(var i=0;i<JSON2.courses.length;i++){
                                 
                                 
                                 if(i%2==0){ j++;
@@ -587,7 +606,7 @@ function createListImgWith1Links(JSON,idWheretoPutIt){
                                            }
                                 
                                 
-                                createImgWith1Link(JSON.courses[i],'riga'+j)
+                                createImgWith1Link(JSON2.courses[i],'riga'+j)
                                 
                                                             }
                           
@@ -629,17 +648,17 @@ function customFilter(level) {
 
 //x All Course Category
 
-function createImgWithMoreLink(JSON,idWheretoPutIt){
+/*function createImgWithMoreLink(JSON,idWheretoPutIt){
 
 var cont=document.createElement('div');
           cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
                             var el="";
                             el+="<img src='"+server+JSON.thumbnail+"'s class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
                             el+="<div class='right-caption col-xs-6 col-*-3'>";
-                            el+="<a  href='' ><h4 id='LINK"+JSON.id+"'>"+JSON.nome+"</h4></a>";
+                            el+="<a  href='' ><h4 class='LINK"+JSON.id+"'>"+JSON.nome+"</h4></a>";
                             
                             //qui ci va id per fare query  di corsi per una categoria
-                            el+="<p id='LINK'><a  href='' >See Course of  this category</a></p>";
+                            el+="<p class='LINK'><a  href='' >See Course of  this category</a></p>";
                             
     
                             el+="</div>";
@@ -673,40 +692,47 @@ function createListImgWithMoreLinks(JSON,idWheretoPutIt){
                           
                             
                             }
-
+*/
 //createListFinalVersione
 function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption){
 //normalizzo ogni elemento
+    var name;
+    var description;
+    var pic;
     if (JSON.title){
-									JSON.name=JSON.title;
-									delete JSON.title;
+									name=JSON.title;
+									
 								}
     if (JSON.nome){
-									JSON.name=JSON.nome;
-									delete JSON.nome;
+									name=JSON.nome;
+									
+								}
+    if (JSON.name){
+									name=JSON.name;
+									
 								}
      if (JSON.miniText){
-									JSON.description=JSON.miniText;
-									delete JSON.miniText;
+									description=JSON.miniText;
+									
 								}
      if(JSON.profilePic) {
-									JSON.pic=JSON.profilePic;
-									delete JSON.coursePic;
+									pic=JSON.profilePic;
+									
 								}
      else if(JSON.coursePic) {
-									JSON.pic=JSON.coursePic;
-									delete JSON.coursePic;
+									pic=JSON.coursePic;
+									
 								}
     else if(JSON.thumbnail) {
-									JSON.pic=JSON.thumbnail;
-									delete JSON.thumbnail;
+									pic=JSON.thumbnail;
+									
 								}
     
     
     
     
     
-            console.log(JSON.pic)
+            console.log(pic)
     
     
             var cont=document.createElement('div');
@@ -714,26 +740,29 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
                             var el="";
     
             var img=document.createElement('img');
-            img.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
-            img.setAttribute('src',server+JSON.pic)
-            if(headerLinked){var aH=document.createElement('a')
-                             aH.setAttribute('id','LINK'+JSON.id)
+            
+            img.setAttribute('src',server+pic)
+            if(headerLinked){
+            img.setAttribute('class','LINK'+JSON.id+'   thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6');
+                             var aH=document.createElement('a')
+                             aH.setAttribute('class','LINK'+JSON.id)
                              aH.appendChild(img);
                              img=aH;
                                 }
+            else img.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
             //caption header
             var DIVcaption=document.createElement('div')
             DIVcaption.setAttribute('class','right-caption col-xs-12 col-*-6')
             var textCaption="";
     //se l'header è linkato o no
             if(headerLinked){
-                            textCaption+="<a  href='' ><h4 id='LINK"+JSON.id+"'>"+JSON.name+"</h4></a>";
+                            textCaption+="<a  href=''><h4  class='LINK"+JSON.id+"'>"+name+"</h4></a>";
                             }
             else {
-                            textCaption+="<h4>"+JSON.name.toUpperCase()+"</h4>";
+                            textCaption+="<h4>"+name.toUpperCase()+"</h4>";
                  }
-    if(caption && headerLinked)    textCaption+="<p >"+JSON.description+"</p>"   
-    else if(moreLink)textCaption+="<li><a  href='' >SEE CATEGORY "+JSON.name.toUpperCase()+"</a></li><li id='LINK"+JSON.id+"'><a  href='' >See Courses of  '"+JSON.name+"'</a></li>";            
+    if(caption && headerLinked)    textCaption+="<p >"+description+"</p>"   
+    else if(moreLink)textCaption+="<li><a  href='' >SEE CATEGORY "+name.toUpperCase()+"</a></li><li class='LINK"+JSON.id+"'><a  href='' >See Courses of  '"+name+"'</a></li>";            
                             
                             //qui ci va id per fare query  di corsi per una categoria
             DIVcaption.innerHTML=textCaption;
@@ -748,30 +777,27 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
                     }
 function createListThumbNailFInal(JSON2,idWheretoPutIt,headerLinked,moreLink,caption){
   //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
+                    
                             var JSON = JSON2;
                             var cont=document.createElement('div');
                             cont.setAttribute('class','container-fluid');
                             cont.setAttribute('id','list-thumbnails-links')
                             var Row="";
+                            var array=new Array();
                             var j=0;
                             document.getElementById(idWheretoPutIt).appendChild(cont);
                            //NORMALIZE
                          if (JSON.courses){
-									JSON.Links=JSON.courses;
-									delete JSON.courses;
-								}
-                        console.log(JSON.instructors)
-                        if (JSON.instructors){
-									JSON.Links=JSON.instructors;
-									delete JSON.instructors;
-								}
-                         if(JSON.courseCategories) {
-									JSON.Links=JSON.courseCategories;
-									delete JSON.courseCategories;
-								}
+									                                  array=JSON.courses;
+									      }else if (JSON.instructors){
+									                                   array=JSON.instructors;
+								         }else if(JSON.courseCategories) {
+									                                   array=JSON.courseCategories;
+								                    }
                             
                             //
-                            for(var i=0;i<JSON.Links.length;i++){
+                        console.log(array)
+                            for(var i=0;i<array.length;i++){
                                 
                                 
                                 if(i%2==0){ j++;
@@ -780,7 +806,7 @@ function createListThumbNailFInal(JSON2,idWheretoPutIt,headerLinked,moreLink,cap
                                            }
                                 
                                 
-                                createThumbnailFINAL(JSON.Links[i],'riga'+j,headerLinked,moreLink,caption);
+                                createThumbnailFINAL(array[i],'riga'+j,headerLinked,moreLink,caption);
                                 
                                                             }
                           
@@ -791,6 +817,7 @@ function createListThumbNailFInal(JSON2,idWheretoPutIt,headerLinked,moreLink,cap
 
 
 //--------------------------------////
+/*
 function createListImgWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
   //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
                             var cont=document.createElement('div');
@@ -816,7 +843,7 @@ function createListImgWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             }
 
 
-
+*/
 //
 
 
@@ -825,27 +852,18 @@ function createListImgWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
 
 
 
-function createMap(idwherePutIt){
-        
 
-
-
-}
 //semplice titolo+testo
 function createTextwithTitle(text,title,idWherePutIt){
                                     
     
                                     var div=document.createElement('div')
                                     var el="";
-                                    el+="<h1 align='center'>"+title+"</h1></br></br><p align='center'>"+text+"                                         </p>";
+                                    if(title)el+="<h1 align='center'>"+title+"</h1></br>";
+                                    if(text)el+="<p align='center'>"+text+"</p>";
                                     div.innerHTML=el;
                                     document.getElementById(idWherePutIt).appendChild(div);
-
-
-
-
-
-                                }
+                                                      }
 
 
 
@@ -873,32 +891,8 @@ function addTestButton(idWherePutIt){
 
 
 
-function addWrappers(){
-    
-                var home=document.getElementsByClassName('HOME-BYG-GYM')
-                
-                home[0].remove();
-                var div=document.createElement('div')
-                div.setAttribute('id','wrapper')
-                var el="<div id='sidebar-wrapper'></div><div id='sidebar-content'></div>"
-                div.innerHTML=el;
-                document.body.appendChild(div);
 
 
-}
-function createDivA2A(n){
-                        var content=document.getElementById('Pages-Container')
-                       
-                        var el="";
-                        for(var i=0;i<n;i++){
-                                                var div=document.createElement('div')
-                                                div.setAttribute('id','page'+i)
-                                                //div.innerHTML="<h1>PAGE"+i+"</h1>";
-                            
-                                            content.appendChild(div);
-                        }
-
-}
 function showPageA2A(pageToShow,npages){
     
     
@@ -922,52 +916,54 @@ function showPageA2A(pageToShow,npages){
 
 //presuppongono che la pagina sia  stata svuotata
 function createPageLocation(JSON){
-                            deleteContent();
+    
                             var pages=["Where we are","Contact Us"]
-                            
-                             
                             console.log("sto creando pagina LOCATION")
+                            
+                            initializePage(2);
+                            
                             createA2ABarDesktop(pages);
-                            createSideBarNav();
                             addA2ALinkOnSideBar(pages,"Location");
-                            createDivA2A(2);
                             showPageA2A(0,2);
+                            //---CONTENT----
                             createTextwithTitle(JSON.whereweare,"WHERE WE ARE","page0");
                             createTextwithTitle(JSON.howtogethere,"HOW TO GET THERE","page0");
                             createGoogleMaps(JSON.map,"page0");
     
                              var string=JSON.conctactUs;
-                          
-                             var   result=string.split('</p>');
-                              console.log(result);
+                             var result=string.split('</p>');
+                             console.log(result);
                             createTextwithTitle(result[1],result[0],"page1");
-                            bindLink(true,2)
+                            bindLink(3)
                            
-                         
-
-
-
-
-
-
-                                }
+                             }
 function createPageInstructor(JSON){
-            deleteContent();
-            console.log(JSON)
-            createDivA2A(1);
+            initializePage(1)
+            
+            createOrientationDesktop();
+            addLCLinkOnSideBar(JSON.courses,"WHAT HE TEACHES");
+            //---CONTENT
             createTextwithTitle("",JSON.name,'page0');//titolo
             createImgRightText(JSON.profilePic,JSON.shortBio,'page0');
             
             createTextwithTitle(JSON.professionalQualification,"",'page0');
             addCarousel2(JSON.images,'page0');
-            createSideBarNav();
-            //addLinkOnSideBarInstructor(JSON.courses)
-            addLCLinkOnSideBar(JSON.courses,"WHAT HE TEACHES");
+         
+        
             //createOrientationInfoSmartphone(JSON)
-            createOrientationDesktop();
-            bindLink();
-
-
+            
+    
+    
+    //----GT INFO
+             var gtInfos= new Array();
+             var gtContext= new Array();
+             gtContext["id"]=JSON.id;
+             gtContext["name"]="Courses Tought by:"+JSON.name;
+             gtInfos["context"]=gtContext;
+             gtInfos["tourVector"]=JSON.courses;
+             console.log(gtInfos);
+             bindLink(0,gtInfos);
+    
 
 
 }
@@ -975,17 +971,20 @@ function createPageInstructor(JSON){
 
 function createPageCourse(JSON){
 
-                            deleteContent();
-                            var pages=["Description","Scheduling","Register"]
                             
-                             
+                            var pages=["Description","Scheduling","Register"]
+                            //initialize+A2ABAR+LINKS+OI
+                            initializePage(3); 
                             console.log("sto creando pagina Course")
                             createA2ABarDesktop(pages);
-                            createSideBarNav();
                             addA2ALinkOnSideBar(pages,JSON.title);
-                                                        createDivA2A(3);
+                            addLCLinkOnSideBar(JSON.instructors,"Tough by:");
+                            createOrientationDesktop();
+    
+    
+    
                             showPageA2A(0,3);
-                        
+                        //----------CONTENT-------------
                             //in pagina 0 description
                             createTextwithTitle(JSON.description,JSON.title,'page0');
                             createTextwithTitle(JSON.target,"TARGET",'page0');
@@ -1004,70 +1003,54 @@ function createPageCourse(JSON){
                             createForm(JSON.formFields,'page2')
 
 
-                            console.log(JSON.instructors)
-                            addLCLinkOnSideBar(JSON.Links,"Tough by:");
-                            createOrientationDesktop();
+                            
                             //createOrientationDesktop();//TODO
-        
-                            bindLink(true,3);
+                             var gtInfos= new Array();
+                             var gtContext= new Array();
+                             gtContext["id"]=JSON.id;
+                             gtContext["name"]="Instructors of :"+JSON.title;
+                             gtInfos["context"]=gtContext;
+                             gtInfos["tourVector"]=JSON.instructors;
+                             console.log(gtInfos);
+                             bindLink(3,gtInfos);
 }
 
 function createPageAllInstructor(JSON){
 
                                 console.log("Sto facendo pagina course By Name")
-                                        deleteContent();
-                                        createDivA2A(1);
-                                        createSideBarNav();
-                                        addLCLinkOnSideBar(LCAllCourseByLevel,"Other sort")
+                                        initializePage(1)
+                            
                                         createTextwithTitle("",JSON.paragraph.content,"page0");
-    
-    
-                              
                                         createListThumbNailFInal(JSON,"page0",true,false,true)
-
-                                        
-                                        
                                         var gtInfos= new Array();
                                         var gtContext= new Array();
                                         gtContext["id"]="AI00";
                                         gtContext["name"]="All Instructors";
                                         gtInfos["context"]=gtContext;
-                                        gtInfos["tourVector"]=JSON.Links;
-                             
-                                        
-                                        
-                                        
-                                        
-                                        bindLink(false,0,gtInfos);
+                                        gtInfos["tourVector"]=JSON.instructors;
+                                        bindLink(0,gtInfos);
 
                                         }
 function createPageAllCourseByName(JSON){
                                         console.log("Sto facendo pagina course By Name")
-                                        deleteContent();
-                                        createDivA2A(1);
-                                        createSideBarNav();
-                                        addLCLinkOnSideBar(LCAllCourseByLevel,"Other sort")
+                                        initializePage(1);
+                                        addLCLinkOnSideBar(LCAllCourseByLevel,"Other sort",true)
                                         createTextwithTitle("",JSON.paragraph.content,"page0");
-    
-    
-                              
                                         createListThumbNailFInal(JSON,"page0",true,false,false);
     
                                          var gtInfos= new Array();
                                         var gtContext= new Array();
                                         gtContext["id"]="ACN0";
-                                        gtContext["name"]="All Instructors";
+                                        gtContext["name"]="All Course by Name";
                                         gtInfos["context"]=gtContext;
-                                        gtInfos["tourVector"]=JSON.Links;
+                                        gtInfos["tourVector"]=JSON.courses;
 
-                                        bindLink(false,0,gtInfos);
+                                        bindLink(0,gtInfos);
                                         }
 function createPageAllCourseByLevel(JSON){
                                         console.log("Sto facendo pagina course By Level")
-                                        deleteContent();
-                                        createDivA2A(1);
-                                        createSideBarNav();
-                                        addLCLinkOnSideBar(LCAllCourseByName,"Other sort")
+                                        initializePage(1);
+                                        addLCLinkOnSideBar(LCAllCourseByName,"Other sort",true)
                                         createTextwithTitle("",JSON.paragraph.content,"page0");
                                         
     
@@ -1079,20 +1062,18 @@ function createPageAllCourseByLevel(JSON){
                                         createTextwithTitle("","high","page0");
                                         createListImgWith1LinksOnlyOneLevel(JSON,"page0","high");
     
-                                         var gtInfos= new Array();
+                                        var gtInfos= new Array();
                                         var gtContext= new Array();
                                         gtContext["id"]="ACL0";
-                                        gtContext["name"]="All Instructors";
+                                        gtContext["name"]="All CourseByLEVEL";
                                         gtInfos["context"]=gtContext;
-                                        gtInfos["tourVector"]=JSON.Links;
+                                        gtInfos["tourVector"]=JSON.courses;
 
-                                        bindLink(false,0,gtInfos);
+                                        bindLink(0,gtInfos);
                                         }
 function createPageAllCourseCategories(JSON){
                                         console.log("Sto facendo pagina All course Category")
-                                        deleteContent();
-                                        createDivA2A(1);
-                                        createSideBarNav();
+                                        initializePage(1);
                                         //cerco di  divide il content
                                         var str=JSON.paragraph.content;
                                         var res=str.split(/\n/)
@@ -1103,7 +1084,7 @@ function createPageAllCourseCategories(JSON){
                                         createTextwithTitle(res[1],res[0],"page0");
                                         //createListThumbNailFInal(JSON,"page0",false,true,true)
                                         createListThumbNailFInal(JSON,"page0",false,true,true)
-                                        bindLink(false,0);
+                                        bindLink(0);
                                         }
 
 
