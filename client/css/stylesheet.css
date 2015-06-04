@@ -78,6 +78,12 @@ margin-bottom: 10px;
 }
 .panel-body {
 
-text-align: center;
+    text-align: center;
+    
+}
+
+.panel-default {
+
+    margin: 7px;
     
 }
