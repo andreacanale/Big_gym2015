@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Giu 01, 2015 alle 18:26
+-- Generation Time: Giu 04, 2015 alle 22:47
 -- Versione del server: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -87,8 +87,8 @@ CREATE TABLE IF NOT EXISTS `coursecategory` (
 
 INSERT INTO `coursecategory` (`id`, `nome`, `thumbnail`, `Description`) VALUES
 ('CC001', 'Aerobic', '/images/LOGO_AEROBICA.png', '<p>Yoga means "to yoke," or "to conjoin." This holistic practice is deeply rooted in ancient Indian culture that unites the mind, body and spirit through movement, breathing techniques and meditation. </p>'),
-('CC002', 'Martial Arts', '/images/logo_MARTIAL ARTS.png', '<p>Here the list of all course of Martial  Arts ,you can choose from boxe to karate,asian oeuropean fight style.\r\nYou think that it''s impossible that there are so many courses only for Martial Arts?\r\nDON''T WORRY: each teacher has an official authorization to teach the course and in some case also an'),
-('CC003', 'Water-Based', '/images/logo_WATER BASED.png', '<p>It''s known that the union of physical exercise with the water is something that it''s for everyone,child will grow up with strongher body,mid-age people can improve their cardio and breathe and also injured people can heal with rehabilitation swim.So let''s start and join our courses.</p>'),
+('CC002', 'Martial Arts', '/images/logo_MARTIAL ARTS.png', '<p>Here the list of all course of Martial  Arts ,you can choose from boxe to karate,asian oeuropean fight style.\nYou think that it''s impossible that there are so many courses only for Martial Arts?\nDON''T WORRY: each teacher has an official authorization to teach the course and in some case also an'),
+('CC003', 'Water Based', '/images/logo_WATER BASED.png', '<p>It''s known that the union of physical exercise with the water is something that it''s for everyone,child will grow up with strongher body,mid-age people can improve their cardio and breathe and also injured people can heal with rehabilitation swim.So let''s start and join our courses.</p>'),
 ('CC004', 'Yoga', '/images/YOGA.png', '<p>Yoga means "to yoke," or "to conjoin." This holistic practice is deeply rooted in ancient Indian culture that unites the mind, body and spirit through movement, breathing techniques and meditation.Don''t be lazy and start,choose your course.</p>');
 
 -- --------------------------------------------------------
@@ -110,6 +110,7 @@ INSERT INTO `coursecategory_course` (`courseCategory`, `course`) VALUES
 ('CC001', 'C0003'),
 ('CC002', 'C0001'),
 ('CC002', 'C0002'),
+('CC003', 'C0001'),
 ('CC004', 'C0004');
 
 -- --------------------------------------------------------
@@ -286,8 +287,8 @@ CREATE TABLE IF NOT EXISTS `paragraph` (
 
 INSERT INTO `paragraph` (`id`, `content`) VALUES
 ('P0001', '<p>All instructors</p>\r\n<p>Health and fitness is increasingly in the public eye and many people are becoming keen to take command of their own fitness. Our Gym instructors facilitate this process by providing expert advice on what to expect, how to exercise and monitor diet, and can also provide that crucial element of motivation which people may find difficult on their own.So let''s know them.</p>'),
-('P0002', '<p>All Courses by NAME</p>'),
-('P0003', '<p>All Courses by LEVEL</p>'),
+('P0002', '<p>All Courses by NAME</p>\n<p>Here the list of all our Corses.We offer everything you need .So let''s start and join our classes</p>'),
+('P0003', '<p>All Courses by LEVEL</p>\n<p>Here the list of all our Corses.We offer everything you need divided by LEVEL,from Courses for everyone to courses to VERY BIG PEOPLE.So let''s start and join our classes</p>'),
 ('P0004', '<p>Course Categories</p>\r\n<p>Here you can see a list of our course categories.</p>');
 
 -- --------------------------------------------------------

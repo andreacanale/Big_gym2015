@@ -3,7 +3,7 @@
 
 var server="http://biggym2015.altervista.org/server/"
 //DATABASE JS
-var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getCourseOfCategoryX.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getLocation.php"]
+var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getCoursesOfCategoryX.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getLocation.php"]
 function strStartsWith(str, prefix) {
     return str.indexOf(prefix) === 0;
 }
@@ -29,7 +29,7 @@ function createPage(typeOfPage,data){
                                 createPageCourse(data)
                                 break;
                             case 2:
-                                createPageCourseOfCategoryX(data);
+                                createPageCoursesOfCategoryX(data);
                                 break;
                             case 3:
                                 createPageAllCourseByName(data)
@@ -53,6 +53,7 @@ function createPage(typeOfPage,data){
 
 
 function requestForPage(id){
+                            if(id=="HOME")createHome();
                             var type=returnTypeOfPage(id);
                             console.log("tipo: "+type+" con id: "+id);
                             callToServer(id,phps[type]);
@@ -75,7 +76,7 @@ function callToServer(whatToKnow,phpUrl){
         crossDomain: true, //localhost purposes
         url: phpUrl, //Relative or absolute path to file.php file
         data: {id:whatToKnow},
-        success: function(response) {   
+        success: function(response) {   console.log(JSON.parse(response))
                                         createPage(phps.indexOf(phpUrl),JSON.parse(response));
             
                                      },
@@ -732,7 +733,7 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
     
     
     
-            console.log(pic)
+            
     
     
             var cont=document.createElement('div');
@@ -762,8 +763,10 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
                             textCaption+="<h4>"+name.toUpperCase()+"</h4>";
                  }
     if(caption && headerLinked)    textCaption+="<p >"+description+"</p>"   
-    else if(moreLink)textCaption+="<li><a  href='' >SEE CATEGORY "+name.toUpperCase()+"</a></li><li class='LINK"+JSON.id+"'><a  href='' >See Courses of  '"+name+"'</a></li>";            
-                            
+    else if(moreLink){
+        textCaption+="<li><a  href='' ><p >SEE CATEGORY "+name.toUpperCase()+"</p></a></li>"
+        textCaption+="<li ><a  href='' ><p class='LINK"+JSON.id+"'>See Courses of  '"+name+"'</p></a></li>";            
+                     }
                             //qui ci va id per fare query  di corsi per una categoria
             DIVcaption.innerHTML=textCaption;
             cont.appendChild(img);
@@ -775,28 +778,19 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
 
 
                     }
-function createListThumbNailFInal(JSON2,idWheretoPutIt,headerLinked,moreLink,caption){
+function createListThumbNailFInal(array,idWheretoPutIt,headerLinked,moreLink,caption){
   //Simg array of images Links,nameLinks matrix of links Capolinks array of  Capolinks 
                     
-                            var JSON = JSON2;
+                            
                             var cont=document.createElement('div');
                             cont.setAttribute('class','container-fluid');
                             cont.setAttribute('id','list-thumbnails-links')
                             var Row="";
-                            var array=new Array();
                             var j=0;
                             document.getElementById(idWheretoPutIt).appendChild(cont);
-                           //NORMALIZE
-                         if (JSON.courses){
-									                                  array=JSON.courses;
-									      }else if (JSON.instructors){
-									                                   array=JSON.instructors;
-								         }else if(JSON.courseCategories) {
-									                                   array=JSON.courseCategories;
-								                    }
+                           
                             
-                            //
-                        console.log(array)
+                            console.log(array)
                             for(var i=0;i<array.length;i++){
                                 
                                 
@@ -806,7 +800,7 @@ function createListThumbNailFInal(JSON2,idWheretoPutIt,headerLinked,moreLink,cap
                                            }
                                 
                                 
-                                createThumbnailFINAL(array[i],'riga'+j,headerLinked,moreLink,caption);
+                            createThumbnailFINAL(array[i],'riga'+j,headerLinked,moreLink,caption);
                                 
                                                             }
                           
@@ -928,13 +922,14 @@ function createPageLocation(JSON){
                             //---CONTENT----
                             createTextwithTitle(JSON.whereweare,"WHERE WE ARE","page0");
                             createTextwithTitle(JSON.howtogethere,"HOW TO GET THERE","page0");
+                            createTextwithTitle("","FIND US ON MAP",'page0');
                             createGoogleMaps(JSON.map,"page0");
     
                              var string=JSON.conctactUs;
                              var result=string.split('</p>');
                              console.log(result);
-                            createTextwithTitle(result[1],result[0],"page1");
-                            bindLink(3)
+                             createTextwithTitle(result[1],result[0],"page1");
+                             bindLink(3)
                            
                              }
 function createPageInstructor(JSON){
@@ -947,6 +942,8 @@ function createPageInstructor(JSON){
             createImgRightText(JSON.profilePic,JSON.shortBio,'page0');
             
             createTextwithTitle(JSON.professionalQualification,"",'page0');
+            
+            if(JSON.awards)createListThumbNailFInal(JSON.awards,'page0',false,false,false)
             addCarousel2(JSON.images,'page0');
          
         
@@ -994,7 +991,7 @@ function createPageCourse(JSON){
                             createTextwithTitle("","Scheduling of : "+JSON.title+"",'page1');
                             addSchedule(JSON.schedule,'page1')
                             createTextwithTitle("","INSTRUCTORS",'page1');
-                            createListThumbNailFInal(JSON,"page1",true,false,true);
+                            createListThumbNailFInal(JSON.instructors,"page1",true,false,true);
                             
                             
                             //in pagina 2 register
@@ -1019,9 +1016,12 @@ function createPageAllInstructor(JSON){
 
                                 console.log("Sto facendo pagina course By Name")
                                         initializePage(1)
-                            
-                                        createTextwithTitle("",JSON.paragraph.content,"page0");
-                                        createListThumbNailFInal(JSON,"page0",true,false,true)
+                                        var str=JSON.paragraph.content;
+                                        var res=str.split(/\n/)
+                                        console.log(res)
+                                        
+                                createTextwithTitle(res[1],res[0],"page0");
+                                createListThumbNailFInal(JSON.instructors,"page0",true,false,true)
                                         var gtInfos= new Array();
                                         var gtContext= new Array();
                                         gtContext["id"]="AI00";
@@ -1036,7 +1036,7 @@ function createPageAllCourseByName(JSON){
                                         initializePage(1);
                                         addLCLinkOnSideBar(LCAllCourseByLevel,"Other sort",true)
                                         createTextwithTitle("",JSON.paragraph.content,"page0");
-                                        createListThumbNailFInal(JSON,"page0",true,false,false);
+                                        createListThumbNailFInal(JSON.courses,"page0",true,false,false);
     
                                          var gtInfos= new Array();
                                         var gtContext= new Array();
@@ -1083,10 +1083,45 @@ function createPageAllCourseCategories(JSON){
                                         addLCLinkOnSideBar(LCAllCourseByName,"Other view")
                                         createTextwithTitle(res[1],res[0],"page0");
                                         //createListThumbNailFInal(JSON,"page0",false,true,true)
-                                        createListThumbNailFInal(JSON,"page0",false,true,true)
-                                        bindLink(0);
+                                createListThumbNailFInal(JSON.courseCategories,"page0",false,true,true)
+                                        var gtInfos= new Array();
+                                        var gtContext= new Array();
+                                        gtContext["id"]="ACC0";
+                                        gtContext["name"]="Courses of All CC";
+                                        gtInfos["context"]=gtContext;
+                                        gtInfos["tourVector"]=JSON.courseCategories;
+
+                                        bindLink(0,gtInfos);
+                                
+                                
+                                
+                                
+                                
+                                
+                                           
                                         }
 
+function createPageCoursesOfCategoryX(JSON){
+                  console.log("Sto facendo pagina All course Category")
+                  initializePage(1);
+                  createTextwithTitle(JSON.Description,"Courses of "+JSON.nome.toUpperCase()+"","page0");
+                  createListThumbNailFInal(JSON.courses,"page0",true,false,false);
+                  createOrientationDesktop();
+    
+    
+                   var gtInfos= new Array();
+                                        var gtContext= new Array();
+                                        gtContext["id"]="ACC0";
+                                        gtContext["name"]="All courses  of"+JSON.nome;
+                                        gtInfos["context"]=gtContext;
+                                        gtInfos["tourVector"]=JSON.courses;
+                                            
+                                        bindLink(0,gtInfos);
+
+
+
+
+                        };
 
 
 //------------------------------------------------------------------
