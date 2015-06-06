@@ -78,12 +78,38 @@ margin-bottom: 10px;
 }
 .panel-body {
 
-    text-align: center;
+text-align: center;
     
 }
-
-.panel-default {
-
-    margin: 7px;
+.OIsmart p {
     
+    display: inline;
+    
+    
+}
+.OIarrow {
+    color: black;
+}
+
+.contentImg {
+  display: inline-block;
+}
+.contentDesc {
+  display: inline-block;
+}
+.HPel.noFirst {
+  display: inline-block;
+  width: 49%;
+}
+.noFirst > .contentImg img {
+  width: 80px;
+  height: 80px;
+}
+.onRight {
+  position: absolute;
+  right: 5px;
+}
+.onlyEL {
+  height: 100%;
+  width: 100%;
 }

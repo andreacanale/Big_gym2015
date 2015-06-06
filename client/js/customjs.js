@@ -128,7 +128,8 @@ function createOrientationInfoSmartphone(){ //sono da passare le variabili come 
     //e aggungere onClick                event
             //create OI for smartphone
               //dove mettere
-             var div = document.createElement('ul');
+    
+            /*var div = document.createElement('ul');
              div.setAttribute('class', 'pager pager-fixed-bottom  visible-xs');
              div.setAttribute('id', 'OISmartphone');
              var p1=document.createElement('p');
@@ -157,8 +158,17 @@ function createOrientationInfoSmartphone(){ //sono da passare le variabili come 
              div.appendChild(li1);
              li1.appendChild(a1);
              div.appendChild(li2);
-             li2.appendChild(a2);
+             li2.appendChild(a2);*/
+    var OI = giveOrientationInfos(); 
+        var div = document.createElement('div');
+    div.setAttribute('class','panel panel-default');
+    var el="";
+     el+= "<a class='OIprevious"+OI["previous"].id+"' href='#'><span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span></a>";
+    el+= "<a  href='#'><p class='GTINDEX"+OI["context"].id+"'>"+OI["context"].name+"</p></a>";
+     el+= "<p>"+(OI["current"]+1)+" of "+OI["tourSize"]+"</p>";
+    el+= "<a  class='OInext"+OI["next"].id+"' href='#'><span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span></a>"; 
     
+    div.innerHTML=el;
              document.getElementById('page-content-wrapper').appendChild(div);
             
             }
