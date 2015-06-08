@@ -20,6 +20,7 @@ function returnTypeOfPage(id){
     else if(strStartsWith(id, "ACC0")){return 5;}
     else if(strStartsWith(id, "AI")){return 6;}
     else if(strStartsWith(id, "L0")){return 7;}
+    else if(strStartsWith(id, "H0")){return 8;}
     else return -1;
 }
 
@@ -50,16 +51,17 @@ function createPage(typeOfPage,data){
         case 7:
             createPageLocation(data)
             break;
+        
         default:console.log("ERRORE SCELTA CREAZIONE PAGINA")
     }
 }
 
 
 function requestForPage(id){
-    if(id=="HOME")createHome();
+    
     var type=returnTypeOfPage(id);
-
-    callToServer(id,phps[type]);
+    if(type==8)createPageHome();
+    else callToServer(id,phps[type]);
 
 }
 
@@ -202,7 +204,8 @@ function initializePage(nA2A){
 }
 
 function deleteContent(){
-    console.log("ELIMINO")
+    console.log("ELIMINO");
+    if($('#HOME'))$('#HOME').remove();
     $('#wrapper').remove();
     //$('#sidebar-wrapper').empty();
     //$('#Pages-Container').empty();
@@ -833,7 +836,14 @@ function createPageCoursesOfCategoryX(JSON){
     bindLink(0,gtInfos);
 };
 
-
+function createPageHome(){
+            deleteContent();
+            var div=document.createElement('div');
+            div.setAttribute('id','HOME')
+            div.innerHTML=home;
+            document.body.appendChild(div);
+            bindLink(0);
+                          }
 //------------------------------------------------------------------
 
 //API FACEBOOK/TWITTER/GOOGLE MAPS
@@ -889,3 +899,6 @@ function addSchedule( Schedule,idWherePutIt){
         return str.indexOf(prefix) === 0;
     }
 }
+
+
+var home="<div class='intro-header'> <div class='container'>  <div class='row'> <div class='col-lg-12'> <div class='intro-message'> <h1>BIG GYM</h1> <h3>A GYM  FOR  BEAST</h3> <hr class='intro-divider'> </div> </div> </div>  </div>   </div> <div class='content-section-a'>  <div class='container'> <div class='row'> <div class='col-lg-5 col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKAI000 section-heading'>Our Instructors</h2></a><br><h2>Best in the world</h2> <p class='lead'>Every instructor in our Gym will lead you to the TOP.</br> Click and Meet them!!!</p> </div> <div class='col-lg-5 col-lg-offset-2 col-sm-6'> <img class='img-responsive' src='http://maisha.gradstate.com/file/2014/10/jobs-in-kenya-gym-instructor.jpg' alt=''> </div> </div>  </div> <!-- /.container -->  </div> <div class='content-section-b'>  <div class='container'>  <div class='row'> <div class='col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKL0001 section-heading'>Location</h2></a>  <p class='lead'>Near everything,our Gym is reachable in all ways.Come to visit us!</p> </div> <div class='col-lg-5 col-sm-pull-6  col-sm-6'> <img class='img-responsive' src='http://www.snapfitness.com/uploads/WelcomeMessage/2013/mar/25/gym%20front.JPG' alt=''> </div> </div>  </div>   </div> <div class='content-section-a'>  <div class='container'>  <div class='row'> <div class='col-lg-5 col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKACN0 section-heading'>Courses</h2></a> <p class='lead'>We provide all type of courses you want:Boxe,Kick-Boxing and more...</p> </div> <div class='col-lg-5 col-lg-offset-2 col-sm-6'> <img class='img-responsive' src='http://pullzone1.selvabjj.netdna-cdn.com/wp-content/uploads/2013/10/Montebello-Kickboxing.jpg' alt=''> </div> </div>  </div> </div>  <footer> <div class='container'> <div class='row'> <div class='col-lg-12'>  <p class='copyright text-muted small'>Copyright © Canale-Pagano 2015. All Rights Reserved</p> </div> </div> </div> </footer>"
