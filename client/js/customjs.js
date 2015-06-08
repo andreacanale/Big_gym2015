@@ -431,7 +431,7 @@ function createImgWith1Link(JSON,idWheretoPutIt){
     var el="";
     el+="<img src='"+server+JSON.coursePic+"'width='100px' class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
     el+="<div class='right-caption col-xs-6 col-*-3'>";
-    el+="<a  href='' ><h4 class='LINK"+JSON.id+"'>"+JSON.title+"</h4><p>"+JSON.description+"</p></a>";
+    el+="<a  href='' ><h4 class='LINK"+JSON.id+"'>"+JSON.title+"</h4></a><p>"+JSON.description.substr(0,150)+"...</p>";
     el+="</div>";
     cont.innerHTML=el;
 
@@ -516,6 +516,9 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
         description=JSON.miniText;
 
     }
+    if (JSON.description){
+        description=JSON.description.substr(0,150)+"...";
+    }
     if(JSON.profilePic) {
         pic=JSON.profilePic;
 
@@ -557,7 +560,7 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
     //se l'header è linkato o no
     if(headerLinked){
         textCaption+="<a  href=''><h4  class='LINK"+JSON.id+"'>"+name+"</h4></a>";
-    }
+    }//<p>"+JSON.description.substr(0,150)+"...</p>
     else {
         textCaption+="<h4>"+name.toUpperCase()+"</h4>";
     }
@@ -756,7 +759,7 @@ function createPageAllCourseByName(JSON){
     var headerText=JSON.paragraph.content.split('</p>');
     createTextwithTitle(headerText[1],headerText[0],"page0");
 
-    createListThumbNailFInal(JSON.courses,"page0",true,false,false);
+    createListThumbNailFInal(JSON.courses,"page0",true,false,true);
 
     var gtInfos= new Array();
     var gtContext= new Array();
