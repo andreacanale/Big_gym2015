@@ -27,6 +27,7 @@ body,html,.row-offcanvas {
     width: 210px;
     height: 240px;
     overflow: auto;
+    float:left; 
 }
 
 #NavInfoDesktop {
@@ -38,6 +39,7 @@ body,html,.row-offcanvas {
     
     
 }
+/*
 .thumbnail.right-caption > img {
     float: left;
     margin-right: 9px;
@@ -51,7 +53,7 @@ body,html,.row-offcanvas {
 px
 .thumbnail.right-caption > .caption {
     padding: 4px;
-}
+}*/
 
 #content{  
 
@@ -114,6 +116,16 @@ text-align: center;
   width: 100%;
 }
 img.awardThumb{
-      height: 100px;
-  width: 100px;
+      height: 10%;
+  width: 10%;
+      float: left;
+}
+.right-caption{
+ width:90%;   
+}
+.right-caption{
+ width:90%;   
+}
+.thumbnail.right-caption{
+    display:inline-block;
 }
