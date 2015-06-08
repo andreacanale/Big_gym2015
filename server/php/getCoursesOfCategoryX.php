@@ -47,7 +47,10 @@ else {
         $myResult["courses"] = $myCourses;
       
                    // var_dump($myArray);
-           echo json_encode($myResult);
+            //echo json_encode($myResult);
+        $callback = $_GET['callback'];
+        $json = json_encode($myResult);
+        echo "$callback({$json})";
     }
     //free result
     if(isset($result1) and $result1)$result1->close();

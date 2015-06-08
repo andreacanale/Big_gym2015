@@ -4,6 +4,8 @@
 var server="http://biggym2015.altervista.org/server/"
 //DATABASE JS
 var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getCoursesOfCategoryX.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getLocation.php"]
+
+
 function strStartsWith(str, prefix) {
     return str.indexOf(prefix) === 0;
 }
@@ -67,25 +69,31 @@ function callToServer(whatToKnow,phpUrl){
     
     //0 Instructor 1 Course 2 Location
   
-    console.log(phpUrl)
-    console.log(whatToKnow)
+    //console.log(phpUrl)
+    //console.log(whatToKnow)
     
     $.ajax({
         method: "GET",
-        //dataType: "json", //type of data
+        dataType: 'JSONP', //type of data
+        //jsonpCallback: 'callback',
         crossDomain: true, //localhost purposes
-        url: phpUrl, //Relative or absolute path to file.php file
+        url: server+phpUrl, //Relative or absolute path to file.php file
         data: {id:whatToKnow},
-        success: function(response) {   console.log(JSON.parse(response))
-                                        createPage(phps.indexOf(phpUrl),JSON.parse(response));
+        success: function(response) {   
+                                        //console.log(response);
+                                        console.log("SUCCESS");
+                                        createPage(phps.indexOf(phpUrl),response);
             
                                      },
-        error: function(request,error) 
-        {
-            console.log("Error");
-        }
+       error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                console.log("ERRORE");
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                }
     });
 
+}
+function callback(){
+    console.log("CALLBACK");
 }
 
 
@@ -161,7 +169,7 @@ function createOrientationInfoSmartphone(){ //sono da passare le variabili come 
              li2.appendChild(a2);*/
     var OI = giveOrientationInfos(); 
         var div = document.createElement('div');
-    div.setAttribute('class','panel panel-default');
+    div.setAttribute('class','panel panel-default OIsmart');
     var el="";
      el+= "<a class='OIprevious"+OI["previous"].id+"' href='#'><span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span></a>";
     el+= "<a  href='#'><p class='GTINDEX"+OI["context"].id+"'>"+OI["context"].name+"</p></a>";
@@ -529,7 +537,7 @@ function createForm(whatToKnow,idWherePutIt){
 
 
 
-function createWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
+/*function createWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             var cont=document.createElement('div');
                             cont.setAttribute('class','container');
                             var el="<div class='cointaner-fluid'><div class='row'>"
@@ -549,6 +557,7 @@ function createWithLinks(Simg,Links,nameLinks,CapoLinks,idWherePutIt){
                             
 
                             }
+                            */
 
 //server per fare lista
 /*function createWithLinks2(Simg,Links,nameLinks,CapoLinks,isCapoLinkALink,idWherePutIt){
