@@ -161,12 +161,12 @@ function createOrientationInfoSmartphone(){ //sono da passare le variabili come 
              li2.appendChild(a2);*/
     var OI = giveOrientationInfos(); 
         var div = document.createElement('div');
-    div.setAttribute('class','panel panel-default panel-body OIsmart');
+    div.setAttribute('class','panel panel-default');
     var el="";
-     el+= "<a class='OIprevious"+OI["previous"].id+"' href='#'><span class='glyphicon glyphicon-chevron-left OIarrow' aria-hidden='true'></span></a>  ";
+     el+= "<a class='OIprevious"+OI["previous"].id+"' href='#'><span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span></a>";
     el+= "<a  href='#'><p class='GTINDEX"+OI["context"].id+"'>"+OI["context"].name+"</p></a>";
-     el+= "<p> "+(OI["current"]+1)+" of "+OI["tourSize"]+"</p>";
-    el+= "  <a  class='OInext"+OI["next"].id+"' href='#'><span class='glyphicon glyphicon-chevron-right OIarrow' aria-hidden='true'></span></a>"; 
+     el+= "<p>"+(OI["current"]+1)+" of "+OI["tourSize"]+"</p>";
+    el+= "<a  class='OInext"+OI["next"].id+"' href='#'><span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span></a>"; 
     
     div.innerHTML=el;
              document.getElementById('page-content-wrapper').appendChild(div);
