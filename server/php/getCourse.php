@@ -96,7 +96,10 @@ else {
 
         }
       //   var_dump($myCourse);
-           echo json_encode($myCourse);
+            //echo json_encode($myResult);
+        $callback = $_GET['callback'];
+        $json = json_encode($myCourse);
+        echo "$callback({$json})";
     }
 
     //free result

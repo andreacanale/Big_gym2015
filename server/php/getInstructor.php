@@ -72,7 +72,10 @@ else {
 
         }
                    // var_dump($myArray);
-           echo json_encode($myInstructor);
+            //echo json_encode($myResult);
+        $callback = $_GET['callback'];
+        $json = json_encode($myInstructor);
+        echo "$callback({$json})";
     }
 
     //free result
