@@ -267,9 +267,13 @@ function bindLink(nA2A,gtInfos){  //
                     $('[class^="OInext"]').click(function(e){
                         e.preventDefault();
                          var str=event.target.className;
-                         var res = str.substr(0,str.indexOf(' '));
-                         res=res.substr(6,10)
-                         console.log("ho selezionato un link:"+res)
+                         var res;
+                         console.log("ho selezionato un link:*"+str+"*")
+                         
+                         if(str.indexOf(' ')==-1)str= str.substr(0,str.indexOf(' '));
+                        console.log("prima di splittare: "+str)
+                         res=str.substr(6,11)
+                         console.log("splittato id :"+res)
                          GTnext();
                          requestForPage(res);
                          
