@@ -10,7 +10,11 @@ function strStartsWith(str, prefix) {
     return str.indexOf(prefix) === 0;
 }
 
-                        
+
+
+
+
+
 function returnTypeOfPage(id){
                 if(strStartsWith(id, "I0")){return 0;}
                 else if(strStartsWith(id, "C0")){return 1;}
@@ -137,12 +141,12 @@ function createOrientationInfoSmartphone(){ //sono da passare le variabili come 
 
     var OI = giveOrientationInfos(); 
         var div = document.createElement('div');
-    div.setAttribute('class','panel panel-default panel-body OIsmart');
+    div.setAttribute('class','panel panel-default panel-body OIsmart visible-xs');
     var el="";
-     el+= "<a class='OIprevious"+OI["previous"].id+"' href='#'><span class='glyphicon glyphicon-chevron-left OIarrow' aria-hidden='true'></span></a>  ";
+     el+= "<a  href='#'><span class='OIprevious"+OI["previous"].id+" glyphicon glyphicon-chevron-left OIarrow' aria-hidden='true'></span></a>  ";
     el+= "<a  href='#'><p class='GTINDEX"+OI["context"].id+"'>"+OI["context"].name+"</p></a>";
      el+= "<p> "+(OI["current"]+1)+" of "+OI["tourSize"]+"</p>";
-    el+= "  <a  class='OInext"+OI["next"].id+"' href='#'><span class='glyphicon glyphicon-chevron-right OIarrow' aria-hidden='true'></span></a>"; 
+    el+= "  <a   href='#'><span class='OInext"+OI["next"].id+" glyphicon glyphicon-chevron-right OIarrow' aria-hidden='true'></span></a>"; 
     
     div.innerHTML=el;
              document.getElementById('page-content-wrapper').appendChild(div);
@@ -155,7 +159,7 @@ function createOrientationDesktop(){ //sono da passare le variabili come punto i
   <div class="panel-body">Panel Content</div>
 </div>*/
     var div = document.createElement('div');
-    div.setAttribute('class','panel panel-default');
+    div.setAttribute('class','panel panel-default hidden-xs');
     var el="";
     el+= "<div class='panel-heading'>Orientation info</div> <div class='panel-body'>";
     el+= "<a  href='#'><p class='GTINDEX"+OI["context"].id+"'>"+OI["context"].name+"</p></a>";
@@ -263,16 +267,19 @@ function bindLink(nA2A,gtInfos){  //
                     $('[class^="OInext"]').click(function(e){
                         e.preventDefault();
                          var str=event.target.className;
-                         var res = str.substr(6, 25);
+                         var res = str.substr(0,str.indexOf(' '));
+                         res=res.substr(6,10)
                          console.log("ho selezionato un link:"+res)
                          GTnext();
                          requestForPage(res);
                          
                     });
+                    //$('[class^="OIprevious"]').click(function(e){
                     $('[class^="OIprevious"]').click(function(e){
                         e.preventDefault();
                         var str=event.target.className;
-                        var res = str.substr(10, 25);
+                        var res = str.substr(0,str.indexOf(' '));
+                        res=res.substr(10,14)
                         console.log("ho selezionato un link:"+res)
                         GTprevious();
                         requestForPage(res);
@@ -923,6 +930,7 @@ function createPageInstructor(JSON){
             initializePage(1)
             
             createOrientationDesktop();
+            createOrientationInfoSmartphone();
             addLCLinkOnSideBar(JSON.courses,"WHAT HE TEACHES");
             //---CONTENT
             createTextwithTitle("",JSON.name,'page0');//titolo
@@ -964,6 +972,7 @@ function createPageCourse(JSON){
                             addA2ALinkOnSideBar(pages,JSON.title);
                             addLCLinkOnSideBar(JSON.instructors,"Tough by:");
                             createOrientationDesktop();
+                            createOrientationInfoSmartphone();
     
     
     
@@ -1094,6 +1103,7 @@ function createPageCoursesOfCategoryX(JSON){
                   createTextwithTitle(JSON.Description,"Courses of "+JSON.nome.toUpperCase()+"","page0");
                   createListThumbNailFInal(JSON.courses,"page0",true,false,false);
                   createOrientationDesktop();
+                  createOrientationInfoSmartphone();
     
     
                    var gtInfos= new Array();
