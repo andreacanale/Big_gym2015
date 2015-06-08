@@ -745,6 +745,11 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
                              img=aH;
                                 }
             else img.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
+            console.log(JSON.id)
+            if (JSON.id.indexOf('A0')==0){
+                img.setAttribute('class','awardThumb');
+                
+                }
             //caption header
             var DIVcaption=document.createElement('div')
             DIVcaption.setAttribute('class','right-caption col-xs-12 col-*-6')
