@@ -405,7 +405,7 @@ function createImgRightText(Simg,Text,idWherePutIt){
     var div=document.createElement('div')
     div.setAttribute('class','row')
     div.setAttribute('id','content')
-    var el="<div class='thumbnail right-caption'><img src='"+server+Simg+"' width='50%'><div                                           class='caption'>"+Text+"</div></div>";
+    var el="<div class='thumbnail right-caption'><img src='"+server+Simg+"' class='col-xs-12 col-sm-4 col-md-4 col-lg-4'><div                                           class='caption'>"+Text+"</div></div>";
     div.innerHTML=el;
     document.getElementById(idWherePutIt).appendChild(div);
 }
@@ -430,9 +430,9 @@ function createForm(whatToKnow,idWherePutIt){
 function createImgWith1Link(JSON,idWheretoPutIt){
 
     var cont=document.createElement('div');
-    cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
+    cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6 picAndDesc')
     var el="";
-    el+="<img src='"+server+JSON.coursePic+"'width='100px' class='col-xs-12 col-sm-6 col-md-6 col-ld-6'>";
+    el+="<div class='col-xs-12 col-sm-6 col-md-6 col-ld-6'> <img src='"+server+JSON.coursePic+"' class='thumbnail '></div>";
     el+="<div class='right-caption col-xs-6 col-*-3'>";
     el+="<a  href='' ><h4 class='LINK"+JSON.id+"'>"+JSON.title+"</h4></a><p>"+JSON.description.substr(0,150)+"...</p>";
     el+="</div>";
@@ -545,20 +545,25 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
 
     img.setAttribute('src',server+pic)
     if(headerLinked){
-        img.setAttribute('class','LINK'+JSON.id+'   thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6');
+        img.setAttribute('class','LINK'+JSON.id+'   thumbnail ');
         var aH=document.createElement('a')
-        aH.setAttribute('class','LINK'+JSON.id)
+        aH.setAttribute('class','LINK'+JSON.id+ ' col-xs-12 col-sm-6 col-md-6 col-ld-6')
         aH.appendChild(img);
         img=aH;
     }
-    else img.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6')
+    else img.setAttribute('class','thumbnail ')
     if (JSON.id.indexOf('A0')==0){
-        img.setAttribute('class','awardThumb');
+        img.setAttribute('class','col-xs-2 col-sm-2 col-md-2 col-lg-2');
 
     }
     //caption header
     var DIVcaption=document.createElement('div')
+    if (JSON.id.indexOf('A0')==0){
+        DIVcaption.setAttribute('class','col-xs-10 col-sm-10 col-md-10 col-lg-10');
+
+    }else{
     DIVcaption.setAttribute('class','right-caption col-xs-12 col-*-6')
+    }
     var textCaption="";
     //se l'header è linkato o no
     if(headerLinked){
@@ -567,8 +572,12 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
     else {
         textCaption+="<h4>"+name.toUpperCase()+"</h4>";
     }
-    if(caption && headerLinked)    textCaption+="<p >"+description+"</p>"   
+    if(caption && headerLinked)   {
+        cont.className = cont.className + " picAndDesc";
+        textCaption+="<p >"+description+"</p>"   }
     else if(moreLink){
+        DIVcaption.className = DIVcaption.className + " col-xs-9 col-sm-9 col-md-9 col-lg-9";
+        img.className = " col-xs-3 col-sm-3 col-md-3 col-lg-3";
         textCaption+="<li><p >SEE CATEGORY "+name.toUpperCase()+"</p></li>"
         textCaption+="<li ><a  href='' ><p class='LINK"+JSON.id+"'>See Courses of  "+name.toUpperCase()+"</p></a></li>";
     }
@@ -899,6 +908,28 @@ function addSchedule( Schedule,idWherePutIt){
         return str.indexOf(prefix) === 0;
     }
 }
-
+function putFBFeed(pageid, whereToPutIt){
+        
+/*FB.login(function(){
+ FB.api('/me/feed', 'post', {message: 'Hello, world!'});
+}, {scope: 'publish_actions'});
+*/
+ /* make the API call */
+    FB.login(function(){
+FB.api(
+    "/"+pageid+"/feed",
+    function (response) {
+         console.log("/"+pageid+"/feed")
+      if (response && !response.error) {
+        /* handle the result */
+          console.log(response);
+           console.log("HEELO")
+      } else{
+            console.log(response.error);   
+      }
+    }
+);});   
+    
+}
 
 var home="<div class='intro-header'> <div class='container'>  <div class='row'> <div class='col-lg-12'> <div class='intro-message'> <h1>BIG GYM</h1> <h3>A GYM  FOR  BEAST</h3> <hr class='intro-divider'> </div> </div> </div>  </div>   </div> <div class='content-section-a'>  <div class='container'> <div class='row'> <div class='col-lg-5 col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKAI000 section-heading'>Our Instructors</h2></a><br><h2>Best in the world</h2> <p class='lead'>Every instructor in our Gym will lead you to the TOP.</br> Click and Meet them!!!</p> </div> <div class='col-lg-5 col-lg-offset-2 col-sm-6'> <img class='img-responsive' src='http://maisha.gradstate.com/file/2014/10/jobs-in-kenya-gym-instructor.jpg' alt=''> </div> </div>  </div> <!-- /.container -->  </div> <div class='content-section-b'>  <div class='container'>  <div class='row'> <div class='col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKL0001 section-heading'>Location</h2></a>  <p class='lead'>Near everything,our Gym is reachable in all ways.Come to visit us!</p> </div> <div class='col-lg-5 col-sm-pull-6  col-sm-6'> <img class='img-responsive' src='http://www.snapfitness.com/uploads/WelcomeMessage/2013/mar/25/gym%20front.JPG' alt=''> </div> </div>  </div>   </div> <div class='content-section-a'>  <div class='container'>  <div class='row'> <div class='col-lg-5 col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKACN0 section-heading'>Courses</h2></a> <p class='lead'>We provide all type of courses you want:Boxe,Kick-Boxing and more...</p> </div> <div class='col-lg-5 col-lg-offset-2 col-sm-6'> <img class='img-responsive' src='http://pullzone1.selvabjj.netdna-cdn.com/wp-content/uploads/2013/10/Montebello-Kickboxing.jpg' alt=''> </div> </div>  </div> </div>  <footer> <div class='container'> <div class='row'> <div class='col-lg-12'>  <p class='copyright text-muted small'>Copyright © Canale-Pagano 2015. All Rights Reserved</p> </div> </div> </div> </footer>"
