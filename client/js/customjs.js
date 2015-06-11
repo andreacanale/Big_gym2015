@@ -237,7 +237,7 @@ function bindLink(nA2A,gtInfos){  //
         $('[class^="LINK"]').not(".binded1").click(function(e){
             e.preventDefault();
             var str=event.target.className;
-            var res =retrieveID(str,"OInext",5);
+            var res =retrieveID(str,"LINK",5);
             startGT(gtInfos["context"], res, gtInfos["tourVector"]);
         });
         $('[class^="LINK"]').not(".binded1").addClass('binded1');
