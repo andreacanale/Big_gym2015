@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Giu 04, 2015 alle 22:47
+-- Generation Time: Giu 11, 2015 alle 18:47
 -- Versione del server: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -193,18 +193,21 @@ CREATE TABLE IF NOT EXISTS `instructor` (
   `shortBio` varchar(1000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `professionalQualification` varchar(1000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `profilePic` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `miniText` varchar(300) NOT NULL
+  `miniText` varchar(300) NOT NULL,
+  `FBid` varchar(20) NOT NULL,
+  `TWid` varchar(20) NOT NULL,
+  `TWname` varchar(30) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `instructor`
 --
 
-INSERT INTO `instructor` (`id`, `name`, `shortBio`, `professionalQualification`, `profilePic`, `miniText`) VALUES
-('I0001', 'Mario Macho', '<p>Short Bio</p>\r\n<p>I studied at New Zealand Institute of Sport in Wellington in 2012-2013 and was a member at Les Mills Extreme.  My first thought was "wow it''s colourful - wish I could work here!".  A few of my mates became Gym Instructors and told me how awesome it was, which made me want to do the same.  My strength is people skills, which makes me the instructor I am today.</p>', '<p>Professional Qualifications</p><ul><li>Level 4 Certificate in Weight Management for Individuals with Obesity and Diabete.</li>\r\n<li>Graduate at New Zealand Institute of Sport in Wellington in 2008-2009.</li>\r\n<li>PFS GYM INSTRUCTOR® Diploma.</li></ul>', '/images/mariomachothumb.jpg', 'Master of Combat and Health + Olympic champion'),
-('I0002', 'Rocco Rambo', '<p>Short Bio</p>\r\n<p>I studied at New Zealand Institute of Sport in Wellington in 2012-2013 and was a member at Les Mills Extreme.  My first thought was "wow it''s colourful - wish I could work here!".  A few of my mates became Gym Instructors and told me how awesome it was, which made me want to do the same.  My strength is people skills, which makes me the instructor I am today.</p>', '\r\n<p>Professional Qualifications</p><ul><li>Level 4 Certificate in Weight Management for Individuals with Obesity and Diabete.</li>', '/images/roccorambothumb.jpg', 'Master of Weightlifting'),
-('I0003', 'Valeria Lift', '<p>Short Bio</p>\r\n<p>I studied at New Zealand Institute of Sport in Wellington in 2012-2013 and was a member at Les Mills Extreme.  My first thought was "wow it''s colourful - wish I could work here!".  A few of my mates became Gym Instructors and told me how awesome it was, which made me want to do the same.  My strength is people skills, which makes me the instructor I am today.</p>', '<p>Professional Qualifications</p><ul><li>Level 4 Certificate in Weight Management for Individuals with Obesity and Diabete.</li>\r\n<li>Graduate at New Zealand Institute of Sport in Wellington in 2008-2009.</li>\r\n<li>PFS GYM INSTRUCTOR® Diploma.</li></ul>', '/images/valerialiftthumb.jpg', 'Master of  Body Building'),
-('I0004', 'Lella Strong', '<p>Short Bio</p>\r\n<p>I studied at New Zealand Institute of Sport in Wellington in 2012-2013 and was a member at Les Mills Extreme.  My first thought was "wow it''s colourful - wish I could work here!".  A few of my mates became Gym Instructors and told me how awesome it was, which made me want to do the same.  My strength is people skills, which makes me the instructor I am today.</p>', '<p>Professional Qualifications</p><ul><li>Level 4 Certificate in Weight Management for Individuals with Obesity and Diabete.</li>\r\n<li>Graduate at New Zealand Institute of Sport in Wellington in 2008-2009.</li>\r\n<li>PFS GYM INSTRUCTOR® Diploma.</li></ul>', '/images/lellastrongthumb.jpg', 'Master of Fitness');
+INSERT INTO `instructor` (`id`, `name`, `shortBio`, `professionalQualification`, `profilePic`, `miniText`, `FBid`, `TWid`, `TWname`) VALUES
+('I0001', 'Mario Macho', '<p>Short Bio</p>\r\n<p>I studied at New Zealand Institute of Sport in Wellington in 2012-2013 and was a member at Les Mills Extreme.  My first thought was "wow it''s colourful - wish I could work here!".  A few of my mates became Gym Instructors and told me how awesome it was, which made me want to do the same.  My strength is people skills, which makes me the instructor I am today.</p>', '<p>Professional Qualifications</p><ul><li>Level 4 Certificate in Weight Management for Individuals with Obesity and Diabete.</li>\r\n<li>Graduate at New Zealand Institute of Sport in Wellington in 2008-2009.</li>\r\n<li>PFS GYM INSTRUCTOR® Diploma.</li></ul>', '/images/mariomachothumb.jpg', 'Master of Combat and Health + Olympic champion', 'MarioMachoMachoke', '', ''),
+('I0002', 'Rocco Rambo', '<p>Short Bio</p>\r\n<p>I studied at New Zealand Institute of Sport in Wellington in 2012-2013 and was a member at Les Mills Extreme.  My first thought was "wow it''s colourful - wish I could work here!".  A few of my mates became Gym Instructors and told me how awesome it was, which made me want to do the same.  My strength is people skills, which makes me the instructor I am today.</p>', '\r\n<p>Professional Qualifications</p><ul><li>Level 4 Certificate in Weight Management for Individuals with Obesity and Diabete.</li>', '/images/roccorambothumb.jpg', 'Master of Weightlifting', '', '609022582898196481', 'RoccoRombo'),
+('I0003', 'Valeria Lift', '<p>Short Bio</p>\r\n<p>I studied at New Zealand Institute of Sport in Wellington in 2012-2013 and was a member at Les Mills Extreme.  My first thought was "wow it''s colourful - wish I could work here!".  A few of my mates became Gym Instructors and told me how awesome it was, which made me want to do the same.  My strength is people skills, which makes me the instructor I am today.</p>', '<p>Professional Qualifications</p><ul><li>Level 4 Certificate in Weight Management for Individuals with Obesity and Diabete.</li>\r\n<li>Graduate at New Zealand Institute of Sport in Wellington in 2008-2009.</li>\r\n<li>PFS GYM INSTRUCTOR® Diploma.</li></ul>', '/images/valerialiftthumb.jpg', 'Master of  Body Building', '', '', ''),
+('I0004', 'Lella Strong', '<p>Short Bio</p>\r\n<p>I studied at New Zealand Institute of Sport in Wellington in 2012-2013 and was a member at Les Mills Extreme.  My first thought was "wow it''s colourful - wish I could work here!".  A few of my mates became Gym Instructors and told me how awesome it was, which made me want to do the same.  My strength is people skills, which makes me the instructor I am today.</p>', '<p>Professional Qualifications</p><ul><li>Level 4 Certificate in Weight Management for Individuals with Obesity and Diabete.</li>\r\n<li>Graduate at New Zealand Institute of Sport in Wellington in 2008-2009.</li>\r\n<li>PFS GYM INSTRUCTOR® Diploma.</li></ul>', '/images/lellastrongthumb.jpg', 'Master of Fitness', '', '', '');
 
 -- --------------------------------------------------------
 

@@ -695,6 +695,8 @@ function createPageInstructor(JSON){
     createImgRightText(JSON.profilePic,JSON.shortBio+JSON.professionalQualification,'page0');
 
     if(JSON.awards)createListThumbNailFInal(JSON.awards,'page0',false,false,false)
+    if(JSON.FBid)createFBWall(JSON);
+    if(JSON.TWid)createTWWall(JSON);
     addCarousel2(JSON.images,'page0');
     //createOrientationInfoSmartphone(JSON)
     //----GT INFO
@@ -908,28 +910,70 @@ function addSchedule( Schedule,idWherePutIt){
         return str.indexOf(prefix) === 0;
     }
 }
-function putFBFeed(pageid, whereToPutIt){
-        
-/*FB.login(function(){
- FB.api('/me/feed', 'post', {message: 'Hello, world!'});
-}, {scope: 'publish_actions'});
-*/
- /* make the API call */
-    FB.login(function(){
-FB.api(
-    "/"+pageid+"/feed",
-    function (response) {
-         console.log("/"+pageid+"/feed")
-      if (response && !response.error) {
-        /* handle the result */
-          console.log(response);
-           console.log("HEELO")
-      } else{
-            console.log(response.error);   
-      }
+
+var home="<div class='intro-header'> <div class='container'>  <div class='row'> <div class='col-lg-12'> <div class='intro-message'> <h1>BIG GYM</h1> <h3>A GYM  FOR  BEAST</h3> <hr class='intro-divider'> </div> </div> </div>  </div>   </div> <div class='content-section-a'>  <div class='container'> <div class='row'> <div class='col-lg-5 col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKAI000 section-heading'>Our Instructors</h2></a><br><h2>Best in the world</h2> <p class='lead'>Every instructor in our Gym will lead you to the TOP.</br> Click and Meet them!!!</p> </div> <div class='col-lg-5 col-lg-offset-2 col-sm-6'> <img class='img-responsive' src='http://maisha.gradstate.com/file/2014/10/jobs-in-kenya-gym-instructor.jpg' alt=''> </div> </div>  </div> <!-- /.container -->  </div> <div class='content-section-b'>  <div class='container'>  <div class='row'> <div class='col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKL0001 section-heading'>Location</h2></a>  <p class='lead'>Near everything,our Gym is reachable in all ways.Come to visit us!</p> </div> <div class='col-lg-5 col-sm-pull-6  col-sm-6'> <img class='img-responsive' src='http://www.snapfitness.com/uploads/WelcomeMessage/2013/mar/25/gym%20front.JPG' alt=''> </div> </div>  </div>   </div> <div class='content-section-a'>  <div class='container'>  <div class='row'> <div class='col-lg-5 col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKACN0 section-heading'>Courses</h2></a> <p class='lead'>We provide all type of courses you want:Boxe,Kick-Boxing and more...</p> </div> <div class='col-lg-5 col-lg-offset-2 col-sm-6'> <img class='img-responsive' src='http://pullzone1.selvabjj.netdna-cdn.com/wp-content/uploads/2013/10/Montebello-Kickboxing.jpg' alt=''> </div> </div>  </div> </div>  <footer> <div class='container'> <div class='row'> <div class='col-lg-12'>  <p class='copyright text-muted small'>Copyright © Canale-Pagano 2015. All Rights Reserved</p> </div> </div> </div> </footer>";
+
+function createFBWall(JSON){
+    if(!($('#myFBWall').length)){
+           $.ajax({
+            method: "GET",
+            dataType: 'JSONP', //type of data
+            //jsonpCallback: 'callback',
+            crossDomain: true, //localhost purposes
+            url: server+"php/getFBFeed.php", //Relative or absolute path to file.php file
+            data: {id:JSON.FBid},
+            success: function(response) {   
+                var div=document.createElement('div');
+                div.className = div.className + " panel panel-default";
+                div.setAttribute('id','myFBWall')
+                var el="<div class='panel-heading'>Posts from the facebook page <a href='http://www.facebook.com/"+ JSON.FBid +"'>"+JSON.FBid+"</a></div>";
+                el+=" <table class='table'><thead><tr><th class='col-xs-2'>Sender</th><th class='col-xs-10'>Message</th></tr></thead><tbody>";
+                for(var i=0;i<response.length;i++){
+                    if(response[i]["type"]== "status"){
+                        el+="<tr>";
+                        el+="<td>"+response[i]["from"]["name"]+"</td>";
+                        el+="<td>"+response[i]["message"]+"</td>";
+                        el+="</tr>";
+                    }
+                }
+                el+="</tbody></table>"
+
+
+        div.innerHTML=el;
+        //vedo  cosa  stampa
+
+
+        document.getElementById('page0').appendChild(div);
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+
+                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+            }
+        });
     }
-);});   
+}
+function createTWWall(JSON){
+    var div=document.createElement('div');
+    div.className = div.className + " panel panel-default";
+    div.setAttribute('id','myTWWall')
+    var el="<div class='panel-heading'>Posts from the twittwer page <a href='http://www.twitter.com/"+ JSON.TWname +"'>"+JSON.TWname+"</a></div><div id='tweettie'></div>";
+    div.innerHTML=el;
+    document.getElementById('page0').appendChild(div);
+    $.getScript("js/twitter.js", function(){
+    $('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', 'css/twitter.css') );
+    var config1 = {
+      "id": JSON.TWid,
+      "domId": 'tweettie',
+      "maxTweets": 5,
+      "enableLinks": true,
+      "showPermalinks": false
+    };
+    twitterFetcher.fetch(config1);
+    
+});
+
     
 }
 
-var home="<div class='intro-header'> <div class='container'>  <div class='row'> <div class='col-lg-12'> <div class='intro-message'> <h1>BIG GYM</h1> <h3>A GYM  FOR  BEAST</h3> <hr class='intro-divider'> </div> </div> </div>  </div>   </div> <div class='content-section-a'>  <div class='container'> <div class='row'> <div class='col-lg-5 col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKAI000 section-heading'>Our Instructors</h2></a><br><h2>Best in the world</h2> <p class='lead'>Every instructor in our Gym will lead you to the TOP.</br> Click and Meet them!!!</p> </div> <div class='col-lg-5 col-lg-offset-2 col-sm-6'> <img class='img-responsive' src='http://maisha.gradstate.com/file/2014/10/jobs-in-kenya-gym-instructor.jpg' alt=''> </div> </div>  </div> <!-- /.container -->  </div> <div class='content-section-b'>  <div class='container'>  <div class='row'> <div class='col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKL0001 section-heading'>Location</h2></a>  <p class='lead'>Near everything,our Gym is reachable in all ways.Come to visit us!</p> </div> <div class='col-lg-5 col-sm-pull-6  col-sm-6'> <img class='img-responsive' src='http://www.snapfitness.com/uploads/WelcomeMessage/2013/mar/25/gym%20front.JPG' alt=''> </div> </div>  </div>   </div> <div class='content-section-a'>  <div class='container'>  <div class='row'> <div class='col-lg-5 col-sm-6'> <hr class='section-heading-spacer'> <div class='clearfix'></div> <a href=''><h2 class='LANDMARKACN0 section-heading'>Courses</h2></a> <p class='lead'>We provide all type of courses you want:Boxe,Kick-Boxing and more...</p> </div> <div class='col-lg-5 col-lg-offset-2 col-sm-6'> <img class='img-responsive' src='http://pullzone1.selvabjj.netdna-cdn.com/wp-content/uploads/2013/10/Montebello-Kickboxing.jpg' alt=''> </div> </div>  </div> </div>  <footer> <div class='container'> <div class='row'> <div class='col-lg-12'>  <p class='copyright text-muted small'>Copyright © Canale-Pagano 2015. All Rights Reserved</p> </div> </div> </div> </footer>"
+
