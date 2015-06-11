@@ -56,7 +56,10 @@ function createPage(typeOfPage,data){
         
         default:console.log("ERRORE SCELTA CREAZIONE PAGINA")
     }
-    }, 2000);
+    if (typeOfPage>-1 && typeOfPage<8){
+            $('#wrapper').fadeIn("400");
+    }
+    }, 500);
 }
 
 
@@ -212,7 +215,7 @@ function initializePage(nA2A){
 
 function deleteContent(){
     console.log("ELIMINO");
-    if($('#HOME'))$('#HOME').fadeOut("1000",function(){ $( this ).remove();});
+    if($('#HOME'))$('#HOME').fadeOut("400",function(){ $( this ).remove();});
     $('#wrapper').fadeOut("400",function(){ $( this ).remove();});
     
     //$('#sidebar-wrapper').empty();
@@ -866,6 +869,7 @@ function createPageHome(){
             div.innerHTML=home;
             document.body.appendChild(div);
             bindLink(0);
+            $("#HOME").fadeIn("2000");
                           }
 //------------------------------------------------------------------
 
@@ -988,4 +992,4 @@ function createTWWall(JSON){
     
 }
 
-
+$( document ).ready( function(){$("#HOME").fadeIn("2000");} );
