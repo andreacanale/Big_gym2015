@@ -25,6 +25,8 @@ function returnTypeOfPage(id){
 }
 
 function createPage(typeOfPage,data){
+    deleteContent();
+    setTimeout(function() { 
     switch (typeOfPage) {
         case 0:
             createPageInstructor(data)
@@ -54,6 +56,7 @@ function createPage(typeOfPage,data){
         
         default:console.log("ERRORE SCELTA CREAZIONE PAGINA")
     }
+    }, 2000);
 }
 
 
@@ -123,6 +126,7 @@ function changeArrowDirection(){
     var left="glyphicon glyphicon-triangle-left";
     if(curr.localeCompare(right)==0){curr=left;}else{curr=right}
     $( "#menu-toggle" ).find( "span" )[0].setAttribute('class',curr)
+    console.log("changed arrow direction");
 }
 
 //aggiungere server nel source
@@ -185,7 +189,8 @@ function createDivA2A(n){
                         }
 */
 function initializePage(nA2A){
-    deleteContent();
+ //   deleteContent();
+ //   setTimeout(function() { 
     var div=document.createElement('div')
     div.setAttribute('id','wrapper')
     var el="<div id='sidebar-wrapper'><ul class='sidebar-nav'></ul></div>"
@@ -201,12 +206,15 @@ function initializePage(nA2A){
 
     div.innerHTML=el;
     document.body.appendChild(div);
+ //   }, 2000);
+    
 }
 
 function deleteContent(){
     console.log("ELIMINO");
-    if($('#HOME'))$('#HOME').remove();
-    $('#wrapper').remove();
+    if($('#HOME'))$('#HOME').fadeOut("1000",function(){ $( this ).remove();});
+    $('#wrapper').fadeOut("400",function(){ $( this ).remove();});
+    
     //$('#sidebar-wrapper').empty();
     //$('#Pages-Container').empty();
 
@@ -216,7 +224,6 @@ function deleteContent(){
 //binda tutto
 function bindLink(nA2A,gtInfos){  //
 
-
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
@@ -224,24 +231,26 @@ function bindLink(nA2A,gtInfos){  //
     });
 
     if (gtInfos){
-        $('[class^="LINK"]').click(function(e){
+        $('[class^="LINK"]').not(".binded1").click(function(e){
             e.preventDefault();
             var str=event.target.className;
             var res =retrieveID(str,"OInext",5);
             startGT(gtInfos["context"], res, gtInfos["tourVector"]);
         });
+        $('[class^="LINK"]').not(".binded1").addClass('binded1');
     }
 
     //bind of  LINK to courses or instructors
-    $('[class^="LINK"]').click(function(e){
+    $('[class^="LINK"]').not(".binded2").click(function(e){
 
         e.preventDefault();
         var str=event.target.className;
         var res =retrieveID(str,"LINK",5);
         requestForPage(res);
     });
-
-    $('[class^="OInext"]').click(function(e){
+    $('[class^="LINK"]').not(".binded2").addClass('binded2');
+    
+    $('[class^="OInext"]').not(".binded3").click(function(e){
         e.preventDefault();
         var str=event.target.className;
         var res=retrieveID(str,"OInext",5);
@@ -249,8 +258,9 @@ function bindLink(nA2A,gtInfos){  //
         requestForPage(res);
 
     });
+    $('[class^="OInext"]').not(".binded3").addClass('binded3');
 
-    $('[class^="OIprevious"]').click(function(e){
+    $('[class^="OIprevious"]').not(".binded4").click(function(e){
         e.preventDefault();
         var str=event.target.className;
         var res=retrieveID(str,"OIprevious",5);
@@ -258,7 +268,9 @@ function bindLink(nA2A,gtInfos){  //
         requestForPage(res);
 
     });
-    $('[class^="GTINDEX"]').click(function(e){
+    $('[class^="OIprevious"]').not(".binded4").addClass('binded4');
+    
+    $('[class^="GTINDEX"]').not(".binded5").addClass('binded5').click(function(e){
         e.preventDefault();
         var str=event.target.className;
         var res =retrieveID(str,"GTINDEX",5);
@@ -267,7 +279,7 @@ function bindLink(nA2A,gtInfos){  //
 
     });
     //bind of Link on Landmark
-    $('[class^="LANDMARK"]').click(function(e){
+    $('[class^="LANDMARK"]').not(".binded6").addClass('binded6').click(function(e){
 
         e.preventDefault();
         var str=event.target.className;
@@ -278,7 +290,7 @@ function bindLink(nA2A,gtInfos){  //
 
     //bind of link of A2A if present
     if(nA2A>0){
-        $('[id^="A2A"]').click(function(e){
+        $('[id^="A2A"]').not(".binded7").addClass('binded7').click(function(e){
 
             e.preventDefault();
             var str=event.target.id;
