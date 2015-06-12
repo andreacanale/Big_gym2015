@@ -227,6 +227,7 @@ function deleteContent(){
 //binda tutto
 function bindLink(nA2A,gtInfos){  //
 
+
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
@@ -253,34 +254,49 @@ function bindLink(nA2A,gtInfos){  //
     });
     $('[class^="LINK"]').not(".binded2").addClass('binded2');
     
-    $('[class^="OInext"]').not(".binded3").click(function(e){
-        e.preventDefault();
-        var str=event.target.className;
-        var res=retrieveID(str,"OInext",5);
-        GTnext();
-        requestForPage(res);
 
-    });
-    $('[class^="OInext"]').not(".binded3").addClass('binded3');
 
-    $('[class^="OIprevious"]').not(".binded4").click(function(e){
+    $('[class^="OIprevious"]').not(".binded4").addClass('binded4').click(function(e){
         e.preventDefault();
         var str=event.target.className;
         var res=retrieveID(str,"OIprevious",5);
         GTprevious();
+         $(this).closest("#wrapper").find("#page-content-wrapper").animate({opacity: 0.0, "left": '+500px'}, {
+    queue:    false,
+    complete: function() {
         requestForPage(res);
+    }} );
+ 
 
     });
-    $('[class^="OIprevious"]').not(".binded4").addClass('binded4');
+    
+    $('[class^="OInext"]').not(".binded3").addClass('binded3').click(function(e){
+        e.preventDefault();
+        var str=event.target.className;
+        var res=retrieveID(str,"OInext",5);
+        GTnext();
+        $(this).closest("#wrapper").find("#page-content-wrapper").animate({opacity: 0.0, "left": '-500px'}, {
+        queue:    false,
+        complete: function() {
+            requestForPage(res);
+        }} );
+
+        });
+
     
     $('[class^="GTINDEX"]').not(".binded5").addClass('binded5').click(function(e){
         e.preventDefault();
         var str=event.target.className;
         var res =retrieveID(str,"GTINDEX",5);
         terminateGT();
-        requestForPage(res);
+        $(this).closest("#wrapper").find("#page-content-wrapper").animate({opacity: 0.0, "top": '500px'}, {
+            queue:    false,
+            complete: function() {
+                requestForPage(res);
+            }} );
 
-    });
+        });
+
     //bind of Link on Landmark
     $('[class^="LANDMARK"]').not(".binded6").addClass('binded6').click(function(e){
 

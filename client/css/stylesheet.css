@@ -1,5 +1,6 @@
 #wrapper, #HOME{
     display: none;
+    position: relative;
 }
 .dropdown{
   background-color: #222;
@@ -143,4 +144,12 @@ img.thumbnail {
   max-height: 100%;
   width: auto;
   height: auto;
+}
+.goToLeft{
+position: relative;
+left: 100px;
+}
+.goToRight{
+position: relative;
+left: -100px;
 }
