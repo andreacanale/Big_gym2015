@@ -594,10 +594,10 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
     img.setAttribute('src',server+pic)
     if(headerLinked){
         img.setAttribute('class','LINK'+JSON.id+'   thumbnail ');
-        //var aH=document.createElement('a')
-        //aH.setAttribute('class','LINK'+JSON.id+ ' col-xs-12 col-sm-6 col-md-6 col-ld-6')
-        //aH.appendChild(img);
-        //img=aH;
+        var aH=document.createElement('a')
+        aH.setAttribute('class',' col-xs-12 col-sm-6 col-md-6 col-ld-6')
+        aH.appendChild(img);
+        img=aH;
     }
     else img.setAttribute('class','thumbnail ')
     if (JSON.id.indexOf('A0')==0){
