@@ -657,7 +657,7 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
     }
     else img.setAttribute('class','thumbnail ')
     if (JSON.id.indexOf('A0')==0){
-        img.setAttribute('class','col-xs-2 col-sm-2 col-md-2 col-lg-2');
+        img.setAttribute('class','awardThumb col-xs-2 col-sm-2 col-md-2 col-lg-2');
 
     }
     //caption header

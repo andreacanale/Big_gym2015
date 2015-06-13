@@ -135,10 +135,8 @@ text-align: center;
   width: 100%;
 }
 img.awardThumb{
-      height: 10%;
-      width: 10%;
-      float: left;
-    margin: 0px;
+
+    padding: 0;
 }
 /*.right-caption{
  width:90%;   
