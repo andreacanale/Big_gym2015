@@ -246,7 +246,7 @@ function bindLink(nA2A,gtInfos){  //
 "z-index": "1000",
 "width": "90%",
 "height": "90%"});
-            var str=event.target.className;
+            var str=e.target.className;
             var res =retrieveID(str,"LINK",5);
             startGT(gtInfos["context"], res, gtInfos["tourVector"]);
         });
@@ -257,7 +257,7 @@ function bindLink(nA2A,gtInfos){  //
     $('[class^="LINK"]').not(".binded2").click(function(e){
 
         e.preventDefault();
-        var str=event.target.className;
+        var str=e.target.className;
         var res =retrieveID(str,"LINK",5);
         requestForPage(res);
     });
@@ -267,7 +267,7 @@ function bindLink(nA2A,gtInfos){  //
 
     $('[class^="OIprevious"]').not(".binded4").addClass('binded4').click(function(e){
         e.preventDefault();
-        var str=event.target.className;
+        var str=e.target.className;
         var res=retrieveID(str,"OIprevious",5);
         GTprevious();
          $(this).closest("#wrapper").find("#page-content-wrapper").animate({opacity: 0.0, "left": '+500px'}, {
@@ -281,7 +281,7 @@ function bindLink(nA2A,gtInfos){  //
     
     $('[class^="OInext"]').not(".binded3").addClass('binded3').click(function(e){
         e.preventDefault();
-        var str=event.target.className;
+        var str=e.target.className;
         var res=retrieveID(str,"OInext",5);
         GTnext();
         $(this).closest("#wrapper").find("#page-content-wrapper").animate({opacity: 0.0, "left": '-500px'}, {
@@ -295,7 +295,7 @@ function bindLink(nA2A,gtInfos){  //
     
     $('[class^="GTINDEX"]').not(".binded5").addClass('binded5').click(function(e){
         e.preventDefault();
-        var str=event.target.className;
+        var str=e.target.className;
         var res =retrieveID(str,"GTINDEX",5);
         terminateGT();
         $(this).closest("#wrapper").find("#page-content-wrapper").animate({opacity: 0.0, "top": '500px'}, {
@@ -318,7 +318,7 @@ function bindLink(nA2A,gtInfos){  //
 
         
        
-        var str=event.target.className;
+        var str=e.target.className;
         var res = retrieveID(str,"LANDMARK",5);
         clearAllGTStacks();
         requestForPage(res);
@@ -329,7 +329,7 @@ function bindLink(nA2A,gtInfos){  //
         $('[id^="A2A"]').not(".binded7").addClass('binded7').click(function(e){
 
             e.preventDefault();
-            var str=event.target.id;
+            var str=e.target.id;
             var res =retrieveID(str,"A2A",1);
 
             showPageA2A(parseInt(res),nA2A);
