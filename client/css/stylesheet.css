@@ -147,8 +147,13 @@ img.awardThumb{
     display:inline-block;
     width:100%;
 }
+@media(min-width:1200px){
+    .picAndDesc{
+        display:inline-flex;
+    }
+}
 .picAndDesc{
- display:inline-flex;
+
 position: relative;
 }
 img.thumbnail {

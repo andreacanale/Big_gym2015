@@ -651,7 +651,7 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
     if(headerLinked){
         img.setAttribute('class','LINK'+JSON.id+'   thumbnail ');
         var aH=document.createElement('a')
-        aH.setAttribute('class',' col-xs-12 col-sm-6 col-md-6 col-ld-6')
+        aH.setAttribute('class',' col-xs-12 col-sm-12 col-md-12 col-ld-6')
         aH.appendChild(img);
         img=aH;
     }
