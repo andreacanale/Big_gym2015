@@ -115,7 +115,11 @@ $(document).ready(function(){
     $(window).resize(function(){
         $(document.body).css('padding-top', $('#topnavbar').height()-1 );
     });
-
+    
+    //swipet
+    $(window).on( "swipe", function(e){swipeHandler( e) ;});
+    
+    
 
     //bind all button/links     
     bindLink(0);
@@ -123,6 +127,48 @@ $(document).ready(function(){
 
 });
 
+function isToggled(){ //return if sidebar is toggle or  not
+
+                    if(document.getElementById('wrapper').className.length>0)return true;
+                    else return false;
+
+                    }
+
+function swipeHandler(event){
+    if(!isSideBar() || $(window).width()>=768 )return 0;//check if swipe do  anything
+    var coordStart=event.swipestart.coords;
+    var coordEnd=event.swipestop.coords;
+    var swipeLeft=false;
+    
+    if(coordStart[0]>coordEnd[0] && coordStart[0]<(($(window).width())/2)){//swipeLeft
+                                console.log("swipeleft")
+                                    if(isToggled()){
+                                                $("#wrapper").toggleClass("toggled");
+                                                changeArrowDirection()
+                                                    }
+                                }
+    else if(coordStart[0]<coordEnd[0]){//swipeRight
+        console.log("swiperight")
+            if(!isToggled()){
+                                                $("#wrapper").toggleClass("toggled");
+                                                changeArrowDirection()
+                                                    }
+    
+    
+        }
+    
+
+}
+
+function isSideBar(){
+ var el=document.getElementsByClassName('sidebar-nav').length;
+    console.log(el)
+    console.log((el==0))
+    if(el==0)return false;
+    else return true;
+
+
+}
 //change arrrowDirection of button for show/sidebar
 function changeArrowDirection(){
     var curr=$( "#menu-toggle" ).find( "span" )[0].className;
@@ -148,7 +194,8 @@ function createOrientationInfoSmartphone(){ //sono da passare le variabili come 
     el+= "  <a   href='#'><span class='OInext"+OI["next"].id+" glyphicon glyphicon-chevron-right OIarrow' aria-hidden='true'></span></a>"; 
 
     div.innerHTML=el;
-    document.getElementById('page-content-wrapper').appendChild(div);
+    var pc=document.getElementById('Pages-Container');
+    pc.insertBefore(div,pc.firstChild);;
 
 }
 function createOrientationDesktop(){ //sono da passare le variabili come punto inizio-fine gt contesto partenza e aggungere onClick                                            event
@@ -192,24 +239,33 @@ function createDivA2A(n){
                                             }
                         }
 */
-function initializePage(nA2A){
+function initializePage(nA2A,isSidebar){
  //   deleteContent();
  //   setTimeout(function() { 
     var div=document.createElement('div')
     div.setAttribute('id','wrapper')
-    var el="<div id='sidebar-wrapper'><ul class='sidebar-nav'></ul></div>"
+    var el="";
+    
+    
+    //sidebar-wrapper
+    if(isSidebar)el="<div id='sidebar-wrapper'><ul class='sidebar-nav'></ul></div>"
     el+="<div id='page-content-wrapper' class='container'>"
+    
+    //button for show sidebar
+    if(isSidebar){
     el+="<div class='container-fluid' id='buttonSide'>"
     el+= "<div class='row'>"
-    el+= "<div class='col-xs-3 col-sm-3'>"
-    el+= "<a href='#menu-toggle' class='btn btn-default hid visible-xs' id='menu-toggle'><span class='glyphicon glyphicon-triangle-right' aria-hidden='true'></span></a></div></div>"
+    el+= "<div class='col-xs-4 col-sm-4'>"
+    el+= "<a href='#menu-toggle' class='btn btn-default hid visible-xs' id='menu-toggle'><span class='glyphicon glyphicon-triangle-right' aria-hidden='true'></span>Link</a></div></div>"
     el+="</div>"
+                 }
     el+="<div id='Pages-Container'>"
     for(var i=0;i<nA2A;i++)el+="<div id='page"+i+"'></div>"
     el+="</div>";
 
     div.innerHTML=el;
     document.body.appendChild(div);
+    if(!isSidebar)$('#wrapper').css("padding-left","0px");
  //   }, 2000);
     
 }
@@ -405,7 +461,7 @@ var LCAllCourseByName= [{id:"ACN0", name:"All course by Name"}];
 //-------------------------------------------------
 
 function createA2ABarDesktop(Pages){ var div=document.createElement('div');
-                                    div.setAttribute('class','btn-group btn-group-justified hidden-xs');
+                                    div.setAttribute('class','btn-group btn-group-justified ');
                                     div.setAttribute('id',"A2ABD");
                                     div.setAttribute('role','group');
                                     div.setAttribute('aria-label','...');
@@ -714,10 +770,10 @@ function createPageLocation(JSON){
     var pages=["Where we are","Contact Us"]
 
 
-    initializePage(2);
+    initializePage(2,false);
 
     createA2ABarDesktop(pages);
-    addA2ALinkOnSideBar(pages,"Location");
+    //addA2ALinkOnSideBar(pages,"Location");
     showPageA2A(0,2);
     //---CONTENT----
     createTextwithTitle(JSON.whereweare,"WHERE WE ARE","page0");
@@ -733,7 +789,7 @@ function createPageLocation(JSON){
 
 }
 function createPageInstructor(JSON){
-    initializePage(1)
+    initializePage(1,true)
 
     createOrientationDesktop();
     createOrientationInfoSmartphone();
@@ -762,9 +818,9 @@ function createPageCourse(JSON){
 
     var pages=["Description","Scheduling","Register"]
     //initialize+A2ABAR+LINKS+OI
-    initializePage(3); 
+    initializePage(3,true); 
     createA2ABarDesktop(pages);
-    addA2ALinkOnSideBar(pages,JSON.title);
+    //addA2ALinkOnSideBar(pages,JSON.title);
     addLCLinkOnSideBar(JSON.instructors,"Tough by:");
     createOrientationDesktop();
     createOrientationInfoSmartphone();
@@ -772,7 +828,8 @@ function createPageCourse(JSON){
     //----------CONTENT-------------
     //in pagina 0 description
     createTextwithTitle(JSON.description,JSON.title,'page0');
-    createTextwithTitle(JSON.target,"TARGET",'page0');
+    createTextwithTitle("","TARGET : "+JSON.target.toUpperCase(),'page0');
+    createTextwithTitle("","LEVEL : "+JSON.level.toUpperCase(),'page0');
     addCarousel2(JSON.images,'page0')
 
     //in pagina 1 scheduling
@@ -799,7 +856,7 @@ function createPageCourse(JSON){
 
 function createPageAllInstructor(JSON){
 
-    initializePage(1)
+    initializePage(1,false);
     var str=JSON.paragraph.content;
     var res=str.split(/\n/)
     createTextwithTitle(res[1],res[0],"page0");
@@ -815,7 +872,7 @@ function createPageAllInstructor(JSON){
 }
 function createPageAllCourseByName(JSON){
 
-    initializePage(1);
+    initializePage(1,true);
     addLCLinkOnSideBar(LCAllCourseByLevel,"Other sort",true)
 
     var headerText=JSON.paragraph.content.split('</p>');
@@ -834,7 +891,7 @@ function createPageAllCourseByName(JSON){
 }
 function createPageAllCourseByLevel(JSON){
 
-    initializePage(1);
+    initializePage(1,true);
     addLCLinkOnSideBar(LCAllCourseByName,"Other sort",true)
 
     var headerText=JSON.paragraph.content.split('</p>');
@@ -858,7 +915,7 @@ function createPageAllCourseByLevel(JSON){
 }
 function createPageAllCourseCategories(JSON){
 
-    initializePage(1);
+    initializePage(1,true);
     //cerco di  divide il content
     var str=JSON.paragraph.content;
     var res=str.split(/\n/)
@@ -879,7 +936,7 @@ function createPageAllCourseCategories(JSON){
 
 function createPageCoursesOfCategoryX(JSON){
 
-    initializePage(1);
+    initializePage(1,true);
     createTextwithTitle(JSON.Description,"Courses of "+JSON.nome.toUpperCase()+"","page0");
     createListThumbNailFInal(JSON.courses,"page0",true,false,false);
     createOrientationDesktop();
