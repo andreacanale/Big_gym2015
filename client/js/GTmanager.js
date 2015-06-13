@@ -6,6 +6,27 @@ Authors: Filippo Pagano, Andrea Canale
 */
 
 
+/*prepare guided tours:
+	crea n vettori di guided tours
+carica nuova pagina uscendo da tutti i guided tours
+	distruggi pila dei guided tours iniziati
+	distruggi vettori per nuovi guided tours
+	prepare guided tours
+inizia un guided tour
+	distruggi eventuale vettore alternativo
+	segna sullo stack di navigazione le informazioni sul nuovo guided tour
+	fornisci link
+fornisci link e info	
+	fornisci link previous, next, what you are seeing now
+	forni what you are seeing now
+	fornisci n of N
+continua guided tour
+	fornisci link
+	prepare guided tours
+termina guided tour
+	elimina dallo stack di navigazione l'ultimo guided tour
+	elimina vettore del guided tour
+	*/
 	var stackContext=new Array();
 	var stackEntry=new Array();
 	var stackTourVector=new Array();
@@ -77,7 +98,7 @@ Authors: Filippo Pagano, Andrea Canale
 		var stackTourVector=new Array();
 		var stackPosition=new Array();
 	}
-    function getStacks(){
+	function getStacks(){
         var status= new Array();
         status["stackContext"] = stackContext;
         status["stackEntry"] = stackEntry;
@@ -86,5 +107,16 @@ Authors: Filippo Pagano, Andrea Canale
         return status;
         
     }
-	
+
+function setStacks(status){
+       stackContext= status["stackContext"];
+       stackEntry= status["stackEntry"];
+       stackTourVector= status["stackTourVector"];
+       stackPosition= status["stackPosition"];
+    }
+
+
+
+
+
 	
