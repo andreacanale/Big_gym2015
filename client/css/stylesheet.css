@@ -137,6 +137,7 @@ img.awardThumb{
 }
 .picAndDesc{
  display:inline-flex;
+position: relative;
 }
 img.thumbnail {
   display: block;
