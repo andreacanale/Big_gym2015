@@ -147,7 +147,7 @@ function swipeHandler(event){
                                                 changeArrowDirection()
                                                     }
                                 }
-    else if(coordStart[0]<coordEnd[0]){//swipeRight
+    else if(coordStart[0]<coordEnd[0]&& coordStart[0]<(($(window).width())/2)){//swipeRight
         console.log("swiperight")
             if(!isToggled()){
                                                 $("#wrapper").toggleClass("toggled");
