@@ -29,7 +29,7 @@ function createImgRightText(Simg,Text,idWherePutIt){
     var div=document.createElement('div')
     div.setAttribute('class','row')
     div.setAttribute('id','content')
-    var el="<div class='thumbnail right-caption'><img src='"+server+Simg+"' class='col-xs-12 col-sm-4 col-md-4 col-lg-4'><div                                           class='caption'>"+Text+"</div></div>";
+    var el="<div class='thumbnail right-caption'><img src='"+server+Simg+"' class='col-xs-12 col-sm-4 col-md-4 col-lg-4'><div                                           class='caption col-xs-12 col-sm-8 col-md-8 col-lg-8'>"+Text+"</div></div>";
     div.innerHTML=el;
     document.getElementById(idWherePutIt).appendChild(div);
 }
@@ -186,7 +186,7 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
         DIVcaption.setAttribute('class','col-xs-10 col-sm-10 col-md-10 col-lg-10');
 
     }else{
-    DIVcaption.setAttribute('class','right-caption col-xs-12 col-*-6')
+    DIVcaption.setAttribute('class','right-caption col-xs-12 col-sm-6')
     }
     var textCaption="";
     //se l'header è linkato o no
