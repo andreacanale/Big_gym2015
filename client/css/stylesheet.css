@@ -217,3 +217,11 @@ left: -100px;
 .picAndDesc>a>img{
     width:100%;
 }
+@media (max-width: 992px){ 
+    .flex {
+        flex-wrap: wrap;
+    }
+}
+#tweettie>ul {
+  -webkit-padding-start: 0;
+}
