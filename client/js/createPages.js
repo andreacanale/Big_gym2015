@@ -179,6 +179,14 @@ function createPageCoursesOfCategoryX(JSON){
     createListThumbNailFInal(JSON.courses,"page0",true,false,false);
     createOrientationDesktop();
     createOrientationInfoSmartphone();
+    
+    //fix hide sidebar for  xs
+    var class1=document.getElementById('sidebar-wrapper').className;
+    document.getElementById('sidebar-wrapper').setAttribute('class',class1+' hidden-xs')
+   
+    var class2=document.getElementById('buttonSide').className;
+    document.getElementById('buttonSide').setAttribute('class',class2+' hidden-xs')
+    //-----
 
     var gtInfos= new Array();
     var gtContext= new Array();
