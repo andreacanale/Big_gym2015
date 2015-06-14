@@ -206,15 +206,21 @@ function swipeHandler(event){
 
 }
 
-
+//begin history block
+var justPopped;
 window.onpopstate = function(event) {
 				console.log(document.location);
 				console.log(document.location.pathname);
                 var res=document.location.pathname.split('/')
-                var idToPass=res[res.length-1];
-                setStacks(event.state.dato)
-                
-                requestForPage(event.state.ID);
+                console.log('log')
+                console.log(event.state)
+                justPopped = true;
+                if (event.state == null) {
+                    requestForPage('H0001');
+                } else{
+                    setStacks(event.state.dato)
+                    requestForPage(event.state.ID);
+                }
                 
 			};
 
@@ -269,7 +275,8 @@ function requestForPage(id){
                             console.log("PRIMA DEL PUSH"+history.state.ID);
                             pila.push(history.state)
                            }
-    history.pushState({dato:getStacks(),ID:id},"TITLE",id)
+    if(justPopped){justPopped=false}else{
+    history.pushState({dato:getStacks(),ID:id},"TITLE",id)}
     if(history.state!=null)console.log("DOPO DEL PUSH"+history.state.ID)
     if(type==8)createPageHome();
     else callToServer(id,phps[type]);
