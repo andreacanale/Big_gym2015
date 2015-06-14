@@ -2,6 +2,12 @@
     display: none;
     position: relative;
 }
+#wrapper{
+
+
+
+
+}
 .dropdown{
   background-color: #222;
   border-color: #080808;
@@ -145,9 +151,9 @@ img.awardThumb{
     display:inline-block;
     width:100%;
 }
-@media(min-width:1200px){
+@media(min-width:1400px){
     .picAndDesc{
-        display:inline-flex;
+        
     }
 }
 .picAndDesc{
@@ -193,7 +199,30 @@ left: -100px;
   .col-sm-height {
     display: table-cell;
     float: none !important;
+
   }
+#site-wrapper{
+margin-bottom: 0px;
+margin-left: 5%;
+margin-right: 5%;
+background-color:rgb(208, 208, 208);
+height: ;
+border-left-style: solid;
+border-right-style: solid;
+      -moz-box-shadow:  0px 40px 40px rgba(0,0,0,.5);
+  -webkit-box-shadow:  0px 40px 40px rgba(0,0,0,.5);
+  box-shadow: 0px 40px 40px rgba(0,0,0,.5);
+   
+            }
+    body{
+    background-image:url(http://svite-league-apps-content.s3.amazonaws.com/bgimages/big-red.jpg);
+    background-attachment:fixed;
+    }
+
+
+
+
+
 }
 @media (min-width: 992px) {
   .col-md-height {
@@ -216,4 +245,39 @@ left: -100px;
 }
 .picAndDesc>a>img{
     width:100%;
+}
+@media (max-width: 768px){ 
+    .flex {
+        flex-wrap: wrap;
+    }
+}
+#tweettie>ul {
+  -webkit-padding-start: 0;
+}
+
+#grassFooter{
+height: 170px;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+  background-image: url(http://biggym2015.altervista.org/server/images/Grass-Footer-Cropped.png);
+  opacity: 1;
+  z-index: 10000;
+}
+
+.row>.thumbnail{
+  border-style: solid;
+  border-color: black;
+
+
+}
+@media (min-width: 768px){
+.container {
+  width: 100%;
+}
+}
+@media (min-width: 992px){
+.container {
+  width: 100%;
+}
 }

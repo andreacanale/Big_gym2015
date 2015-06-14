@@ -54,10 +54,10 @@ function createForm(whatToKnow,idWherePutIt){
 function createImgWith1Link(JSON,idWheretoPutIt){
 
     var cont=document.createElement('div');
-    cont.setAttribute('class','thumbnail  col-xs-12 col-sm-6 col-md-6 col-ld-6 picAndDesc')
+    cont.setAttribute('class','thumbnail  col-xs-12  picAndDesc')
     var el="";
-    el+="<div class='col-xs-12 col-sm-6 col-md-6 col-ld-6'> <img src='"+server+JSON.coursePic+"' class='thumbnail '></div>";
-    el+="<div class='right-caption col-xs-6 col-*-3'>";
+    el+="<div class='col-xs-12 '> <img src='"+server+JSON.coursePic+"' class='thumbnail '></div>";
+    el+="<div class='right-caption col-xs-12 '>";
     el+="<a  href='' ><h4 class='LINK"+JSON.id+"'>"+JSON.title+"</h4></a><p>"+JSON.description.substr(0,150)+"...</p>";
     el+="</div>";
     cont.innerHTML=el;
@@ -171,8 +171,15 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
     if(headerLinked){
         img.setAttribute('class','LINK'+JSON.id+'   thumbnail ');
         var aH=document.createElement('a')
-        aH.setAttribute('class',' col-xs-12 col-sm-6 col-md-6 col-ld-6')
+        if(JSON.id.indexOf('C0')==0){
+            aH.setAttribute('class',' col-xs-12')
+        } else {
+            aH.setAttribute('class',' col-xs-12 col-sm-6 col-md-6 col-ld-6')
+        }
         aH.appendChild(img);
+        
+        
+        
         img=aH;
     }
     else img.setAttribute('class','thumbnail ')
@@ -185,7 +192,9 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
     if (JSON.id.indexOf('A0')==0){
         DIVcaption.setAttribute('class','col-xs-10 col-sm-10 col-md-10 col-lg-10');
 
-    }else{
+    }else if(JSON.id.indexOf('C0')==0){
+        DIVcaption.setAttribute('class','right-caption col-xs-12')
+    } else {
     DIVcaption.setAttribute('class','right-caption col-xs-12 col-sm-6')
     }
     var textCaption="";
@@ -212,6 +221,7 @@ function createThumbnailFINAL(JSON,idWheretoPutIt,headerLinked,moreLink,caption)
 
 
     document.getElementById(idWheretoPutIt).appendChild(cont);
+    
 
 }
 function createListThumbNailFInal(array,idWheretoPutIt,headerLinked,moreLink,caption){
@@ -271,4 +281,16 @@ function addLCLinkOnSideBar(Links2,nameHead,areLandmark){
     document.getElementsByClassName('sidebar-nav')[0].appendChild(correlatedLinks);
 
 
+}
+function createGrassFooter(){
+if(!($("#grassFooter").length)){
+    $("body").append("<div id='grassFooter'></div>");
+    
+    
 } 
+    $("#grassFooter").animate({
+        "height": "170px"
+    });
+    
+
+}

@@ -23,6 +23,7 @@ function createPageLocation(JSON){
     var result=string.split('</p>');
 
     createTextwithTitle(result[1],result[0],"page1");
+    //createGrassFooter();
     bindLink(3)
 
 }
@@ -200,10 +201,11 @@ function createPageCoursesOfCategoryX(JSON){
 
 function createPageHome(){
             deleteContent();
+            initializePage(1,false)
             var div=document.createElement('div');
             div.setAttribute('id','HOME')
             div.innerHTML=home;
-            document.body.appendChild(div);
+            document.getElementById('site-wrapper').appendChild(div);
             bindLink(0);
             
             $("#HOME").fadeIn("2000");
