@@ -246,6 +246,7 @@ border-right-style: solid;
 .picAndDesc>a>img{
     width:100%;
 }
+
 @media (max-width: 768px){ 
     .flex {
         flex-wrap: wrap;
