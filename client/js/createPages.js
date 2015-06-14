@@ -207,7 +207,6 @@ function createPageHome(){
             div.innerHTML=home;
             document.getElementById('site-wrapper').appendChild(div);
             bindLink(0);
-            
-            $("#HOME").fadeIn("2000");
-    $('#HOME').scrollTop();
+            setInterval(function () {$("#HOME").fadeIn("400");$('#HOME').scrollTop();}, 500);
+          
                           }

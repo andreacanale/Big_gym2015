@@ -64,6 +64,9 @@ function showPageA2A(pageToShow,npages){
 function bindLink(nA2A,gtInfos){  //
 
 
+    
+    
+    
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
@@ -177,7 +180,7 @@ function bindLink(nA2A,gtInfos){  //
 
 $('#grassFooter').not(".binded8").addClass('binded8').click(function(e){
         
-        $(this).animate({ "height": "-=50px"});
+        $(this).animate({ "height": "-=100px"});
         
     });
 
@@ -325,7 +328,7 @@ function updateStatusCallback(){
 //--------DOCUMENT-READY----------////
 
 $(document).ready(function(){
-    $("#HOME").fadeIn("2000");
+    $("#HOME").fadeIn("400");
     //Don't overlap content with navbar
     $(document.body).css('padding-top', $('#topnavbar').height() );
     $(window).resize(function(){
