@@ -1,6 +1,6 @@
 //SERVER  VARIABLES FOR IMAGES SOURCES
 
-var pila=new Array();
+
 var server="http://biggym2015.altervista.org/server/"
 //DATABASE JS
 var phps= ["../server/php/getInstructor.php","../server/php/getCourse.php","../server/php/getCoursesOfCategoryX.php","../server/php/getAllCourseByName.php","../server/php/getAllCourseByLevel.php","../server/php/getAllCourseCategories.php","../server/php/getAllInstructor.php","../server/php/getLocation.php"]
@@ -33,8 +33,7 @@ function isToggled(){ //return if sidebar is toggle or  not
                     }
 function isSideBar(){
  var el=document.getElementsByClassName('sidebar-nav').length;
-    console.log(el)
-    console.log((el==0))
+    
     if(el==0)return false;
     else return true;
 
@@ -47,7 +46,7 @@ function changeArrowDirection(){
     var left="glyphicon glyphicon-triangle-left";
     if(curr.localeCompare(right)==0){curr=left;}else{curr=right}
     $( "#menu-toggle" ).find( "span" )[0].setAttribute('class',curr)
-    console.log("changed arrow direction");
+ 
 }
 function retrieveID(nameLink,prefix,lengthID){
     var result=nameLink.substr(prefix.length,lengthID);
@@ -150,7 +149,7 @@ function bindLink(nA2A,gtInfos){  //
 
         $(this).closest( "li" ).parent().closest( "li" ).addClass("active");
         $(this).closest( "li" ).addClass("active");
-        console.log($(this).closest( "li" ).parent().parents("li"));
+        
 
         
        
@@ -195,14 +194,14 @@ function swipeHandler(event){
     var swipeLeft=false;
     
     if(coordStart[0]>coordEnd[0] && coordStart[0]<(($(window).width()))){//swipeLeft
-                                console.log("swipeleft")
+                                
                                     if(isToggled()){
                                                 $("#wrapper").toggleClass("toggled");
                                                 changeArrowDirection()
                                                     }
                                 }
     else if(coordStart[0]<coordEnd[0] && coordStart[0]<(($(window).width()))/2){//swipeRight
-        console.log("swiperight")
+      
             if(!isToggled()){
                             //$('#menu-toggle').animate({
                             //"left":"+=250px"
@@ -220,11 +219,9 @@ function swipeHandler(event){
 //begin history block
 var justPopped;
 window.onpopstate = function(event) {
-				console.log(document.location);
-				console.log(document.location.pathname);
+				
                 var res=document.location.pathname.split('/')
-                console.log('log')
-                console.log(event.state)
+                
                 justPopped = true;
                 if (event.state == null) {
                     requestForPage('H0001');
@@ -282,13 +279,10 @@ function requestForPage(id){
     
     var type=returnTypeOfPage(id);
     //history.pushState({stacks:getStacks()}, "title", id);
-    if(history.state!=null){
-                            console.log("PRIMA DEL PUSH"+history.state.ID);
-                            pila.push(history.state)
-                           }
+
     if(justPopped){justPopped=false}else{
     history.pushState({dato:getStacks(),ID:id},"TITLE",id)}
-    if(history.state!=null)console.log("DOPO DEL PUSH"+history.state.ID)
+   
     if(type==8)createPageHome();
     else callToServer(id,phps[type]);
 
@@ -429,7 +423,7 @@ function initializePage(nA2A,isSidebar){
 }
 
 function deleteContent(){
-//    console.log("ELIMINO");
+
     if($('#HOME'))$('#HOME').fadeOut("400",function(){ $( this ).remove();});
     $('#wrapper').fadeOut("400",function(){ $( this ).remove();});
     
@@ -437,7 +431,7 @@ function deleteContent(){
     //$('#Pages-Container').empty();
 
 }
-//---------New Function----------------------------------------
+
 
 
 
