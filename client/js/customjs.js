@@ -183,14 +183,14 @@ function swipeHandler(event){
     var coordEnd=event.swipestop.coords;
     var swipeLeft=false;
     
-    if(coordStart[0]>coordEnd[0] && coordStart[0]<(($(window).width())/2)){//swipeLeft
+    if(coordStart[0]>coordEnd[0] && coordStart[0]<(($(window).width()))){//swipeLeft
                                 console.log("swipeleft")
                                     if(isToggled()){
                                                 $("#wrapper").toggleClass("toggled");
                                                 changeArrowDirection()
                                                     }
                                 }
-    else if(coordStart[0]<coordEnd[0]){//swipeRight
+    else if(coordStart[0]<coordEnd[0] && coordStart[0]<(($(window).width()))/2){//swipeRight
         console.log("swiperight")
             if(!isToggled()){
                             //$('#menu-toggle').animate({

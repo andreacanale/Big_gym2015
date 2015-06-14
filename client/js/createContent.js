@@ -84,7 +84,7 @@ function createListImgWith1Links(JSON,idWheretoPutIt){
 
     for(var i=0;i<JSON2.courses.length;i++){
         if(i%2==0){ j++;
-                   Row="<div  id='riga"+j+"' class='row'></div>"
+                   Row="<div  id='riga"+j+"' class='row flex'></div>"
                    cont.innerHTML=cont.innerHTML+Row;
                   }
         createImgWith1Link(JSON2.courses[i],'riga'+j)
@@ -104,7 +104,7 @@ function createListImgWith1LinksOnlyOneLevel(JSON,idWheretoPutIt,level){
     document.getElementById(idWheretoPutIt).appendChild(cont);
     for(var i=0;i<JSONF.length;i++){
         if(i%2==0){ j++;
-                   Row="<div  id='riga"+level+j+"' class='row'></div>"
+                   Row="<div  id='riga"+level+j+"' class='row flex'></div>"
                    cont.innerHTML=cont.innerHTML+Row;
                   }
         createImgWith1Link(JSONF[i],'riga'+level+j)
@@ -227,7 +227,7 @@ function createListThumbNailFInal(array,idWheretoPutIt,headerLinked,moreLink,cap
 
     for(var i=0;i<array.length;i++){
         if(i%2==0){ j++;
-                   Row="<div  id='riga"+j+"' class='row'></div>"
+                   Row="<div  id='riga"+j+"' class='row flex'></div>"
                    cont.innerHTML=cont.innerHTML+Row;
                   }
         createThumbnailFINAL(array[i],'riga'+j,headerLinked,moreLink,caption);
