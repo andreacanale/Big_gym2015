@@ -282,3 +282,6 @@ height: 170px;
   width: 100%;
 }
 }
+#site-wrapper{
+  min-height: 100%;
+}

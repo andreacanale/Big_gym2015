@@ -420,8 +420,8 @@ function initializePage(nA2A,isSidebar){
     el+="</div>";
 
     div.innerHTML=el;
-   //document.getElementById('site-wrapper').insertBefore(div,  document.getElementById('site-wrapper').lastChild);
-    $('footer').before(div);
+   document.getElementById('site-wrapper').appendChild(div);//   insertBefore(div,  document.getElementById('site-wrapper').lastChild);
+ //   $('footer').before(div);
    // div.insertBefore('footer');
     if(!isSidebar)$('#wrapper').css("padding-left","0px");
  //   }, 2000);

@@ -23,7 +23,7 @@ function createPageLocation(JSON){
     var result=string.split('</p>');
 
     createTextwithTitle(result[1],result[0],"page1");
-    //createGrassFooter();
+    createGrassFooter();
     bindLink(3)
 
 }
