@@ -214,6 +214,6 @@ left: -100px;
   display: flex;
     
 }
-.thumbnail a>img, .thumbnail>img{
-    width:100% /* TODO solo per le thumbnail degli insegnanti + padding 0 per gli awardThumb (aggiungere la classe alle stelline)*/
+.picAndDesc>a>img{
+    width:100%;
 }
